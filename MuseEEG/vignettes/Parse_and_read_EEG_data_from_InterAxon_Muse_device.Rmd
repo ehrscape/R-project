@@ -17,7 +17,7 @@ vignette: >
 
 The package `museEEG` is designed to parse and read the EEG data collected with the [InterAxon Muse device](http://www.choosemuse.com/). The device stores the acquired data directly in .muse format and the manufacturer offers a tool [MusePlayer](http://developer.choosemuse.com/research-tools/museplayer) that converts the .muse data to .csv format. The package is comprised of `read_eeg` function. 
 
-### Reading and parsing EEG data
+## Reading and parsing EEG data
 
 The `read_eeg` function reads a file in csv format acquired by MUSE hardware and sorts the EEG data in it into a data frame. The function is defined as 
 

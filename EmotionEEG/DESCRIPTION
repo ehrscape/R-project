@@ -1,12 +1,14 @@
-Package: museEEG
+Package: emotionEEG
 Type: Package
-Title: Parse and read EEG data from InterAxon Muse device
+Title: Assessment of emotional valence and arousal of a person based on the EEG recordings
 Version: 0.1
 Date: 2015-08-06
 Authors@R: person("Emil", "Plesnik", email = "emil.plesnik@marand.si", role = c("aut", "cre"))
 Maintainer: Emil Plesnik <emil.plesnik@marand.si>
-Description: The package is designed to parse and read the EEG data collected with the InterAxon Muse device.
+Description: Emotional valence and arousal are assessed based on analysis of EEG recordings with the Muse hardware. The Muse EEG recording is imported in csv format.
 License: GNU AGPLv3
 LazyData: TRUE
-Suggests: knitr, scales, ggplot2
+Imports:
+  classInt
+Suggests: knitr, ggplot2, gridExtra, scales
 VignetteBuilder: knitr

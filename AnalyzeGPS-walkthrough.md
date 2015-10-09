@@ -1,5 +1,13 @@
 # Walkthrough for the analyzeGPS package
 
+-   Introduction
+-   Load GPS data
+-   Plot data
+-   Calculate distances
+-   Calculate speed
+-   Calculate acceleration
+-   Calculate route grade or inclination
+
 ## Introduction
 
 GPS data has become extensily used in our activities due to technological advances and development of affordable, pervasive, integrated and efficient GPS devices. Availability of the GPS data is offering possibilities to apply it in different ways than before. And the first step in this kind of experimenting is to be able to read the data and to prepare it for further use.  The package `analyzeGPS` offers functions for basic preparation and analysis of the GPS signal:
@@ -56,7 +64,7 @@ ggmap(get_googlemap(center = c(lon = mean(gps$lon), lat = mean(gps$lat)), zoom =
     size = c(720, 720))) + geom_point(data = gps, aes(x = lon, y = lat))
 ```
 
-![](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-2-1.png) 
+![GPS data ploted on a map](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-2-1.png) 
 
 If elevation data is also available, we can represent the GPS route in 3D. For basic 3D plotting we can use the `lines3D` function from the `plot3D` package. 
 
@@ -66,7 +74,7 @@ library(plot3D)
 lines3D(gps$lon, gps$lat, gps$ele, phi = 10, theta = 20)
 ```
 
-![](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-3-1.png) 
+![A 3D presentation of the GPS data (longitude, latitude and elevation)](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-3-1.png) 
 
 To create an interactive 3D plot the `plot3d` function from the `rgl` package can be used. The following command opens a new window with the 3D plot, which can be rotated using the click&drag. 
 
@@ -107,7 +115,7 @@ ggplot(data = gps, aes(x = dist/1000, y = ele)) + geom_line() + xlab("Distance [
     ylab("Elevation [m]")
 ```
 
-![](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-5-1.png) 
+![Elevation profile of the route](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-5-1.png) 
 
 
 The function `distanceGPS` takes latitude and longitude information as input and returns the distance (in meters) between them as the reseult. The input can be given as a pair of points or as a pair of vectors. The function implements the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) 
@@ -201,7 +209,7 @@ ggplot(data = gps, aes(x = dist/1000, y = speed * 3.6)) + geom_line() + xlab("Di
     ylab("Speed [km/h]")
 ```
 
-![](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-8-1.png) 
+![Speed profile of the route](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-8-1.png) 
 
 
 From the speed vs distance figure we can observe that the calculated speed has many very sudden changes with high values, which are not expected for a (amateur) cyclist. This is mainly due to inaccuracy of the GPS sensor. However the main trend can still be noticed with speeds not exceeding 50 km/h. Therefore, these glitches can be neutralized by applying some smoothing, for example rolling mean with window width of 10 samples, since the length of the sudden changes is short and doesn't exceed 3 samples. The `rollmean` function from `zoo` package is used for this task. 
@@ -216,7 +224,7 @@ ggplot(data = gps, aes(x = dist/1000, y = speed_smooth * 3.6)) + geom_line() +
     xlab("Distance [km]") + ylab("Smoothed speed [km/h]")
 ```
 
-![](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-9-1.png) 
+![Smoothed speed profile of the route](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-9-1.png) 
 
 
 The input parameters for the `speedGPS` function are the time vector in POSIXct format and the numeric distance vector. The time vector has to have at least two values or time stamps to be able to determine the time difference in seconds corresponding to the distance in meters traveled in that time period. The distance vector can be the output of the `distanceGPS` function. The speed values are calculated as the quotient between the traveled distance (in m) and the corresponding time difference (in seconds). To obtain values in km/h, the values are multiplied by 3.6.  
@@ -304,7 +312,7 @@ ggplot(data = gps, aes(x = dist/1000, y = acc)) + geom_line() + xlab("Distance [
     ylab("Acceleration [m/s^2]")
 ```
 
-![](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-12-1.png) 
+![Acceleration profile of the route](./figures/AnalyzeGPS-walkthrough_files/figure-latex/unnamed-chunk-12-1.png) 
 
 
 As seen from the acceleration vs distance figure, the acceleration values are between - 1 and +1 $m/s^2$ for the entire GPS route, which can be expected for a cyclist. 

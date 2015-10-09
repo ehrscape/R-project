@@ -10,7 +10,7 @@
 
 <meta name="author" content="Emil Plesnik, Marand d.o.o." />
 
-<meta name="date" content="2015-09-21" />
+<meta name="date" content="2015-10-09" />
 
 <title>Parse and read EEG data from InterAxon Muse device</title>
 
@@ -72,14 +72,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">Parse and read EEG data from InterAxon Muse device</h1>
 <h4 class="author"><em>Emil Plesnik, Marand d.o.o.</em></h4>
-<h4 class="date"><em>2015-09-21</em></h4>
+<h4 class="date"><em>2015-10-09</em></h4>
 </div>
 
 <div id="TOC">
-<h2 class="toctitle">Contents</h2>
 <ul>
-<li><a href="#introduction">Introduction</a><ul>
-<li><a href="#reading-and-parsing-eeg-data">Reading and parsing EEG data</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#reading-and-parsing-eeg-data">Reading and parsing EEG data</a><ul>
 <li><a href="#read-eeg-data">Read EEG data</a></li>
 <li><a href="#subsetting">Subsetting</a></li>
 <li><a href="#ratios-of-alpha-and-beta-power-bands">Ratios of alpha and beta power bands</a></li>
@@ -91,8 +90,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>The package <code>museEEG</code> is designed to parse and read the EEG data collected with the <a href="http://www.choosemuse.com/">InterAxon Muse device</a>. The device stores the acquired data directly in .muse format and the manufacturer offers a tool <a href="http://developer.choosemuse.com/research-tools/museplayer">MusePlayer</a> that converts the .muse data to .csv format. The package is comprised of <code>read_eeg</code> function.</p>
-<div id="reading-and-parsing-eeg-data" class="section level3">
-<h3>Reading and parsing EEG data</h3>
+</div>
+<div id="reading-and-parsing-eeg-data" class="section level2">
+<h2>Reading and parsing EEG data</h2>
 <p>The <code>read_eeg</code> function reads a file in csv format acquired by MUSE hardware and sorts the EEG data in it into a data frame. The function is defined as</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">read_eeg &lt;-<span class="st"> </span>function(<span class="dt">NAME=</span><span class="st">&quot;filename&quot;</span>)</code></pre></div>
 <p>The input argument is the string path to the selected EEG file in csv format (<code>NAME</code>). The original input file with Muse data includes many different (derived) parameters besides EEG data signal data. With the <code>read_eeg</code> function, a selection of available data is shaped into the output data frame. This selection includes:</p>
@@ -104,7 +104,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>fp1_beta_alpha</code>: ratio between beta and alpha band power of channel FP1 (in decibels).</li>
 <li><code>fp2_beta_alpha</code>: ratio between beta and alpha band power of channel FP2 (in decibels).</li>
 </ul>
-</div>
 <div id="read-eeg-data" class="section level3">
 <h3>Read EEG data</h3>
 <p>Below, the steps of <code>read_eeg</code> are presented in detail on a short (approx. 30 seconds long) Muse recording that is included in the package.</p>

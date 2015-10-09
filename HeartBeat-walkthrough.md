@@ -34,7 +34,7 @@ library(ggplot2)
 ggplot(data = ecg, aes(x = time, y = ecg)) + geom_line()
 ```
 
-![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![ECG data](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
 The data frame `ecg` has two columns:
 
@@ -135,7 +135,7 @@ plot(ecg_wav@W$W3, type = "l")
 plot(ecg_wav@W$W4, type = "l")
 ```
 
-![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![Detail wavelet coefficients of the ECG data](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 par(oldpar)
@@ -151,7 +151,7 @@ plot(ecg_wav@V$V3, type = "l")
 plot(ecg_wav@V$V4, type = "l")
 ```
 
-![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![Approximation wavelet coefficients of the ECG data](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 ``` r
 par(oldpar)
@@ -260,7 +260,7 @@ ggplot(data = ecg, aes(x = time, y = ecg)) + geom_line() + geom_point(data = ecg
     ], aes(x = time, y = ecg), colour = "red", shape = 1, size = 3)
 ```
 
-![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![ECG data with annotated heart beats](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 ### Heart beat tachogram
 
@@ -409,7 +409,7 @@ barplot(beats_count, main = "HR Histogram",
         border = "blue")
 ```
 
-![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![Heart rate histogram (non-training)](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 Finally, the function output is constructed: the data frame with all heart beats of the input ECG signal. Columns of this data frame corespond to heart rate intervals and in each column the indexes of all heart beats that belong to the certain interval are writen. However, due to the variability of heart function there are different numbers of heart beats in each interval. Consequently, the "interval" vectors (`ind_..._...`) have different lengths and are easier to combine into a list than into a data frame. This is why in first step the list of interval vectors of unequal lengths is created (`beat_list`).
 
@@ -579,7 +579,7 @@ graphics::barplot(beats_training, main = "HR Histogram - Training",
                   border = "blue")
 ```
 
-![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![Heart rate histogram (training)](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 The function output is constructed Similarly as with the non-training regime. A list (`beat_list`) of interval vectors is created, where each interval vector contains the indexes of heart beats that correspond to the certain heart rate zone. The interval vectors in `beat_list` are first complemented to be of equal length (the `lapply` line) and then the list `beat_data` (with interval vectors of equal length) is converted to a data frame `beat_matrix`
 

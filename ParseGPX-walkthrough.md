@@ -1,0 +1,194 @@
+# Walkthrough for the parseGPX package
+
+-   Introduction
+-   Read, parse and save GPX data
+    -   Arguments
+    -   Read and parse data
+    -   Format conversion
+    -   Save and return data
+
+## Introduction
+
+This tutorial introduces the usage of the package `parseGPX` for reading and parsing of GPX files containing GPS data.
+
+GPS data has become broadly available by integrating low-cost GPS chips into portable consumer devices. Consequently, there is an abundance of online and offline tools for GPS data visualization and analysis with R project being in the focus in this example.
+
+The data itself can be generated in several different file formats, such as txt, csv, xml, kml, gpx. Among these the [GPX data format](http://www.topografix.com/gpx.asp) is ment to be the most universal intended for exchanging GPS data between programs, and for sharing GPS data with other users. Unlike many other data files, which can only be understood by the programs that created them, GPX files actually contain a description of what's inside them, allowing anyone to create a program that can read the data within. Several R packages already exist with functions for reading and parsing of GPX data files, e.g. `plotKML`, `maptools`, `rgdal` with corresponding functions `readGPX`, `readGPS` and `readOGR`.
+
+## Read, parse and save GPX data
+
+The presented package `parseGPX` contains the function `parse_gpx` to read, parse and optionally save GPS data
+
+``` r
+parse_gpx <- function(NAME="filename", writeData = FALSE, timeZone = "GMT") {
+
+  gpx_file <- NAME
+  # Extract file and directory names
+  file_name <- substr(basename(gpx_file), 1, nchar(basename(gpx_file))-4)
+  directory_name <- dirname(gpx_file)
+
+  # Read data
+  gpx_data <- plotKML::readGPX(gpx.file = gpx_file,
+                               metadata = FALSE,
+                               bounds = FALSE,
+                               waypoints = FALSE,
+                               routes = FALSE)
+  gpx_data <- gpx_data[[4]][[1]][[1]]
+
+  # Convert date-time string to time data.
+  gpxdatum <- as.POSIXct(gpx_data$time, format = "%Y-%m-%dT%H:%M:%SZ", tz="GMT")
+
+  if (timeZone != "GMT") {
+    attributes(gpxdatum)$tzone <- timeZone
+  }
+
+  # Add time data column to gpx_data data frame
+  gpx_data$tz_CEST <- gpxdatum
+  # gpx_data <- gpx_data[,c("lon", "lat", "ele", "time", "tz_CEST", "speed")]
+
+  # Convert numbers to type numeric
+  if (sum("ele" == names(gpx_data)) > 0) {
+    gpx_data$ele <- as.numeric(gpx_data$ele)
+  }
+  if (sum("speed" == names(gpx_data)) > 0) {
+    gpx_data$speed <- as.numeric(gpx_data$speed)
+  }
+
+  if (writeData == TRUE) {
+    # Export data to csv file
+    write.table(gpx_data,
+                file = paste(directory_name, "/", file_name, ".csv", sep = ""),
+                sep = ",", row.names = FALSE, quote = FALSE)
+  }
+
+  return(gpx_data)
+}
+```
+
+The function `readGPX` from the package `plotKML` is used to read and parse GPX data. In general the GPX data format can contain data of several tracks, routes, waypoints and metadata. The `readGPX` function was designed to return a list of data frames (or a list of lists if there is more than one route, track). In the returned result all values except the longitude and latitude data are written as character strings. The presented package `parseGPX` with its function `parse_gpx` further processes the returned result of `readGPX` function so that only the first GPS track data along with possible meta data is returned in a data frame with longitude, latitude, elevation, speed and time values being either numeric or POSIXct (for time). The original time stamps and any potential additional data (e.g. course, source, number of satellites) are left unaltered and returned as a character strings.
+
+### Arguments
+
+The input arguments of the `parse_gpx` function are:
+
+-   `NAME`: The input argument NAME is the string path to the selected GPX file (gpx format). In this case it will be set as the path to the file "myGPXData.gpx", which is part of the `parseGPX` package.
+-   `writeData`: Write to disk flag. Default setting is `FALSE`. If set to `TRUE`, the parsed GPX data frame is saved as csv file to the same directory as the source GPX file. In this case it will be set to the default value.
+-   `timeZone`: Time zone definition of the parsed data. Default value is "GMT". For other possible values see `timezones` function in the `base` package. In this case it will be set to "Europe/Ljubljana", which was the time zone during acquisition of sample data "myGPXData.gpx".
+
+``` r
+NAME <- system.file("extdata", "myGPXData.gpx", package="parseGPX")
+writeData <- FALSE
+timeZone <- "Europe/Ljubljana"
+```
+
+### Read and parse data
+
+the data from the GPX file is read and parsed with the `readGPX` function of the `ploKML` package
+
+``` r
+library(plotKML)
+gpx_data <- readGPX(gpx.file = NAME, metadata = FALSE, bounds = FALSE, waypoints = FALSE, 
+    routes = FALSE)
+```
+
+The output is presented as a list of metadata, bounds, waypoints, routes and tracks. Each list can be comprised of several sublists depending on the number of recordings combined in the same gpx file.
+
+``` r
+str(gpx_data, strict.width = "wrap")
+```
+
+    ## List of 5
+    ## $ metadata : logi FALSE
+    ## $ bounds : logi FALSE
+    ## $ waypoints: logi FALSE
+    ## $ tracks :List of 1
+    ## ..$ :List of 1
+    ## .. ..$ NA:'data.frame': 1394 obs. of 8 variables:
+    ## .. .. ..$ lon : num [1:1394] 15.9 15.9 15.9 15.9 15.9 ...
+    ## .. .. ..$ lat : num [1:1394] 46.4 46.4 46.4 46.4 46.4 ...
+    ## .. .. ..$ ele : chr [1:1394] "260.70001220703125" "260.3999938964844"
+    ##    "260.1000061035156" "263.79998779296875" ...
+    ## .. .. ..$ time : chr [1:1394] "2015-02-26T06:33:49Z"
+    ##    "2015-02-26T06:33:54Z" "2015-02-26T06:33:58Z" "2015-02-26T06:34:08Z"
+    ##    ...
+    ## .. .. ..$ course: chr [1:1394] "165.0" "166.3" "165.2" "250.4" ...
+    ## .. .. ..$ speed : chr [1:1394] "3.0" "8.5" "7.75" "4.75" ...
+    ## .. .. ..$ src : chr [1:1394] "gps" "gps" "gps" "gps" ...
+    ## .. .. ..$ sat : chr [1:1394] "20" "20" "20" "20" ...
+    ## $ routes : logi FALSE
+
+The basic latitude, longitude and elevation data of most GPS sensors is usually written as a track. All tracks of a single recording are stored as separate lists in the `tracks` list of the `gpx_data` list. As mentioned, the `parse_gpx` function returns the data for the first track by extracting the first data frame from the `tracks` list of the `gpx_data` list
+
+``` r
+gpx_data <- gpx_data[[4]][[1]][[1]]
+str(gpx_data, strict.width = "wrap")
+```
+
+    ## 'data.frame':    1394 obs. of  8 variables:
+    ## $ lon : num 15.9 15.9 15.9 15.9 15.9 ...
+    ## $ lat : num 46.4 46.4 46.4 46.4 46.4 ...
+    ## $ ele : chr "260.70001220703125" "260.3999938964844" "260.1000061035156"
+    ##    "263.79998779296875" ...
+    ## $ time : chr "2015-02-26T06:33:49Z" "2015-02-26T06:33:54Z"
+    ##    "2015-02-26T06:33:58Z" "2015-02-26T06:34:08Z" ...
+    ## $ course: chr "165.0" "166.3" "165.2" "250.4" ...
+    ## $ speed : chr "3.0" "8.5" "7.75" "4.75" ...
+    ## $ src : chr "gps" "gps" "gps" "gps" ...
+    ## $ sat : chr "20" "20" "20" "20" ...
+
+### Format conversion
+
+Timestamps, longitude, latitude, elevation and speed are converted from character strings to POSIXct time format and numeric format. Time conversion is executed according to the input timeZone argument.
+
+``` r
+# Convert date-time string to time data.
+gpxdatum <- as.POSIXct(gpx_data$time, format = "%Y-%m-%dT%H:%M:%SZ", tz="GMT")
+
+if (timeZone != "GMT") {
+  attributes(gpxdatum)$tzone <- timeZone
+}
+
+# Add time data column to gpx_data data frame
+gpx_data$tz_CEST <- gpxdatum
+
+# Convert numbers to type numeric
+if (sum("ele" == names(gpx_data)) > 0) {
+  gpx_data$ele <- as.numeric(gpx_data$ele)
+}
+if (sum("speed" == names(gpx_data)) > 0) {
+  gpx_data$speed <- as.numeric(gpx_data$speed)
+}
+
+str(gpx_data, strict.width = "wrap")
+```
+
+    ## 'data.frame':    1394 obs. of  9 variables:
+    ## $ lon : num 15.9 15.9 15.9 15.9 15.9 ...
+    ## $ lat : num 46.4 46.4 46.4 46.4 46.4 ...
+    ## $ ele : num 261 260 260 264 265 ...
+    ## $ time : chr "2015-02-26T06:33:49Z" "2015-02-26T06:33:54Z"
+    ##    "2015-02-26T06:33:58Z" "2015-02-26T06:34:08Z" ...
+    ## $ course : chr "165.0" "166.3" "165.2" "250.4" ...
+    ## $ speed : num 3 8.5 7.75 4.75 9.5 ...
+    ## $ src : chr "gps" "gps" "gps" "gps" ...
+    ## $ sat : chr "20" "20" "20" "20" ...
+    ## $ tz_CEST: POSIXct, format: "2015-02-26 07:33:49" "2015-02-26 07:33:54"
+    ##    ...
+
+### Save and return data
+
+If the `writeData` flag is set to `TRUE`, the `gpx_data` data frame is saved as csv file to the same directory as the "myGPXData.gpx" file. The file name and directory path are determined from the `NAME` argument. The function is concluded by returning the `gpx_data` data frame.
+
+``` r
+file_name <- substr(basename(NAME), 1, nchar(basename(NAME))-4)
+directory_name <- dirname(NAME)
+
+if (writeData == TRUE) {
+  # Export data to csv file
+  write.table(gpx_data,
+              file = paste(directory_name, "/", file_name, ".csv", sep = ""),
+              sep = ",", row.names = FALSE, quote = FALSE)
+}
+
+return(gpx_data)
+```
