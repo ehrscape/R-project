@@ -1,3 +1,5 @@
+# Walkthrough for the heartBeat package
+
 -   Heart beat detection
     -   Wavelet decomposition
     -   Peak detection
@@ -13,8 +15,7 @@
     -   Non-training heart rate annotation
     -   Training heart rate annotation
 
-Heart beat detection
---------------------
+## Heart beat detection
 
 This is the first of three short tutorials on how to use the package `heartBeat` for heart beat detection from single-lead ECG signals. The functions of the package are focused on the detection itself and it is asumed that the input ECG data is already preprocessed (parsed, imported, denoised, etc.). The ECG data is expected to be already loaded into a data frame and ready to use (for importing data recorded with Zephyr BioHarness 3 monitor, please see the package `zephyrECG`).
 However, for example purposes there is a data sample prepared within this package in the folder `./inst/extdata`. It is a data frame saved in .Rda format which can be imported with the `load` function. The data is loaded directly into a data frame called `ecg`
@@ -301,10 +302,9 @@ Finally, the function returns all the results together with the input data as a 
 return(list(signal = df, coeff = x, R = R, Rall = Rall))
 ```
 
-Heart rate distribution
------------------------
+## Heart rate distribution
 
-The second of the tutorial demonstrates the use and workflow of the `HRdistribution` function of the package `heartBeat`
+The second tutorial demonstrates the use and workflow of the `HRdistribution` function of the package `heartBeat`
 
 ``` r
 HRdistribution <- function(Rall, signal, HRrest, age, training = FALSE)
@@ -324,8 +324,7 @@ with input arguments:
 
 The function reads the signal and the output of `heart_beat` function and determines instant heart rates, their distribution and a basic histogram. The output of the function is a matrix named `beat_matrix` with 16 or 4 columns. Each column corresponds to a certain heart rate interval. The number of columns depends on the setting of the `training` flag: if `training` is `FALSE`, 16 columns are returned and if `training` is `TRUE`, 4 columns are returned. Each column contains indexes of all heart beats that belong to the certain interval. The number of rows in the `beat_matrix` is determined by the heart rate interval with the most heart beats. All other columns with less heart beats are appropriately filled with `NA` values.
 
-Heart rate calculation
-----------------------
+### Heart rate calculation
 
 The function begins with basic preparation of the input data. First, the sampling frequency is calculated from the sample index and time moment of one of the detected heart beats. The calculation is prepared to return the result in Hz and is rounded to the whole number (in this example it should be equal to 250 Hz). Also, the instant heart rate in beats per minute is calculated
 
@@ -347,8 +346,7 @@ IHR
 
     ## [1] 72.81553 73.71007 73.71007 73.98274 73.80074 73.26007 72.46377 72.81553
 
-Non-training heart rate distribution
-------------------------------------
+### Non-training heart rate distribution
 
 Then the heart rate distribution is determined. Based on the setting of the `training` flag there are two options that produce distributions with different number and limits of heart rate intervals. When the `training` flag is set to `FALSE` the heart rate values are divided into intervals from below 60 to above 200 with the stepping of 10 beats. For each interval a vector is created into which the indexes of all instant heart beats are written. These vectors remain empty if there are no beats in the corresponding interval. In our example all the detected heart beats fall into the interval between 70 and 80 beats per minute (`ind_70_80`)
 
@@ -499,8 +497,7 @@ str(beat_matrix)
 ## return(beat_matrix)
 ```
 
-Training heart rate distribution
---------------------------------
+### Training heart rate distribution
 
 When the `training` flag is set to `TRUE`, the algorithm uses a different division of heart rate intervals than the non-training regime. All other steps are equivalent. During trainig the values of heart beats are expected to be higher than the interval distribution of non-training conditions. Also, training is divided into known specific heart rate zones[1] calculated according to estimated maximum heart rate of the trainee. Therefore, the [maximum heart rate](https://en.wikipedia.org/wiki/Heart_rate#Maximum_heart_rate) estimation is the required first step and can be determined in various ways. In this example, the maximum heart rate is calculated by using the following age-predicted formula[2]
 
@@ -605,8 +602,7 @@ str(beat_matrix)
 ## return(beat_matrix)
 ```
 
-Annotation of the ECG signal
-----------------------------
+## Annotation of the ECG signal
 
 The tutorial concludes by presenting in more detail the use and workflow of the `annotateHR` function of the `heartBeat` package
 
@@ -649,8 +645,7 @@ if (names(beat_matrix)[1] != "ind_recovery") {
 }
 ```
 
-Non-training heart rate annotation
-----------------------------------
+### Non-training heart rate annotation
 
 Firstly, the `heartRate` column of NA values is created for the input data frame `data`
 
@@ -836,8 +831,7 @@ for (idx in 1:length(IHR)) {
 }
 ```
 
-Training heart rate annotation
-------------------------------
+### Training heart rate annotation
 
 The procedure for annotation of training regime is the same as for the non-training regime, except that the interval limits and values and annotations are different.
 
