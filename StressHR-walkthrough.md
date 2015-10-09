@@ -145,7 +145,7 @@ PlotNIHR(hrv_data)
     ## ** Plotting non-interpolated instantaneous heart rate **
     ##    Number of points: 157
 
-![](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![Non-interpolated instantaneous heart rate](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 In order to be able to perform spectral analysis in the frequency domain, a uniformly sampled HR series is required. It may be constructed from the niHR series by using the `InterpolateNIHR` function, which uses linear (default) or spline interpolation. The frequency of interpolation may be specified. 4 Hz (the default value) is enough for most applications and also used in this case
 
@@ -168,7 +168,7 @@ PlotNIHR(hrv_data)
     ## ** Plotting non-interpolated instantaneous heart rate **
     ##    Number of points: 157
 
-![](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![Non-interpolated instantaneous heart rate](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 PlotHR(hrv_data)
@@ -177,7 +177,7 @@ PlotHR(hrv_data)
     ## ** Plotting interpolated instantaneous heart rate **
     ##    Number of points: 478
 
-![](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-6-2.png)
+![Interpolated instantaneous heart rate](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-6-2.png)
 
 ### Calculating spectrogram of HR series
 
@@ -480,7 +480,7 @@ ggplot() +
   ylab("ECG [mV]")
 ```
 
-![](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![ECG signal segment annotated with calculated stress data](figures/StressHR-walkthrough_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 [1] [Duration and circumstances of ECG recording for HRV analysis](https://en.wikipedia.org/wiki/Heart_rate_variability#Duration_and_circumstances_of_ECG_recording)
 
