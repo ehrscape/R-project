@@ -1,4 +1,4 @@
---   Heart beat detection
+-   Heart beat detection
     -   Wavelet decomposition
     -   Peak detection
     -   Determining heart beats
