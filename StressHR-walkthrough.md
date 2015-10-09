@@ -1,3 +1,5 @@
+# Walkthrough for the stressHR package
+
 -   Introduction
 -   Heart rate variability analysis
     -   Initialization and HR series preparation
@@ -6,14 +8,12 @@
     -   Data synchronization
     -   Calculating and adding stress data
 
-Introduction
-------------
+## Introduction
 
 This is a short demo of the functionalities of the `stressHR` package, which assesses mental stress based on heart rate. Heart beats and heart rate are previously detected from single-lead ECG signal by using the `heartBeat` package.
 The `stressHR` package is comprised of `hrv_analyze` and `merge_hrv` functions. The `hrv_analyze` function executes the [heart rate variability (HRV)](https://en.wikipedia.org/wiki/Heart_rate_variability) on heart beat positions written in an ASCII file (`Rsec_data.txt`). The resulting data structure with HRV data is then forwarded to `merge_hrv` function, which merges the HRV data with the initial ECG data frame.
 
-Heart rate variability analysis
--------------------------------
+## Heart rate variability analysis
 
 The `hrv_analyze` function is used to perform the HRV analysis
 
@@ -275,8 +275,7 @@ The `hrv_data` structure with the HR series and calculated frequency spectrum is
 return(hrv_data)
 ```
 
-Calculate stress
-----------------
+## Calculate stress
 
 The literature states the ratio of low- and high-frequency power band of the HR series (LF/HF) as appropriate for For assessing mental stress[2]. Mental stress is considered to be correlated with the [autonomic nervous system](https://en.wikipedia.org/wiki/Autonomic_nervous_system), which consists of the sympathetic ("fight or flight") and the parasympathetic ("rest and digest") branch. The parasympathetic activity (non-stressful) is a major contributor to the HF component and the symphatetic activity (stressful) is a contributor (not major!) to the LF component of the heart-rate series frequency spectrum[3]. Therefore, this ratio was used to calculate stress in this case with the `merge_hrv` function. The higher the value of LF/HF ratio, the higher the stress and vice-versa. The LF component is Using the results of the spectral HRV analysis, stress is calculated (assessed) with the `merge_hrv` function, which adds columns `lf_hf` and `stress` to the initial ECG data frame.
 
