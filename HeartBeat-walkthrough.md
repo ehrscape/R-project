@@ -26,7 +26,7 @@ library(ggplot2)
 ggplot(data = ecg, aes(x = time, y = ecg)) + geom_line()
 ```
 
-![](heartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
 The data frame `ecg` has two columns:
 
@@ -127,7 +127,7 @@ plot(ecg_wav@W$W3, type = "l")
 plot(ecg_wav@W$W4, type = "l")
 ```
 
-![](heartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 par(oldpar)
@@ -143,7 +143,7 @@ plot(ecg_wav@V$V3, type = "l")
 plot(ecg_wav@V$V4, type = "l")
 ```
 
-![](heartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 ``` r
 par(oldpar)
@@ -252,7 +252,7 @@ ggplot(data = ecg, aes(x = time, y = ecg)) + geom_line() + geom_point(data = ecg
     ], aes(x = time, y = ecg), colour = "red", shape = 1, size = 3)
 ```
 
-![](heartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](figures/HeartBeat-walkthrough_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 ### Heart beat tachogram
 
