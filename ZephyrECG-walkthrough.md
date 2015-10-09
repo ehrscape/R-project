@@ -1,4 +1,8 @@
-# Parse and read Zephyr BH3 ECG data
+# Walkthrough for the analyzeGPS package
+
+-   Introduction
+-   Parse Zephyr BH3 data
+-   Import the ECG data to a data frame
 
 ## Introduction
 
@@ -6,7 +10,7 @@ This is a short demonstration of how to parse ECG data acquired with the [Zephyr
 The Zephyr BH3 monitor is able to save the acquired data locally or stream it to a remote location. The locally (on chip) saved data can be retrieved via data cable using the [Bioharness log downloader](http://zephyranywhere.com/zephyr-labs/development-tools), which sorts the acquired data into separate sessions (according to the timestamp of the recording start) and enables extraction of each session separately as csv files. However, the data stream recorded remotely isn't necesarily ordered in such an obvious way and it can happen that all recorded data is saved or parsed to the same file. In this case we have to separate it on our own by using the function `separate_bh3`, which parses the data from a common csv file to separate csv files corresponding to separate recording sessions. The resulting seprated files are not returned as data frames to the environment because that can caues problems with insufficient RAM when dealing with multiple long duration recordings (each > 1hr). 
 The ECG data files in csv format can be imported into R data frame by using the function `read_ecg`.  
 
-## Function `separate_bh3`
+## Parse Zephyr BH3 data
 
 The function `separate_bh3` is intended to parse and separate multiple sessions of ECG data recorded with the Zephyr BH3 monitor into separate csv files.  
 
@@ -177,7 +181,7 @@ list.files(ecg_directory_name)
 ## [5] "myECGData.csv"           "myZephyrBH3Data.csv"
 ```
 
-## Function `read_ecg`
+## Import the ECG data to a data frame
 
 The function `read_ecg` imports the ECG data stored in a csv file to a data frame in R. 
 
