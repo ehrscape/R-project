@@ -15,7 +15,7 @@ vignette: >
 
 ## Introduction
 
-This demonstration presents the `cycleR` package, which enables calculation of advanced advanced cycling parameters based on GPS data of the cycling route, for example power output, climb categorization, route-time segmentation. Calculations used in the package are based on [Strava glossary & calculations](https://strava.zendesk.com/forums/20246821-Strava-Glossary-Calculations) and are described in detail below. 
+This demonstration presents the `cycleR` package, which enables calculation of advanced cycling parameters based on GPS data of the cycling route, for example power output, climb categorization, route-time segmentation. Calculations used in the package are based on [Strava glossary & calculations](https://strava.zendesk.com/forums/20246821-Strava-Glossary-Calculations) and are described in detail below. 
 
 ## Segmenting time 
 
