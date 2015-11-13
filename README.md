@@ -110,3 +110,12 @@ Emotional valence is calcluated based on the ratio of alpha band power between r
 Emotional arousal is calculated based on the mean value of beta to alpha ratios of left and right EEG channels FP1 and FP2. 
 
 For more details on the usage of the package please refer to the included vignette.
+
+### cycleR - cycling analysis through GPS data 
+
+The R package **cycleR** was designed to calculate advanced cycling parameters based on GPS data of the cycling route, for example power output, climb categorization, route-time segmentation. 
+Calculations used in the package are based on [Strava glossary & calculations](https://strava.zendesk.com/forums/20246821-Strava-Glossary-Calculations)
+The package [**analyzeGPS**](https://github.com/ehrscape/R-project/tree/master/AnalyzeGPS) is required.
+The package is comprised of function `segment_time`, which segments the cycling route according to activity, function `categorize`, which detects and categorizes the climbs on the route and function `cycling_power`, which assessea the total power produced by a cyclist on a bike ride given the GPS data and additional physical parameters.
+
+For more details on the usage of the package please refer to the included vignette. 
