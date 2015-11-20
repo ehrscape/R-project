@@ -42,7 +42,7 @@ The function begins with converting the time vector of the GPS data to `POSIXct`
 
 
 ```r
-gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 ```
 
 This is followed by calculating and prepairing six additional variables required for calculating the final result. The first one is `delta_time` which contains the time differences between the GPS samples. The time differences are calculated simply with the `diff` function and they have to be converted from POSIXct to numeric format 
@@ -199,7 +199,7 @@ Since sample data frame `gps` with GPS data of a cycling route located within th
 
 
 ```r
-gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 
 # Calculate distances between GPS data points if it doesn't exist
 if (sum(names(gps) == "d") == 0) {
@@ -665,7 +665,7 @@ Once the function is called it begins by prepairing all the data needed for the 
 ```r
 g <- 9.81
 
-gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 
 # Length of the smoothing window is determined so that it's approximately 1 minute long
 win_smooth <- round(60 / as.numeric(difftime(tail(gps$time, 1), gps$time[1], units = "secs") / length(gps$time)), digits = -1)
