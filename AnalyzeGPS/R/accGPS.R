@@ -15,7 +15,7 @@
 #' acc <- accGPS(gps$time, speed)
 
 accGPS <- function(timeVec, speedVec) {
-  timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%SZ")
+  timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%OSZ")
 
   delta_time <- as.numeric(timeVec[2:length(timeVec)] -
                              timeVec[1:(length(timeVec)-1)])

@@ -1,4 +1,4 @@
-## ---- out.width=60-------------------------------------------------------
+## ---- out.width=80-------------------------------------------------------
 library(analyzeGPS)
 data_file <- system.file("extdata", "myGPSData.csv", package="analyzeGPS")
 gps <- readGPS(data_file)
@@ -81,7 +81,7 @@ ggplot(data = gps, aes(x = dist/1000, y = speed_smooth*3.6)) +
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  speedGPS <- function(timeVec, distanceVec) {
-#    timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%SZ")
+#    timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%OSZ")
 #  
 #    delta_time <- as.numeric(timeVec[2:length(timeVec)] -
 #                               timeVec[1:(length(timeVec)-1)])
@@ -110,7 +110,7 @@ ggplot(data = gps, aes(x = dist/1000, y = acc)) +
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  accGPS <- function(timeVec, speedVec) {
-#    timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%SZ")
+#    timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%OSZ")
 #  
 #    delta_time <- as.numeric(timeVec[2:length(timeVec)] -
 #                               timeVec[1:(length(timeVec)-1)])

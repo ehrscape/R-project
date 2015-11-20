@@ -34,7 +34,7 @@ For example, let's test these functions on an example GPS dataset `myGPSData.csv
 
 First, we load the `analyzeGPS` package, which contains the GPS data, find the exact location of the data file with `system.file` and than call the `readGPS` function with the obtained address:
 
-```{r, out.width=60}
+```{r, out.width=80}
 library(analyzeGPS)
 data_file <- system.file("extdata", "myGPSData.csv", package="analyzeGPS")
 gps <- readGPS(data_file)
@@ -159,7 +159,7 @@ The input parameters for the `speedGPS` function are the time vector in POSIXct 
 
 ```{r, eval=FALSE}
 speedGPS <- function(timeVec, distanceVec) {
-  timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%SZ")
+  timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%OSZ")
 
   delta_time <- as.numeric(timeVec[2:length(timeVec)] -
                              timeVec[1:(length(timeVec)-1)])
@@ -204,7 +204,7 @@ The input parameters for the `accGPS` function are the time vector in POSIXct fo
 
 ```{r, eval=FALSE}
 accGPS <- function(timeVec, speedVec) {
-  timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%SZ")
+  timeVec <- as.POSIXct(timeVec, format = "%Y-%m-%dT%H:%M:%OSZ")
 
   delta_time <- as.numeric(timeVec[2:length(timeVec)] -
                              timeVec[1:(length(timeVec)-1)])
