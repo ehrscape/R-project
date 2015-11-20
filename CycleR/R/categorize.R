@@ -27,7 +27,7 @@
 
 categorize <- function(gps) {
 
-  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
   # Calculate distances between GPS data points if it doesn't exist
   if(sum(names(gps) == "d") == 0){
     gps$d <- c(NA, analyzeGPS::distanceGPS(lat1 = gps$lat[1:(length(gps$lat)-1)], lon1 = gps$lon[1:(length(gps$lon)-1)],

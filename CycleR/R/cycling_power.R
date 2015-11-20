@@ -28,7 +28,7 @@ cycling_power <- function(gps, m = 0, Crr = 0, Cd = 0, ro = 0, A = 0, windspeed 
 
   g <- 9.81
 
-  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 
   # Length of the smoothing window is determined so that it's approximately 1 minute long
   win_smooth <- round(60 / as.numeric(difftime(tail(gps$time, 1), gps$time[1], units = "secs") / length(gps$time)), digits = -1)

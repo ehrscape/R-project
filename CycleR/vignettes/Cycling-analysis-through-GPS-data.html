@@ -10,7 +10,7 @@
 
 <meta name="author" content="Emil Plesnik, Marand d.o.o." />
 
-<meta name="date" content="2015-11-13" />
+<meta name="date" content="2015-11-20" />
 
 <title>Cycling analysis through GPS data</title>
 
@@ -72,7 +72,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">Cycling analysis through GPS data</h1>
 <h4 class="author"><em>Emil Plesnik, Marand d.o.o.</em></h4>
-<h4 class="date"><em>2015-11-13</em></h4>
+<h4 class="date"><em>2015-11-20</em></h4>
 </div>
 
 <div id="TOC">
@@ -104,7 +104,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## $ tz_CEST: chr &quot;2015-06-02 16:59:55&quot; &quot;2015-06-02 17:01:55&quot; &quot;2015-06-02
 ##    17:01:56&quot; &quot;2015-06-02 17:01:57&quot; ...</code></pre>
 <p>The function begins with converting the time vector of the GPS data to <code>POSIXct</code> format</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gps$time &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gps$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gps$time &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gps$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%OSZ&quot;</span>)</code></pre></div>
 <p>This is followed by calculating and prepairing six additional variables required for calculating the final result. The first one is <code>delta_time</code> which contains the time differences between the GPS samples. The time differences are calculated simply with the <code>diff</code> function and they have to be converted from POSIXct to numeric format</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if(<span class="kw">sum</span>(<span class="kw">names</span>(gps) ==<span class="st"> &quot;delta_time&quot;</span>) ==<span class="st"> </span><span class="dv">0</span>) {
     gps$delta_time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">as.numeric</span>(<span class="kw">diff</span>(gps$time)))
@@ -202,7 +202,7 @@ time_div</code></pre></div>
 <p>The <code>categorize</code> function is used to detect and categorize all climbs of the cycling route. The input argument of the function is the <code>gps</code> data frame containing longitude, latitude, elevation and time data of the route. This function detects the starting and ending point, length, average grade and category of climbs. The function output is a list containing the input <code>gps</code> data frame with added categorization data, the <code>climbs</code> data frame with the details of the climbs and the <code>total_vam</code> variable indicating the total vertical ascent meters (VAM) of the route. The function is called with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">climb_cat &lt;-<span class="st"> </span><span class="kw">categorize</span>(gps)</code></pre></div>
 <p>Since sample data frame <code>gps</code> with GPS data of a cycling route located within the <code>cycleR</code> package was already loaded, we can proceed by inspecting the function’s actions. Firstly, the time vector is converted to POSIXct format and smoothing of the distances <code>d</code>, elevation <code>ele</code>, hill grades <code>grade</code> and time differences <code>delta_time</code> are performed similarly as in the beginning of previously explained <code>segment_time</code> function</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gps$time &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gps$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gps$time &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gps$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%OSZ&quot;</span>)
 
 <span class="co"># Calculate distances between GPS data points if it doesn't exist</span>
 if (<span class="kw">sum</span>(<span class="kw">names</span>(gps) ==<span class="st"> &quot;d&quot;</span>) ==<span class="st"> </span><span class="dv">0</span>) {
@@ -534,7 +534,7 @@ windspeed &lt;-<span class="st"> </span><span class="dv">0</span></code></pre></
 <p>Once the function is called it begins by prepairing all the data needed for the power calculations. The preparation of the data is almost the same as with previously described functions <code>segment_time</code> and <code>categorize</code> with the exception of defining the vector of smoothed speed and acceleration values and the value of gravitational pull (9.81 m/s^2). The smoothed speed <code>speed_smooth</code> is calculated directly from the smoothed distnace vector <code>d</code> by dividing those values with the average sampling time of the GPS data. The smoothed speed values are then used to calculate the smoothed acceleration values by dividing them with the time differences between samples (ba applying the <code>accGPS</code> function of the <code>analyzeGPS</code> package)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="fl">9.81</span>
 
-gps$time &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gps$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span>)
+gps$time &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gps$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%OSZ&quot;</span>)
 
 <span class="co"># Length of the smoothing window is determined so that it's approximately 1 minute long</span>
 win_smooth &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">60</span> /<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">difftime</span>(<span class="kw">tail</span>(gps$time, <span class="dv">1</span>), gps$time[<span class="dv">1</span>], <span class="dt">units =</span> <span class="st">&quot;secs&quot;</span>) /<span class="st"> </span><span class="kw">length</span>(gps$time)), <span class="dt">digits =</span> -<span class="dv">1</span>)

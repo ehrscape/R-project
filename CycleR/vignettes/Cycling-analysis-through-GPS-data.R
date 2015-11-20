@@ -6,7 +6,7 @@ load(system.file("extdata", "gps.Rda", package="cycleR"))
 str(gps, strict.width = "wrap")
 
 ## ------------------------------------------------------------------------
-gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 
 ## ------------------------------------------------------------------------
 if(sum(names(gps) == "delta_time") == 0) {
@@ -91,7 +91,7 @@ return(list(time_div = time_div, resting_ind = resting_ind, moving_ind = moving_
 #  climb_cat <- categorize(gps)
 
 ## ---- eval=FALSE, tidy=TRUE----------------------------------------------
-#  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+#  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 #  
 #  # Calculate distances between GPS data points if it doesn't exist
 #  if(sum(names(gps) == "d") == 0){
@@ -349,7 +349,7 @@ windspeed <- 0
 ## ------------------------------------------------------------------------
 g <- 9.81
 
-gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 
 # Length of the smoothing window is determined so that it's approximately 1 minute long
 win_smooth <- round(60 / as.numeric(difftime(tail(gps$time, 1), gps$time[1], units = "secs") / length(gps$time)), digits = -1)

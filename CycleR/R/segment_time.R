@@ -33,7 +33,7 @@
 
 segment_time <- function(gps) {
 
-  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%SZ")
+  gps$time <- as.POSIXct(gps$time, format = "%Y-%m-%dT%H:%M:%OSZ")
 
   if(sum(names(gps) == "delta_time") == 0) {
     gps$delta_time <- c(NA, as.numeric(diff(gps$time)))
