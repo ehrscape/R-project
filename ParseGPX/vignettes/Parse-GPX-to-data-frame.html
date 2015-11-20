@@ -10,7 +10,7 @@
 
 <meta name="author" content="Emil Plesnik, Marand d.o.o." />
 
-<meta name="date" content="2015-08-20" />
+<meta name="date" content="2015-11-20" />
 
 <title>Parsing GPX data to R data frame</title>
 
@@ -72,11 +72,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">Parsing GPX data to R data frame</h1>
 <h4 class="author"><em>Emil Plesnik, Marand d.o.o.</em></h4>
-<h4 class="date"><em>2015-08-20</em></h4>
+<h4 class="date"><em>2015-11-20</em></h4>
 </div>
 
 <div id="TOC">
-<h2 class="toctitle">Contents</h2>
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#function-parse_gpx">Function <code>parse_gpx</code></a><ul>
@@ -113,7 +112,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   gpx_data &lt;-<span class="st"> </span>gpx_data[[<span class="dv">4</span>]][[<span class="dv">1</span>]][[<span class="dv">1</span>]]
 
   <span class="co"># Convert date-time string to time data.</span>
-  gpxdatum &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gpx_data$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span>, <span class="dt">tz=</span><span class="st">&quot;GMT&quot;</span>)
+  gpxdatum &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gpx_data$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%OSZ&quot;</span>, <span class="dt">tz=</span><span class="st">&quot;GMT&quot;</span>)
 
   if (timeZone !=<span class="st"> &quot;GMT&quot;</span>) {
     <span class="kw">attributes</span>(gpxdatum)$tzone &lt;-<span class="st"> </span>timeZone
@@ -199,7 +198,7 @@ gpx_data &lt;-<span class="st"> </span><span class="kw">readGPX</span>(<span cla
 <h3>Format conversion</h3>
 <p>Timestamps, longitude, latitude, elevation and speed are converted from character strings to POSIXct time format and numeric format. Time conversion is executed according to the input timeZone argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Convert date-time string to time data.</span>
-gpxdatum &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gpx_data$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span>, <span class="dt">tz=</span><span class="st">&quot;GMT&quot;</span>)
+gpxdatum &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(gpx_data$time, <span class="dt">format =</span> <span class="st">&quot;%Y-%m-%dT%H:%M:%OSZ&quot;</span>, <span class="dt">tz=</span><span class="st">&quot;GMT&quot;</span>)
 
 if (timeZone !=<span class="st"> &quot;GMT&quot;</span>) {
   <span class="kw">attributes</span>(gpxdatum)$tzone &lt;-<span class="st"> </span>timeZone

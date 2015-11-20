@@ -32,7 +32,7 @@ parse_gpx <- function(NAME="filename", writeData = FALSE, timeZone = "GMT") {
   gpx_data <- gpx_data[[4]][[1]][[1]]
 
   # Convert date-time string to time data.
-  gpxdatum <- as.POSIXct(gpx_data$time, format = "%Y-%m-%dT%H:%M:%SZ", tz="GMT")
+  gpxdatum <- as.POSIXct(gpx_data$time, format = "%Y-%m-%dT%H:%M:%OSZ", tz="GMT")
 
   if (timeZone != "GMT") {
     attributes(gpxdatum)$tzone <- timeZone
