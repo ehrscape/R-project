@@ -8,7 +8,7 @@ Author: person("Emil", "Plesnik", email = "emil.plesnik@marand.si", role =
 Maintainer: Emil Plesnik <emil.plesnik@marand.si>
 Description: The package enables calculation of advanced running parameters
     based on the GPS data of the running route, for example pace,
-    calories burned, route segmentation, moving time, grade adjusted pace.
+    calories burned, route segmentation, moving time.
     The package `analyzeGPS` is required.
 License: GNU AGPLv3
 LazyData: TRUE
