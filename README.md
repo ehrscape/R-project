@@ -115,7 +115,7 @@ The package includes functions
 
 For more details on the usage of the package please refer to the included vignette.
 
-### cycleR - cycling analysis through GPS data 
+### CycleR - cycling analysis through GPS data 
 
 The R package **cycleR** was designed to calculate advanced cycling parameters based on GPS data of the cycling route, for example power output, climb categorization, route-time segmentation. 
 Calculations used in the package are based on [Strava glossary & calculations](https://strava.zendesk.com/forums/20246821-Strava-Glossary-Calculations)
@@ -127,7 +127,7 @@ The package is comprised of functions
 
 For more details on the usage of the package please refer to the included vignette. 
 
-### runneR - running analysis with GPS data
+### RunneR - running analysis with GPS data
 
 The R package **runneR** was designed to calculate advanced running parameters based on GPS data of the running route, for example pace, calories burned, route segmentation, moving time. 
 Calculations used in the package are based on [Strava glossary & calculations](https://strava.zendesk.com/forums/20246821-Strava-Glossary-Calculations)
