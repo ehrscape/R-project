@@ -1,0 +1,23 @@
+Package: runneR
+Type: Package
+Title: Running analysis through GPS data
+Version: 0.1
+Date: 2015-11-16
+Author: person("Emil", "Plesnik", email = "emil.plesnik@marand.si", role =
+    c("aut", "cre"))
+Maintainer: Emil Plesnik <emil.plesnik@marand.si>
+Description: The package enables calculation of advanced running parameters
+    based on the GPS data of the running route, for example pace,
+    calories burned, route segmentation, moving time, grade adjusted pace.
+    The package `analyzeGPS` is required.
+License: GNU AGPLv3
+LazyData: TRUE
+Imports:
+    zoo,
+    analyzeGPS
+RoxygenNote: 5.0.0
+Suggests: knitr,
+    rmarkdown,
+    ggplot2,
+    RColorBrewer
+VignetteBuilder: knitr
