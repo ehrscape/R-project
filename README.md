@@ -108,6 +108,10 @@ The R package **emotionEEG** uses the EEG data collected with the [InterAxon Mus
 The EEG data prepared by the `museEEG` package contains EEG signal values in microvolts and alpha and beta absolute band powers and ratios in decibels. 
 Emotional valence is calcluated based on the ratio of alpha band power between right and left EEG chanels FP2 and FP1. 
 Emotional arousal is calculated based on the mean value of beta to alpha ratios of left and right EEG channels FP1 and FP2. 
+The package includes functions
+
+* `read_eeg`: reads raw EEG data in csv format acquired by MUSE hardware and sorts it into a data frame,
+* `emotion_analysis`: uses the EEG data collected with Muse and assesses emotional valence and arousal based on asymmetry analysis.
 
 For more details on the usage of the package please refer to the included vignette.
 
@@ -116,6 +120,22 @@ For more details on the usage of the package please refer to the included vignet
 The R package **cycleR** was designed to calculate advanced cycling parameters based on GPS data of the cycling route, for example power output, climb categorization, route-time segmentation. 
 Calculations used in the package are based on [Strava glossary & calculations](https://strava.zendesk.com/forums/20246821-Strava-Glossary-Calculations)
 The package [**analyzeGPS**](https://github.com/ehrscape/R-project/tree/master/AnalyzeGPS) is required.
-The package is comprised of function `segment_time`, which segments the cycling route according to activity, function `categorize`, which detects and categorizes the climbs on the route and function `cycling_power`, which assesses the total power produced by a cyclist on a bike ride given the GPS data and additional physical parameters.
+The package is comprised of functions 
+* `segment_time`: segments the cycling route according to activity, 
+* `categorize`: detects and categorizes the climbs on the route, 
+* `cycling_power`: assesses the total power produced by a cyclist on a bike ride given the GPS data and additional physical parameters.
+
+For more details on the usage of the package please refer to the included vignette. 
+
+### runneR - running analysis with GPS data
+
+The R package **runneR** was designed to calculate advanced running parameters based on GPS data of the running route, for example pace, calories burned, route segmentation, moving time. 
+Calculations used in the package are based on [Strava glossary & calculations](https://strava.zendesk.com/forums/20246821-Strava-Glossary-Calculations)
+The package [**analyzeGPS**](https://github.com/ehrscape/R-project/tree/master/AnalyzeGPS) is required.
+The package is comprised of functions 
+* `analyze_run`: determines the total time, moving time, resting time, time spent ascending, descending and on the flat and also pace on a running route described with GPS data, 
+* `cb_activity`: estimates the amount of calories that you burn while running activity based on the MET (Metabolic Equivalent) data for physical activities, 
+* `cb_running`: estimates the calories that you burn while running any given distance,
+* `cb_hr`: estimates the calories that you burn during aerobic (i.e. cardiorespiratory) exercise, based on your average heart rate while performing the exercise.
 
 For more details on the usage of the package please refer to the included vignette. 
