@@ -51,7 +51,9 @@ str(gpsHR, strict.width = "wrap")
 
 The loaded data contains GPS data (time, logitude, latitude and elevation) of a single run. Since the sample data is used for examples of all functions, it also includes heart rate (HR) data of the runner. 
 
-After the `gpsHR` data frame is served as input, the function begins with converting the time vector of the GPS data to `POSIXct` format
+### Data preparation
+
+After the `gpsHR` data frame is provided as input, the function begins with converting the time vector of the GPS data to `POSIXct` format
 
 ```{r}
 gpsHR$time <- as.POSIXct(gpsHR$time, format = "%Y-%m-%dT%H:%M:%OSZ")
@@ -70,7 +72,6 @@ gpsHR$d <- c(NA, analyzeGPS::distanceGPS(lat1 = gpsHR$lat[1:(length(gpsHR$lat)-1
 gpsHR$delta_time <- c(NA, as.numeric(difftime(gpsHR$time[-1], gpsHR$time[1:(length(gpsHR$time) - 1)], units = "secs")))
 samp_avg <- round(mean(gpsHR$delta_time, na.rm = T), digits = 0)
 ```
-
 
 If the smoothing argument is set to `FALSE`, the distances `d` and elevation `ele` are left unaltered. The speed data (`speed`) is calculated from distances `d` and time differences `delta_time` by using the `speedGPS` function from the **analyzeGPS** package. The grade (inclination) `grade` is calculated from elevation `ele` and distances `d` by using the `gradeGPS` function from the **analyzeGPS** package. The elevation differences `delta_ele` are calculated from `ele` and used to calculate the total vertical ascent meters (VAM) - `total_vam` based on positive values of `grade`. If the elevation data is not present the `total_vam_smooth` is assigned the `NA` value.
 
@@ -123,6 +124,8 @@ total_vam_smooth
 ```
 
 The above figures present the smoothed distances between GPS data points and smoothed elevation data according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
+
+### Route segmentation
 
 Distances, time and elevation differences, average speed and grade between gps data points and total VAM are calculated at this point. Next, the function cotinues with segmenting the running route according to time. The total time of the recorded activity `active_time` is calculated by summing up the elements of `delta_time`. This is further divided to resting and moving time, `resting_time` and `moving_time`. Additionally, the indexes of resting (`resting_ind`) and moving (`moving_ind`) segments are extracted along with their proportions (`t_rest_rel`, `t_mov_rel`) in relation to total active time. All the absolute values are given in seconds.
 
@@ -195,6 +198,8 @@ time_div <- data.frame(active_time = active_time, moving_time = moving_time,
 time_div
 ```
 
+### Pace calculation
+
 After time segmentation the running pace is calculated from the speed data. The pace is the basic information of how many time units are needed to cover a selected unit of distance. This means that by inversing the speed we get the pace. However, we are not particularly interested in how many seconds we need to travel one meter. Therefore, we need to convert the units to a more standard unit. The most standard pace unit in running is minutes per kilometer (min/km). This requires multiplying the inversed speed in m/s by (100/6). By applying this formula, instantaneous pace `pace`, average pace `avg_pace`, average moving pace `avg_mov_pace`, best achieved pace `best_pace` and worst achieved pace `worst_pace` are calculated.
 
 ```{r, fig.width=7, fig.height=5, fig.align='center'}
@@ -216,6 +221,8 @@ ggplot() +
 ```
 
 The above figure presents running pace according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
+
+### Result
 
 The function concludes by returning a list of results: 
 

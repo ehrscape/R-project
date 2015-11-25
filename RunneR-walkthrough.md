@@ -2,6 +2,10 @@
 
 -   Introduction
 -   Analyze the run
+	-	Data preparation
+	-	Route segmentation
+	-	Pace calculation
+	-	Result
 -   Activity based calorie burn calculation
 -   Running calorie burn calculation
 -   Heart rate based calorie burn calculation
@@ -53,6 +57,8 @@ load(system.file("extdata", "gpsHR.Rda", package="runneR"))
 ```
 
 The loaded data contains GPS data (time, logitude, latitude and elevation) of a single run. Since the sample data is used for examples of all functions, it also includes heart rate (HR) data of the runner. 
+
+### Data preparation
 
 After the `gpsHR` data frame is served as input, the function begins with converting the time vector of the GPS data to `POSIXct` format
 
@@ -161,6 +167,8 @@ total_vam_smooth <- sum(gpsHR$delta_ele[which(gpsHR$grade_smooth > 0)], na.rm = 
 ```
 The above figures present the smoothed distances between GPS data points and smoothed elevation data according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
+### Segmenting the route
+
 Distances, time and elevation differences, average speed and grade between gps data points and total VAM are calculated at this point. Next, the function cotinues with segmenting the running route according to time. The total time of the recorded activity `active_time` is calculated by summing up the elements of `delta_time`. This is further divided to resting and moving time, `resting_time` and `moving_time`. Additionally, the indexes of resting (`resting_ind`) and moving (`moving_ind`) segments are extracted along with their proportions (`t_rest_rel`, `t_mov_rel`) in relation to total active time. All the absolute values are given in seconds.
 
 ```r
@@ -265,6 +273,8 @@ time_div
 ## 1 0.4352239       910  0.5432836         0          0      36 0.02149254
 ```
 
+### Pace calculation
+
 After time segmentation the running pace is calculated from the speed data. The pace is the basic information of how many time units are needed to cover a selected unit of distance. This means that by inversing the speed we get the pace. However, we are not particularly interested in how many seconds we need to travel one meter. Therefore, we need to convert the units to a more standard unit. The most standard pace unit in running is minutes per kilometer (min/km). This requires multiplying the inversed speed in m/s by (100/6). By applying this formula, instantaneous pace `pace`, average pace `avg_pace`, average moving pace `avg_mov_pace`, best achieved pace `best_pace` and worst achieved pace `worst_pace` are calculated.
 
 
@@ -300,6 +310,8 @@ ggplot() +
 ![Runner's pace on the route](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 The above figure presents running pace according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
+
+### Result
 
 The function concludes by returning a list of results: 
 
