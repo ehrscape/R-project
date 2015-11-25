@@ -84,9 +84,10 @@ If the smoothing argument is set to `FALSE`, the distances `d` and elevation `el
 
 ```r
 gpsHR$d <- gpsHR$d
+gpsHR$cum_dist <- c(NA, cumsum(na.omit(gpsHR$d)))
 
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = d)) + xlab("Time (GMT) [HH:MM:SS]") + 
-    ylab("Distances [m]")
+ggplot() + geom_line(data = gpsHR, aes(x = cum_dist, y = d)) + xlab("Distance [m]") + 
+    ylab("Distances between data points [m]")
 ```
 
 ```
@@ -97,7 +98,7 @@ ggplot() + geom_line(data = gpsHR, aes(x = time, y = d)) + xlab("Time (GMT) [HH:
 
 ```r
 gpsHR$ele <- gpsHR$ele
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele)) + xlab("Time (GMT) [HH:MM:SS]") + 
+ggplot() + geom_line(data = gpsHR, aes(x = cum_dist, y = ele)) + xlab("Distance [m]") + 
     ylab("Elevation [m]")
 ```
 
@@ -115,6 +116,7 @@ total_vam <- sum(gpsHR$delta_ele[which(gpsHR$grade > 0)], na.rm = TRUE)
 ## [1] 117.971
 ```
 
+The above figures present the distances between GPS data points and elevation data according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable.
 
 If the smoothing argument of the function is set to `TRUE`, the distances and elevation data are smoothed using the rolling mean. The speed data `speed_smooth` is smoothed by dividing the smoothed distances with the average sampling rate `samp_avg`. The smoothed grade (inclination) `grade_smooth` is calculated from smoothed elevation `ele_smooth` and distances `d_smooth` by using the `gradeGPS` function from the **analyzeGPS** package. The elevation differences `delta_ele_smooth` are calculated from `ele_smooth`. All elevation differences, where the grade `grade_smooth` is positive, are summed-up to present VAM - `total_vam_smooth`. If the elevation data is not present, the grade and elevation differences are not calculated and `total_vam_smooth` is assigned the `NA` value.  
 
@@ -122,8 +124,8 @@ If the smoothing argument of the function is set to `TRUE`, the distances and el
 gpsHR$d_smooth <- NA
 gpsHR$d_smooth[1:(length(gpsHR$d) - win_smooth + 1)] <- zoo::rollapply(gpsHR$d, 
     win_smooth, mean)
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = d_smooth)) + xlab("Time (GMT) [HH:MM:SS]") + 
-    ylab("Smoothed distances [m]")
+ggplot() + geom_line(data = gpsHR, aes(x = cum_dist, y = d_smooth)) + xlab("Distance [m]") + 
+    ylab("Smoothed distances between data points [m]")
 ```
 
 ```
@@ -136,7 +138,7 @@ ggplot() + geom_line(data = gpsHR, aes(x = time, y = d_smooth)) + xlab("Time (GM
 gpsHR$ele_smooth <- rep(NA, length(gpsHR$ele))
 gpsHR$ele_smooth[1:(length(gpsHR$ele) - win_smooth + 1)] <- zoo::rollapply(gpsHR$ele, 
     win_smooth, mean)
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele_smooth)) + xlab("Time (GMT) [HH:MM:SS]") + 
+ggplot() + geom_line(data = gpsHR, aes(x = cum_dist, y = ele_smooth)) + xlab("Distance [m]") + 
     ylab("Smoothed elevation [m]")
 ```
 
@@ -157,6 +159,7 @@ total_vam_smooth <- sum(gpsHR$delta_ele[which(gpsHR$grade_smooth > 0)], na.rm = 
 ```
 ## [1] 51.31
 ```
+The above figures present the smoothed distances between GPS data points and smoothed elevation data according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 Distances, time and elevation differences, average speed and grade between gps data points and total VAM are calculated at this point. Next, the function cotinues with segmenting the running route according to time. The total time of the recorded activity `active_time` is calculated by summing up the elements of `delta_time`. This is further divided to resting and moving time, `resting_time` and `moving_time`. Additionally, the indexes of resting (`resting_ind`) and moving (`moving_ind`) segments are extracted along with their proportions (`t_rest_rel`, `t_mov_rel`) in relation to total active time. All the absolute values are given in seconds.
 
@@ -285,8 +288,8 @@ pace
 
 ```r
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = pace)) + 
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = pace)) + 
+  xlab("Distance [m]") + 
   ylab("Pace [min/km]")
 ```
 
@@ -295,6 +298,8 @@ ggplot() +
 ```
 
 ![Runner's pace on the route](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+The above figure presents running pace according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 The function concludes by returning a list of results: 
 
@@ -316,12 +321,13 @@ return(list(time_div = time_div, resting_ind = resting_ind,
 ```r
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits = c(1, 20))
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele, color = pace)) + sc + 
-    xlab("Time (GMT) [HH:MM:SS]") + ylab("Elevation [m]")
+ggplot() + geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = pace), size = 1.5) + sc + 
+    xlab("Distance [m]") + ylab("Elevation [m]")
 ```
 
 ![Elevation graph coloured by the runner's pace](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the pace value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable.
 
 ## Activity based calorie burn calculation
 
@@ -558,12 +564,13 @@ str(gpsHR)
 ```r
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits = c(0, 5))
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB)) + 
-    sc + xlab("Time (GMT) [HH:MM:SS]") + ylab("Elevation [m]")
+ggplot() + geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB), size = 1.5) + 
+    sc + xlab("Distance [m]") + ylab("Elevation [m]")
 ```
 
 ![Elevation graph coloured by the runner's activity based calorie burn](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the activity-based net calorie burn value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 ## Running calorie burn calculation
 
@@ -807,12 +814,13 @@ str(gpsHR)
 ```r
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits = c(0, 5))
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB_run)) + 
-    sc + xlab("Time (GMT) [HH:MM:SS]") + ylab("Elevation [m]")
+ggplot() + geom_line(data = gpsHR, aes(x = time, y = cum_dist, color = netCB_run), size = 1.5) + 
+    sc + xlab("Distance [m]") + ylab("Elevation [m]")
 ```
 
 ![Elevation graph coloured by the runner's running speed based calorie burn](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-26-1.png)
 
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the running speed-based net calorie burn value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable.
 
 ## Heart rate based calorie burn calculation
 
@@ -958,10 +966,12 @@ str(gpsHR)
 ```r
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits = c(0, 5))
-ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB_hr)) + 
-    sc + xlab("Time (GMT) [HH:MM:SS]") + ylab("Elevation [m]")
+ggplot() + geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_hr), size = 1.5) + 
+    sc + xlab("Distance [m]") + ylab("Elevation [m]")
 ```
 
 ![Elevation graph coloured by the runner's heart rate based calorie burn](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-31-1.png)
+
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the heart rate-based net calorie burn value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable.
 
 The three presented calorie calculations provide only calorie burn estimations. However, the heart rate based calorie burn calculation is considered to be the most accurate of the three presented methods. 
