@@ -32,7 +32,7 @@ ggplot() +
 
 gpsHR$ele <- gpsHR$ele
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele))+
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele)) +
   xlab("Distance [m]") + 
   ylab("Elevation [m]")
 
@@ -154,7 +154,7 @@ ggplot() +
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(1, 20))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = pace)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = pace), size = 1.5) + 
   sc +
   xlab("Distance[m]") + 
   ylab("Elevation [m]")
@@ -310,7 +310,7 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB), size = 1.5) + 
   sc +
   xlab("Distance[m]") + 
   ylab("Elevation [m]")
@@ -433,7 +433,7 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_run)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_run), size = 1.5) + 
   sc +
   xlab("Distance[m]") + 
   ylab("Elevation [m]")
@@ -507,7 +507,7 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_hr)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_hr), size = 1.5) + 
   sc +
   xlab("Distance [m]") + 
   ylab("Elevation [m]")

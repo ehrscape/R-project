@@ -85,7 +85,7 @@ ggplot() +
 
 gpsHR$ele <- gpsHR$ele
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele))+
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele)) +
   xlab("Distance [m]") + 
   ylab("Elevation [m]")
 
@@ -96,6 +96,7 @@ total_vam <- sum(gpsHR$delta_ele[which(gpsHR$grade > 0)], na.rm = TRUE)
 total_vam
 ```
 
+The above figures present the distances between GPS data points and elevation data according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 If the smoothing argument of the function is set to `TRUE`, the distances and elevation data are smoothed using the rolling mean. The speed data `speed_smooth` is smoothed by dividing the smoothed distances with the average sampling rate `samp_avg`. The smoothed grade (inclination) `grade_smooth` is calculated from smoothed elevation `ele_smooth` and distances `d_smooth` by using the `gradeGPS` function from the **analyzeGPS** package. The elevation differences `delta_ele_smooth` are calculated from `ele_smooth`. All elevation differences, where the grade `grade_smooth` is positive, are summed-up to present VAM - `total_vam_smooth`. If the elevation data is not present, the grade and elevation differences are not calculated and `total_vam_smooth` is assigned the `NA` value.  
 
@@ -120,6 +121,8 @@ gpsHR$delta_ele_smooth <- c(NA, gpsHR$ele_smooth[2:length(gpsHR$ele_smooth)] - g
 total_vam_smooth <- sum(gpsHR$delta_ele[which(gpsHR$grade_smooth > 0)], na.rm = TRUE)
 total_vam_smooth
 ```
+
+The above figures present the smoothed distances between GPS data points and smoothed elevation data according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 Distances, time and elevation differences, average speed and grade between gps data points and total VAM are calculated at this point. Next, the function cotinues with segmenting the running route according to time. The total time of the recorded activity `active_time` is calculated by summing up the elements of `delta_time`. This is further divided to resting and moving time, `resting_time` and `moving_time`. Additionally, the indexes of resting (`resting_ind`) and moving (`moving_ind`) segments are extracted along with their proportions (`t_rest_rel`, `t_mov_rel`) in relation to total active time. All the absolute values are given in seconds.
 
@@ -212,6 +215,8 @@ ggplot() +
   ylab("Pace [min/km]")
 ```
 
+The above figure presents running pace according to the cumulative distance (`cum_dist`). However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
+
 The function concludes by returning a list of results: 
 
 * `time_div` data frame containing time segmentation information for the running route, 
@@ -231,12 +236,13 @@ return(list(time_div = time_div, resting_ind = resting_ind,
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(1, 20))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = pace)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = pace), size = 1.5) + 
   sc +
   xlab("Distance[m]") + 
   ylab("Elevation [m]")
 ```
 
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the pace value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 ## Activity based calorie burn calculation
 
@@ -420,12 +426,13 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB), size = 1.5) + 
   sc +
   xlab("Distance[m]") + 
   ylab("Elevation [m]")
 ```
 
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the activity-based net calorie burn value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 ## Running calorie burn calculation
 
@@ -585,11 +592,13 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_run)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_run), size = 1.5) + 
   sc +
   xlab("Distance[m]") + 
   ylab("Elevation [m]")
 ```
+
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the running speed-based net calorie burn value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 ## Heart rate based calorie burn calculation
 
@@ -692,10 +701,12 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_hr)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_hr), size = 1.5) + 
   sc +
   xlab("Distance [m]") + 
   ylab("Elevation [m]")
 ```
+
+The above figure presents elevation data according to the cumulative distance (`cum_dist`) and coloured according to the heart rate-based net calorie burn value in that particular place. However, if time dependence is of interest, the `cum_dist` variable in the `ggplot` code can be replaced with `time` variable. 
 
 The three presented calorie calculations provide only calorie burn estimations. However, the heart rate based calorie burn calculation is considered to be the most accurate of the three presented methods. 
