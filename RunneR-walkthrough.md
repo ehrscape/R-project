@@ -118,7 +118,6 @@ total_vam <- sum(gpsHR$delta_ele[which(gpsHR$grade > 0)], na.rm = TRUE)
 
 If the smoothing argument of the function is set to `TRUE`, the distances and elevation data are smoothed using the rolling mean. The speed data `speed_smooth` is smoothed by dividing the smoothed distances with the average sampling rate `samp_avg`. The smoothed grade (inclination) `grade_smooth` is calculated from smoothed elevation `ele_smooth` and distances `d_smooth` by using the `gradeGPS` function from the **analyzeGPS** package. The elevation differences `delta_ele_smooth` are calculated from `ele_smooth`. All elevation differences, where the grade `grade_smooth` is positive, are summed-up to present VAM - `total_vam_smooth`. If the elevation data is not present, the grade and elevation differences are not calculated and `total_vam_smooth` is assigned the `NA` value.  
 
-
 ```r
 gpsHR$d_smooth <- NA
 gpsHR$d_smooth[1:(length(gpsHR$d) - win_smooth + 1)] <- zoo::rollapply(gpsHR$d, 
@@ -160,7 +159,6 @@ total_vam_smooth <- sum(gpsHR$delta_ele[which(gpsHR$grade_smooth > 0)], na.rm = 
 ```
 
 Distances, time and elevation differences, average speed and grade between gps data points and total VAM are calculated at this point. Next, the function cotinues with segmenting the running route according to time. The total time of the recorded activity `active_time` is calculated by summing up the elements of `delta_time`. This is further divided to resting and moving time, `resting_time` and `moving_time`. Additionally, the indexes of resting (`resting_ind`) and moving (`moving_ind`) segments are extracted along with their proportions (`t_rest_rel`, `t_mov_rel`) in relation to total active time. All the absolute values are given in seconds.
-
 
 ```r
 active_time = sum(gpsHR$delta_time, na.rm = TRUE)
@@ -298,7 +296,6 @@ ggplot() +
 
 ![Runner's pace on the route](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
-
 The function concludes by returning a list of results: 
 
 * `time_div` data frame containing time segmentation information for the running route, 
@@ -328,16 +325,15 @@ ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele, color = pace)) + sc +
 
 ## Activity based calorie burn calculation
 
-The function `cb_activity` estimates the amount of calories that you burn while running based on the MET (Metabolic Equivalent) data for the running activities from ["The Compendium of Physical Activities Tracking Guide" by B. E. Ainsworth](https://sites.google.com/site/compendiumofphysicalactivities/Activity-Categories/running). This table associates MET value associated with individual activities. A MET value represents the ratio of energy (i.e. calories) required to perform a particular activity relative to your BMR (Basal Metabolic Rate over 24 hours), where BMR is the amount of energy required to simply sit or lie quietly (while not digesting any food). The MET values for running are determined directly from the running speed and they are entered into a formula that estimates the calorie burn by multiplying the MET value for the running activity by the duration time of the activity and by the calculated BMR. Estimation of BMR is based on the widely used and accepted Harris-Benedict equations^[Harris J.A. and Benedict F.G. A Biometric Study of Human Basal Metabolism. Proc Natl Acad Sci U S A. 1918 December; 4(12): 370â€“373.]. The equation for calorie calculation is 
+The function `cb_activity` estimates the amount of calories that you burn while running based on the MET (Metabolic Equivalent) data for the running activities from ["The Compendium of Physical Activities Tracking Guide" by B. E. Ainsworth](https://sites.google.com/site/compendiumofphysicalactivities/Activity-Categories/running). This table associates MET value associated with individual activities. A MET value represents the ratio of energy (i.e. calories) required to perform a particular activity relative to your BMR (Basal Metabolic Rate over 24 hours), where BMR is the amount of energy required to simply sit or lie quietly (while not digesting any food). The MET values for running are determined directly from the running speed and they are entered into a formula that estimates the calorie burn by multiplying the MET value for the running activity by the duration time of the activity and by the calculated BMR. Estimation of BMR is based on the widely used and accepted Harris-Benedict equations [*Harris J.A. and Benedict F.G. A Biometric Study of Human Basal Metabolism. Proc Natl Acad Sci U S A. 1918 December; 4(12): 370-373.*]. The equation for calorie calculation is 
 
 ![Activity based calorie burn equation](./figures/Equations/ActivityCB_equation.png)
 
-where T is the duration of the exercise in hours (BMR and MET factors were already explained). This equation provides gross calorie burn estimate. To convert this value to net calorie burn estimate, we need to substract the resting metabolic rate calorie burn (RMRCB) which is calculated by 
+where *T* is the duration of the exercise in hours (BMR and MET factors were already explained). This equation provides gross calorie burn estimate. To convert this value to net calorie burn estimate, we need to substract the resting metabolic rate calorie burn (RMRCB) which is calculated by 
 
 ![Resting metabolic rate calorie burn equation](./figures/Equations/RMRCB_equation.png)
 
 The function is called with 
-
 
 ```r
 ## activity_cal_burn <- cb_activity(gender = "male", age = 41, m = 80, h = 180, gpsHR)
@@ -444,7 +440,6 @@ MET
 
 After selecting the proper MET value, all the quantities are inserted to the described equation to calculate the gross calorie burn estimate (`grossCB`) which is then converted to the net estimate by substracting the RMRCB value from the gross estimation. 
 
-
 ```r
 grossCB <- BMR * MET * duration / 24
 
@@ -525,7 +520,6 @@ for(i in 1:dim(gpsHR)[1]) {
 
 The function returns a list containing the net estimate of calories burned `netCB` and the modified input data frame gpsHR (among the added columns also the `netCB` column)
 
-
 ```r
 ## return(list(netCB = netCB, gpsHR = gpsHR))
 netCB
@@ -577,16 +571,15 @@ The function `cb_running` estimates the calories that you burn while running any
 
 VO2 (or oxygen consumption) is a measure of the volume of oxygen that is used by your body to convert the energy from the food into the energy molecules. VO2max (or maximal oxygen consumption) is simply the maximum possible VO2 that a given person can achieve. VO2 and VO2max are important in the context of exercise, because they are a measure of body's ability to generate the energy source that allows your muscles to continue working while you are exercising. Therefore, by definition, a VO2max measurement is ultimately a measure of your cardiorespiratory fitness level. A person who is fit, in the cardiorespiratory sense of the word "fit," would have a higher VO2max than someone who is less fit. However, it is important to understand that if you have a larger VO2max than someone else, it does not necessarily mean that you could beat them in, for example, a marathon race. What it means is that your body is more able to absorb and use oxygen to generate energy for your muscles, and this will certainly give you an edge, but what you are actually capable of doing with that energy depends on many other factors (the mechanical efficiency with which you run at a given speed, for example).
 
-This function is based on equations derived by from experimental data gathered by R. Margaria, P. Cerretelli, P. Aghemo, and G. Sassi for their study titled "Energy Cost of Running"^[Margaria R., Cerretelli P., Aghemo P., Sassi G. Energy cost of running. J Appl Physiol. 1963 Mar;18:367-70.]. The experimental data gathered by Margaria et al. measured calorie burn of subjects running on a treadmill at various speeds (from 9 to 22 km/hr) and running surface grades (from 20% decline to 15% incline). It was found that the net calories burned per kilogram of body weight per kilometer run is independent of speed, and depends only on the incline or decline of the running surface and the cardiorespiratory fitness level (measured through VO2max) of the runner. There is, therefore, no need to take running speed into consideration when estimating calories burned while running. You simply need to know the total distance run, the weight of the runner, and the incline or decline of the running surface. If the cardiorespiratory fitness level of the runner is known it will allow you to further refine your estimation of calorie burn because there is a known negative correlation between VO2max and energy cost of running. This function estimates cardiorespiratory fitness level through VO2max estimation, based on the runner's resting heart rate^[Uth N., SĂ¸rensen H., Overgaard K., Pedersen P.K. Estimation of VO2max from the ratio between HRmax and HRrest--the Heart Rate Ratio Method. Eur J Appl Physiol. 2004 Jan;91(1):111-5.] 
+This function is based on equations derived by from experimental data gathered by [*Margaria R., Cerretelli P., Aghemo P., Sassi G. Energy cost of running. J Appl Physiol. 1963 Mar;18:367-70.*]. The experimental data gathered by Margaria et al. measured calorie burn of subjects running on a treadmill at various speeds (from 9 to 22 km/hr) and running surface grades (from 20% decline to 15% incline). It was found that the net calories burned per kilogram of body weight per kilometer run is independent of speed, and depends only on the incline or decline of the running surface and the cardiorespiratory fitness level (measured through VO2max) of the runner. There is, therefore, no need to take running speed into consideration when estimating calories burned while running. You simply need to know the total distance run, the weight of the runner, and the incline or decline of the running surface. If the cardiorespiratory fitness level of the runner is known it will allow you to further refine your estimation of calorie burn because there is a known negative correlation between VO2max and energy cost of running. This function estimates cardiorespiratory fitness level through VO2max estimation, based on the runner's resting heart rate [*Uth N., SA¸rensen H., Overgaard K., Pedersen P.K. Estimation of VO2max from the ratio between HRmax and HRrest-the Heart Rate Ratio Method. Eur J Appl Physiol. 2004 Jan;91(1):111-5.*] 
 
 ![VO2max equation](./figures/Equations/VO2max_equation.png)
 
-where $MHR$ is the maximum heart rate and $RHR$ is the resting heart rate of the runner, both in beats/min. For the Uth et al. estimation of VO2max an age based estimation of maximum heart rate is made^[Tanaka, H., Monhan, K.D., Seals, D.G., Age-predicted maximal heart rate revisited. Am Coll Cardiol 2001; 37:153-156.] 
+where *MHR* is the maximum heart rate and *RHR* is the resting heart rate of the runner, both in beats/min. For the Uth et al. estimation of VO2max an age based estimation of maximum heart rate is made [*Tanaka, H., Monhan, K.D., Seals, D.G., Age-predicted maximal heart rate revisited. Am Coll Cardiol 2001; 37:153-156.*] 
 
 ![Maximal heart rate equation](./figures/Equations/MHR_equation.png)
 
 The function is called with 
-
 
 ```r
 ## running_cal_burn <- cb_running(age = 41, m = 80, h = 180, RHR = 60, treadmill = FALSE, gpsHR)
@@ -634,7 +627,7 @@ VO2max <- 15.3 * MHR / RHR
 ## [1] 45.87833
 ```
 
-Depending on the value of `treadmill` argument the treadmill factor `TF` is defined, which is used to account for the presence or absence of air resistance. Runner on a treadmill does not experience air resistance while running and therefore burns fewer calories than a runner that is running on solid ground. For a person running at a typical casual runner's pace of 2.5 meters per second (9 km/hr) it can be shown that the energy cost of air resistance while running on solid ground is roughly 0.84 calories per kilometer (this is equivalent to approximately an extra 1.2% calorie burn relative to a runner on a treadmill)^[Pugh LG. The influence of wind resistance in running and walking and the mechanical efficiency of work against horizontal or vertical forces. J Physiol. 1971 Mar;213(2):255-76.]. The value of 0.84 calories per kilometer assumes a typical running speed of 2.5 m/s and no wind (i.e. the extra calorie burn is caused by the runner having to "push" through still air while at running 2.5 m/s). Therefore, the `TF` is 0.84 calories if the runner is not on a treadmill and 0 calories if the runner is using a treadmill. 
+Depending on the value of `treadmill` argument the treadmill factor `TF` is defined, which is used to account for the presence or absence of air resistance. Runner on a treadmill does not experience air resistance while running and therefore burns fewer calories than a runner that is running on solid ground. For a person running at a typical casual runner's pace of 2.5 meters per second (9 km/hr) it can be shown that the energy cost of air resistance while running on solid ground is roughly 0.84 calories per kilometer (this is equivalent to approximately an extra 1.2% calorie burn relative to a runner on a treadmill) [*Pugh LG. The influence of wind resistance in running and walking and the mechanical efficiency of work against horizontal or vertical forces. J Physiol. 1971 Mar;213(2):255-76.*]. The value of 0.84 calories per kilometer assumes a typical running speed of 2.5 m/s and no wind (i.e. the extra calorie burn is caused by the runner having to "push" through still air while at running 2.5 m/s). Therefore, the `TF` is 0.84 calories if the runner is not on a treadmill and 0 calories if the runner is using a treadmill. 
 
 
 ```r
@@ -645,8 +638,7 @@ if(treadmill) {
 }
 ```
 
-The VO2max value is used for determination of Cardiorespiratory Fitness Factor (CFF), which accounts for fitness level of the runner since athletes can perform better not so much because of their greater skill as for their greater capacity for oxygen consumption^2^. Essentially, a runner with a high VO2max will burn approximately 5% to 7% fewer calories while running than a runner with a low VO2max. The cardiorespiratory fitness factor `CFF` is defined according to the `VO2max` value as shown below:
-
+The VO2max value is used for determination of Cardiorespiratory Fitness Factor (CFF), which accounts for fitness level of the runner since athletes can perform better not so much because of their greater skill as for their greater capacity for oxygen consumption. Essentially, a runner with a high VO2max will burn approximately 5% to 7% fewer calories while running than a runner with a low VO2max. The cardiorespiratory fitness factor `CFF` is defined according to the `VO2max` value as shown below:
 
 ```r
 if(VO2max >= 56) {
@@ -826,17 +818,17 @@ ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB_run)) +
 
 The function `cb_hr` provides an estimate of the rate at which you are burning calories during aerobic (i.e. cardiorespiratory) exercise, based on your average heart rate while performing the exercise. During exercise your muscles must burn calories to fuel their contractions. The conversion of calories from their stored nutrient state to the form that can be burned by your muscle cells is achieved, during aerobic exercise, through the process of cellular respiration, which requires oxygen, and the delivery of oxygen through your bloodstream to your active muscle cells is directly related to your heart rate. It is this relationship that allows you to predict your energy expenditure (i.e. calorie burn) from your heart rate. Essentially, with increased exercise intensity your muscles must burn more calories, and so your heart must beat faster to provide the oxygen necessary to convert those calories to the form of energy that can be burned by your muscles.
 
-This function calculates burned calories by using the following equations^[Keytel L.R., Goedecke J.H., Noakes T.D., Hiiloskorpi H., Laukkanen R., van der Merwe L., Lambert E.V. Prediction of energy expenditure from heart rate monitoring during submaximal exercise. J Sports Sci. 2005 Mar;23(3):289-97] 
+This function calculates burned calories by using the following equations [*Keytel L.R., Goedecke J.H., Noakes T.D., Hiiloskorpi H., Laukkanen R., van der Merwe L., Lambert E.V. Prediction of energy expenditure from heart rate monitoring during submaximal exercise. J Sports Sci. 2005 Mar;23(3):289-97*] 
 
 ![Heart rate based calorie burn equation for males](./figures/Equations/HR-CB-male_equation.png)
+
 ![Heart rate based calorie burn equation for females](./figures/Equations/HR-CB-female_equation.png)
 
 where *HR* represents heart rate, *m* is body mass, and *T* is duration in hours. 
 
-It should be noted that the presented equations are optimized to estimate calorie burn for exercise intesity level ranging between 41% of VO2max (or roughly 64% of maximum heart rate^[Swain D.P., Abernathy K.S., Smith C.S., Lee S.J., Bunn S.A. Target heart rates for the development of cardiorespiratory fitness. Med Sci Sports Exerc. January 1994. 26(1): 112-116.]) and VO2max. 
+It should be noted that the presented equations are optimized to estimate calorie burn for exercise intesity level ranging between 41% of VO2max (or roughly 64% of maximum heart rate [*Swain D.P., Abernathy K.S., Smith C.S., Lee S.J., Bunn S.A. Target heart rates for the development of cardiorespiratory fitness. Med Sci Sports Exerc. January 1994. 26(1): 112-116.*]) and VO2max. 
 
 The function is called with 
-
 
 ```r
 ## hr_cal_burn <- cb_hr(gender = "male", age = 41, m = 80, h = 180, RHR = 60, gpsHR$hr, gpsHR)
@@ -861,7 +853,6 @@ using the following mandatory input agruments:
 
 The first step of the function is preparation of necessary parameters. Age is used to determine the maximum heart rate `MHR`, which is then used together with the resting heart rate `RHR` to assess the VO2max value. Also, the average heart rate `avg_hr` is calculated for the input heart rate series. Additionally, the time vector is converted to POSIXct format and time differences between data points are determined together with total duration of the run
 
-
 ```r
 MHR <- 208 - (0.685 * age)
 VO2max <- 15.3 * MHR/RHR
@@ -870,7 +861,6 @@ duration <- sum(gpsHR$delta_time, na.rm = T)/3600
 ```
 
 Then, the calories burn is estimated according to `gender`. The formula provides gross calorie burn estimate. To convert this value to net calorie burn estimate, we need to substract the resting metabolic rate calorie burn (RMRCB), described in the section about calculating calorie burn by activity
-
 
 ```r
 if (gender == "male") {
@@ -895,7 +885,6 @@ netCB_hr
 ```
 
 The above procedure of calculating the net calorie burn estimate is also vectorized to determine sample-by-sample value of the `netCB_hr` for the input data frame.
-
 
 ```r
 gpsHR$netCB_hr <- NA
@@ -928,7 +917,6 @@ if (gender == "male") {
 ```
 
 The function returns a list containing the net estimate of calories burned `netCB_hr` and the modified input data frame `gpsHR` (among the added columns also the `netCB_hr` column)
-
 
 ```r
 ## return(list(netCB = netCB_hr, gpsHR = gpsHR))
@@ -975,6 +963,5 @@ ggplot() + geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB_hr)) +
 ```
 
 ![Elevation graph coloured by the runner's heart rate based calorie burn](./figures/RunneR-walkthrough_files/figure-markdown_github/unnamed-chunk-31-1.png)
-
 
 The three presented calorie calculations provide only calorie burn estimations. However, the heart rate based calorie burn calculation is considered to be the most accurate of the three presented methods. 
