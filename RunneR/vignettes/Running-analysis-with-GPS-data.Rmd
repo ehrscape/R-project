@@ -76,16 +76,17 @@ If the smoothing argument is set to `FALSE`, the distances `d` and elevation `el
 
 ```{r, tidy=TRUE, fig.width=7, fig.height=5, fig.align='center', echo=-12}
 gpsHR$d <- gpsHR$d
+gpsHR$cum_dist <- c(NA, cumsum(na.omit(gpsHR$d)))
 
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = d)) + 
-  xlab("Time (GMT) [HH:MM:SS]") + 
-  ylab("Distances [m]")
+  geom_line(data = gpsHR, aes(x = cum_dist, y = d)) + 
+  xlab("Distance [m]") + 
+  ylab("Distances between data points [m]")
 
 gpsHR$ele <- gpsHR$ele
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = ele))+
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele))+
+  xlab("Distance [m]") + 
   ylab("Elevation [m]")
 
 gpsHR$speed <- c(NA, analyzeGPS::speedGPS(gpsHR$time, gpsHR$d[-1]))
@@ -102,15 +103,15 @@ If the smoothing argument of the function is set to `TRUE`, the distances and el
 gpsHR$d_smooth <- NA
 gpsHR$d_smooth[1:(length(gpsHR$d) - win_smooth + 1)] <- zoo::rollapply(gpsHR$d, win_smooth, mean)
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = d_smooth)) + 
-  xlab("Time (GMT) [HH:MM:SS]") + 
-  ylab("Smoothed distances [m]")
+  geom_line(data = gpsHR, aes(x = cum_dist, y = d_smooth)) + 
+  xlab("Distance [m]") + 
+  ylab("Smoothed distances between data points [m]")
 
 gpsHR$ele_smooth <- rep(NA, length(gpsHR$ele))
 gpsHR$ele_smooth[1:(length(gpsHR$ele) - win_smooth + 1)] <- zoo::rollapply(gpsHR$ele, win_smooth, mean)
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = ele_smooth))+
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele_smooth))+
+  xlab("Distance [m]") + 
   ylab("Smoothed elevation [m]")
 
 gpsHR$speed_smooth <- gpsHR$d_smooth / samp_avg 
@@ -206,8 +207,8 @@ pace <- data.frame(avg_pace = avg_pace, avg_mov_pace = avg_mov_pace,
 pace
 
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = pace)) + 
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = pace)) + 
+  xlab("Distance [m]") + 
   ylab("Pace [min/km]")
 ```
 
@@ -230,9 +231,9 @@ return(list(time_div = time_div, resting_ind = resting_ind,
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(1, 20))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = ele, color = pace)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = pace)) + 
   sc +
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  xlab("Distance[m]") + 
   ylab("Elevation [m]")
 ```
 
@@ -419,9 +420,9 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB)) + 
   sc +
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  xlab("Distance[m]") + 
   ylab("Elevation [m]")
 ```
 
@@ -584,9 +585,9 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB_run)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_run)) + 
   sc +
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  xlab("Distance[m]") + 
   ylab("Elevation [m]")
 ```
 
@@ -691,9 +692,9 @@ str(gpsHR)
 myPalette <- colorRampPalette(rev(brewer.pal(10, "Spectral")))
 sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(0, 5))
 ggplot() + 
-  geom_line(data = gpsHR, aes(x = time, y = ele, color = netCB_hr)) + 
+  geom_line(data = gpsHR, aes(x = cum_dist, y = ele, color = netCB_hr)) + 
   sc +
-  xlab("Time (GMT) [HH:MM:SS]") + 
+  xlab("Distance [m]") + 
   ylab("Elevation [m]")
 ```
 
