@@ -342,29 +342,18 @@ Below temperature data for the first three patients from the `json_nav` is visua
 
 ---------------------------------------------------
 |&nbsp; | json_results |       path          | ind | 
-|-------|--------------|---------------------|-----|
+ ------- -------------- --------------------- ----- 
 | **1** | DV_QUANTITY  | Temperature.@class  |  1  |
-|       |              |                     |     |
 | **2** |     37.3     |Temperature.magnitude|  1  |
-|       |              |                     |     |
 | **3** |      °C      |  Temperature.units  |  1  |
-|       |              |                     |     |
 | **4** |      1       |Temperature.precision|  1  |
-|       |              |                     |     |
 |**11** | DV_QUANTITY  | Temperature.@class  |  2  |
-|       |              |                     |     |
 |**12** |     38.4     |Temperature.magnitude|  2  |
-|       |              |                     |     |
 |**13** |      °C      |  Temperature.units  |  2  |
-|       |              |                     |     |
 |**14** |      1       |Temperature.precision|  2  |
-|       |              |                     |     |
 |**21** | DV_QUANTITY  | Temperature.@class  |  3  |
-|       |              |                     |     |
 |**22** |     36.2     |Temperature.magnitude|  3  |
-|       |              |                     |     |
 |**23** |      °C      |  Temperature.units  |  3  |
-|       |              |                     |     |
 |**24** |      1       |Temperature.precision|  3  |
 ---------------------------------------------------
 
@@ -404,57 +393,42 @@ The first six rows of output data frame `out` presented as table
 
 
 ----------------------------------------------------------------------------------------
- ind   seq   Diastolic.@class   Diastolic.magnitude   Diastolic.units   Systolic.@class 
------ ----- ------------------ --------------------- ----------------- -----------------
-  1     1      DV_QUANTITY              70                mm[Hg]          DV_QUANTITY   
-
-  2     1      DV_QUANTITY              58                mm[Hg]          DV_QUANTITY   
-
-  3     1      DV_QUANTITY              62                mm[Hg]          DV_QUANTITY   
-
-  4     1      DV_QUANTITY              83                mm[Hg]          DV_QUANTITY   
-
-  5     1      DV_QUANTITY              70                mm[Hg]          DV_QUANTITY   
-
-  6     1      DV_QUANTITY              59                mm[Hg]          DV_QUANTITY   
+|ind | seq | Diastolic.@class | Diastolic.magnitude | Diastolic.units | Systolic.@class |
+ ---- ----- ------------------ --------------------- ----------------- -----------------
+| 1  |  1  |   DV_QUANTITY    |         70          |     mm[Hg]      |   DV_QUANTITY   |
+| 2  |  1  |   DV_QUANTITY    |         58          |     mm[Hg]      |   DV_QUANTITY   |
+| 3  |  1  |   DV_QUANTITY    |         62          |     mm[Hg]      |   DV_QUANTITY   |
+| 4  |  1  |   DV_QUANTITY    |         83          |     mm[Hg]      |   DV_QUANTITY   |
+| 5  |  1  |   DV_QUANTITY    |         70          |     mm[Hg]      |   DV_QUANTITY   |
+| 6  |  1  |   DV_QUANTITY    |         59          |     mm[Hg]      |   DV_QUANTITY   |
 ----------------------------------------------------------------------------------------
 
 Table: Table continues below
 
  
 ----------------------------------------------------------------------------------
- Systolic.magnitude   Systolic.units   Temperature.@class   Temperature.magnitude 
+|Systolic.magnitude | Systolic.units | Temperature.@class | Temperature.magnitude |
 -------------------- ---------------- -------------------- -----------------------
-         99               mm[Hg]          DV_QUANTITY               37.3          
-
-        107               mm[Hg]          DV_QUANTITY               38.4          
-
-        101               mm[Hg]          DV_QUANTITY               36.2          
-
-        122               mm[Hg]          DV_QUANTITY                36           
-
-         88               mm[Hg]          DV_QUANTITY               37.7          
-
-         96               mm[Hg]          DV_QUANTITY               36.7          
+|        99         |     mm[Hg]     |    DV_QUANTITY     |         37.3          |
+|       107         |     mm[Hg]     |    DV_QUANTITY     |         38.4          |
+|       101         |     mm[Hg]     |    DV_QUANTITY     |         36.2          |
+|       122         |     mm[Hg]     |    DV_QUANTITY     |          36           |
+|        88         |     mm[Hg]     |    DV_QUANTITY     |         37.7          |
+|        96         |     mm[Hg]     |    DV_QUANTITY     |         36.7          |
 ----------------------------------------------------------------------------------
 
 Table: Table continues below
 
  
 -------------------------------------------
- Temperature.precision   Temperature.units 
+|Temperature.precision | Temperature.units |
 ----------------------- -------------------
-           1                    °C         
-
-           1                    °C         
-
-           1                    °C         
-
-           1                    °C         
-
-           1                    °C         
-
-           1                    °C         
+|          1           |        °C         |
+|          1           |        °C         |
+|          1           |        °C         |
+|          1           |        °C         |
+|          1           |        °C         |
+|          1           |        °C         |
 -------------------------------------------
 
 
@@ -490,57 +464,42 @@ The first six rows of output data frame `out` presented as table
 
 
 ------------------------------------------------------------------------------------------
- ind   Diastolic.@class.1   Diastolic.magnitude.1   Diastolic.units.1   Systolic.@class.1 
+|ind | Diastolic.@class.1 | Diastolic.magnitude.1 | Diastolic.units.1 | Systolic.@class.1 |
 ----- -------------------- ----------------------- ------------------- -------------------
-  1       DV_QUANTITY                70                  mm[Hg]            DV_QUANTITY    
-
-  2       DV_QUANTITY                58                  mm[Hg]            DV_QUANTITY    
-
-  3       DV_QUANTITY                62                  mm[Hg]            DV_QUANTITY    
-
-  4       DV_QUANTITY                83                  mm[Hg]            DV_QUANTITY    
-
-  5       DV_QUANTITY                70                  mm[Hg]            DV_QUANTITY    
-
-  6       DV_QUANTITY                59                  mm[Hg]            DV_QUANTITY    
+| 1  |    DV_QUANTITY     |          70           |      mm[Hg]       |    DV_QUANTITY    |
+| 2  |    DV_QUANTITY     |          58           |      mm[Hg]       |    DV_QUANTITY    |
+| 3  |    DV_QUANTITY     |          62           |      mm[Hg]       |    DV_QUANTITY    |
+| 4  |    DV_QUANTITY     |          83           |      mm[Hg]       |    DV_QUANTITY    |
+| 5  |    DV_QUANTITY     |          70           |      mm[Hg]       |    DV_QUANTITY    |
+| 6  |    DV_QUANTITY     |          59           |      mm[Hg]       |    DV_QUANTITY    |
 ------------------------------------------------------------------------------------------
 
 Table: Table continues below
 
  
 ------------------------------------------------------------------------------------------
- Systolic.magnitude.1   Systolic.units.1   Temperature.@class.1   Temperature.magnitude.1 
+|Systolic.magnitude.1 | Systolic.units.1 | Temperature.@class.1 | Temperature.magnitude.1 |
 ---------------------- ------------------ ---------------------- -------------------------
-          99                 mm[Hg]            DV_QUANTITY                 37.3           
-
-         107                 mm[Hg]            DV_QUANTITY                 38.4           
-
-         101                 mm[Hg]            DV_QUANTITY                 36.2           
-
-         122                 mm[Hg]            DV_QUANTITY                  36            
-
-          88                 mm[Hg]            DV_QUANTITY                 37.7           
-
-          96                 mm[Hg]            DV_QUANTITY                 36.7           
+|         99          |      mm[Hg]      |     DV_QUANTITY      |          37.3           |
+|        107          |      mm[Hg]      |     DV_QUANTITY      |          38.4           |
+|        101          |      mm[Hg]      |     DV_QUANTITY      |          36.2           |
+|        122          |      mm[Hg]      |     DV_QUANTITY      |           36            |
+|         88          |      mm[Hg]      |     DV_QUANTITY      |          37.7           |
+|         96          |      mm[Hg]      |     DV_QUANTITY      |          36.7           |
 ------------------------------------------------------------------------------------------
 
 Table: Table continues below
 
  
 -----------------------------------------------
- Temperature.precision.1   Temperature.units.1 
+|Temperature.precision.1 | Temperature.units.1 |
 ------------------------- ---------------------
-            1                      °C          
-
-            1                      °C          
-
-            1                      °C          
-
-            1                      °C          
-
-            1                      °C          
-
-            1                      °C          
+|           1            |         °C          |
+|           1            |         °C          |
+|           1            |         °C          |
+|           1            |         °C          |
+|           1            |         °C          |
+|           1            |         °C          |
 -----------------------------------------------
 
 In this case the `out2` notation was used just to distinguish between results for different values of the `full_path` argument. 
@@ -661,19 +620,14 @@ json <- httr::content(resp)
 
 
 --------------------------------------
- Temperature    Systolic    Diastolic 
+|Temperature |  Systolic  | Diastolic |
 ------------- ------------ -----------
-   37.3 °C    99.0 mm[Hg]  70.0 mm[Hg]
-
-   38.4 °C    107.0 mm[Hg] 58.0 mm[Hg]
-
-   36.2 °C    101.0 mm[Hg] 62.0 mm[Hg]
-
-   36.0 °C    122.0 mm[Hg] 83.0 mm[Hg]
-
-   37.7 °C    88.0 mm[Hg]  70.0 mm[Hg]
-
-   36.7 °C    96.0 mm[Hg]  59.0 mm[Hg]
+|  37.3 °C   |99.0 mm[Hg] |70.0 mm[Hg]|
+|  38.4 °C   |107.0 mm[Hg]|58.0 mm[Hg]|
+|  36.2 °C   |101.0 mm[Hg]|62.0 mm[Hg]|
+|  36.0 °C   |122.0 mm[Hg]|83.0 mm[Hg]|
+|  37.7 °C   |88.0 mm[Hg] |70.0 mm[Hg]|
+|  36.7 °C   |96.0 mm[Hg] |59.0 mm[Hg]|
 --------------------------------------
 
 
