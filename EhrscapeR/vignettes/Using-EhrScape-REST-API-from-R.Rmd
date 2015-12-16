@@ -1,0 +1,343 @@
+---
+title: "Using EhrScape REST API from R"
+author: "Emil Plesnik, Marand d.o.o."
+date: "`r Sys.Date()`"
+toctitle: "Contents"
+output: 
+  rmarkdown::html_vignette:
+    css: custom.css
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{Using EhrScape REST API from R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## Introduction
+
+[EhrScape](https://www.ehrscape.com/index.html) is an open health data platform providing a rich service framework that allows you to store, query and retrieve electronic health records based on the [openEHR](http://www.openehr.org/) specification. The data is available as [JSON](https://en.wikipedia.org/wiki/JSON) via a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) web service architecture. 
+
+The overall approach is generic – we want to obtain healthcare data by calling a REST API, and then format the returned result set in R to ready the data for more sophisticated analysis.
+
+RESTful applications use HTTP requests to read data (e.g., make queries) and post data (create and/or update). At its most basic, calling a REST API to obtain data involves making a HTTP GET request to a server. If the call succeeds, you’ll have a document that contains the requested data. To store data using REST API, a HTTP POST request needs to be made to the server along with the newly created data. 
+
+This tutorial describes the `EhrscapeR` package, showcasing the use of R for handling data from EhrScape platform using REST API:
+
+* [GET /query](https://www.ehrscape.com/api-explorer.html?api=thinkehr&service=/query&operation=/query&method=get&inline=true): returns the results of the specified AQL query,
+* [GET /query/csv](https://www.ehrscape.com/api-explorer.html?api=thinkehr&service=/query&operation=/query/csv&method=get&inline=true): returns the results of the specified AQL query as CSV, 
+* [POST /composition](https://www.ehrscape.com/api-explorer.html?api=thinkehr&service=/composition&operation=/composition&method=post&inline=true): creates and commits a contribution consisting of multiple composition creations, updates or deletes.
+
+Please check the [EhrScape API Explorer](https://www.ehrscape.com/api-explorer.html) for a complete list of REST API. 
+
+The basis of this package are functions from the:
+
+- **httr** package: functions for making HTTP requests
+- **jsonlite** package: functions for parsing JSON formated data into data frames (R-suitable form)
+
+An important part is parsing the obtained JSON data into R-usable form. The result set in JSON format can be complex in structure with several nested levels which requires flattening of the structure to the data frame.  
+
+The package `EhrscapeR` includes functions: 
+
+* `get_query`: for a given [AQL](http://www.openehr.org/releases/QUERY/latest/docs/AQL/AQL.html) query returns the result set in a data frame. 
+* `get_query_csv`: for a given AQL query returns the CSV formated result set in a data frame. 
+* `post_composition`: stores new data records (compositions) in EhrScape.
+
+All the examples below can be checked on EhrScape API Explorer.
+
+
+## Data query
+
+Data is queried from EhrScape using the `get_query` function:
+
+```{r, eval=FALSE, tidy=TRUE}
+query_data <- get_query(baseURL, credentials = c(user_name, password), aql_query, full_path = FALSE)
+```
+
+Input parameters: 
+
+  - `baseURL`: base url address of the REST service, 
+  - `credentials`: authentication pair of username and password
+  - `aql_query`: AQL query, 
+  - `full_path`: logical value indicating the degree of flattening. If `FALSE`, each value (even repetitions on the same path) in the JSON is assigned a unique identifier. If `TRUE`, values are sorted in the outpt data frame according to JSON path and unique sequence within the same path (if there are several repetitions on the same JSON path).
+  
+The function connects to the server with provided credentials and AQL query. The response in JSON format is parsed to a data frame and returned as the result of the function. 
+
+Example: Query body temperature, systolic and diastolic measurements for all patients
+
+```{r, tidy=FALSE}
+aql_query <- 
+  "select
+    t/data[at0002|History|]/events[at0003|Any event|]/data[at0001]/items[at0004|Temperature|]/value as Temperature,
+    bp/data[at0001|history|]/events[at0006|any event|]/data[at0003]/items[at0004|Systolic|]/value as Systolic,
+    bp/data[at0001|history|]/events[at0006|any event|]/data[at0003]/items[at0005|Diastolic|]/value as Diastolic
+from EHR e
+contains COMPOSITION c
+contains (
+    OBSERVATION t[openEHR-EHR-OBSERVATION.body_temperature.v1] and
+    OBSERVATION bp[openEHR-EHR-OBSERVATION.blood_pressure.v1])
+offset 0 limit 100"
+
+baseURL <- "https://rest.ehrscape.com/rest/v1/"
+user_name <- "guidemo"
+password <- "gui?!demo123"
+```
+
+Result of the above query is: 
+
+![Result of example query](query_result.png)
+
+
+### Make HTTP request
+
+The function begins by preparing the AQL query for construction of the HTTP request. First, the `rm_white` function of the **qdapRegex** package removes from the input `aql_query` all multiple white spaces, white spaces before commas, semicolons, colons or endmarks, white spaces before or after brackets, leading and trailing white spaces. Next, line break and carriage return symbols are replaced with white space by using the `gsub` function. The edited AQL query string is then URL encoded (`query_enc`) and used to construct the HTTP request `URL_address` 
+
+```{r, tidy=TRUE, echo=-5}
+aql_query <- qdapRegex::rm_white(aql_query)
+aql_query <- gsub("\r?\n|\r", " ", aql_query)
+query_enc <- utils::URLencode(aql_query)
+URL_address = paste(baseURL, "query?aql=", query_enc, sep = "")
+str(URL_address, strict.width = "cut")
+```
+
+### GET response
+
+The request `URL_address` is executed using the `GET` function of the **httr** package. The server response is stored as `resp`. Since EhrScape requires authentication, user credentials have to be included to the `GET` function call. Additionally, the `content_type_json` function is used to set the expected content type returned from the server to JSON. 
+
+```{r, echo=-2}
+resp <- httr::GET(URL_address, httr::authenticate(user_name, password), httr::content_type_json())
+str(resp, strict.width = "wrap")
+```
+
+### Parse response
+
+Response `resp` includes data such as the HTTP request, status, headers, cookies, and also the answer to the request in JSON format. This is stored in the content field, which is extracted with the `content` function to a nested list `json`. 
+
+```{r, echo=-2}
+json <- httr::content(resp)
+str(json, strict.width = "wrap", list.len = 4)
+```
+
+Sublists contain the used AQL query and URL address as well as the result, which is extracted to the `json_results` named vector.
+
+```{r, echo=-2}
+json_results <- unlist(json[[4]])
+str(json_results, strict.width = "wrap")
+```
+
+### Convert to data frame
+
+The `json_results` named vector is converted to two-column data frame where the names of the vector are in one column and the values are in the other
+
+```{r, echo=-3}
+json_nav <- as.data.frame(json_results, stringsAsFactors = FALSE)
+json_nav$path <- attr(json_results, "names")
+str(json_nav, strict.width = "wrap")
+```
+
+The names of the unlisted JSON `json_results` represent paths of the values in the nested JSON. And in the next step the unique paths of the JSON content are determined (`unique_path`) and used to determine the number of different records `rec_num` and their index limits (`limits`) in the `json_results` data_frame. 
+
+```{r, echo=-c(2,5,7)}
+unique_path <- unique(json_nav$path)
+str(unique_path)
+runs <- rle(json_nav$path == unique_path[1])
+limits <- cumsum(runs$lengths)
+str(limits)
+rec_num <- sum(runs$values)
+str(rec_num)
+```
+
+The number of different records `rec_num` and their start and end limits `limits` are then used to add a new column `ind` to the `json_nav` data frame to assign each line to the corresponding record number
+
+```{r, echo=-3}
+json_nav$ind <- rep(NA, dim(json_nav)[1])
+for(i in 1:rec_num) {
+  json_nav$ind[limits[2*i - 1] : limits[2*i]] <- i
+}
+str(json_nav, strict.width = "wrap")
+```
+
+Below temperature data for the first three patients from the `json_nav` is visualized (the first column indicates which rows are displayed).
+
+```{r, echo=FALSE}
+pander::pander(json_nav[c(1:4, 11:14, 21:24),])
+```
+
+
+In the final step, the output data frame `out` is prepared according to the value of the `full_path` parameter, which can be either `FALSE` or `TRUE`. 
+
+#### JSON paths without numbering
+
+If `full_path` is set to `FALSE`, the column names of the `out` data frame are equal to the values of `unique_path` vector. Additionally, the `ind` and `seq` columns are included. This way each column represents elements on the same path. The `ind` column is used to annotate each row with the corresponding record number. The `seq` column is used to annotate each row with the number of repetitions in the same JSON path (to distinguish between several different elements in the same JSON path). If each JSON path contains a single element, all values in the `seq` are equal to 1.
+
+The `seq` column is created using the `with` function, which evaluates the `json_nav` data frame to the expression defined by the `ave` function. The `ave` function groups the values in `json_results` according to unique combinations of variables `ind` and `path`. The `out` data frame is cast (by using function `dcast`) from the molten data frame `json_nav` by sorting the values in `json_results` according to the match between `ind` and `seq` on one side and `path` on the other.
+
+```{r, echo=-4}
+json_nav$seq <- with(json_nav, stats::ave(json_results, ind, path, FUN = seq_along))
+json_nav$seq <- as.numeric(json_nav$seq)
+out <- reshape2::dcast(ind + seq ~ path, data = json_nav, value.var = "json_results")
+str(out)
+```
+
+The first six rows of output data frame `out` presented as table
+
+```{r, echo=FALSE}
+pander::panderOptions('table.split.table', 100)
+pander::pander(head(out))
+```
+
+
+#### JSON paths with numbering 
+
+If `full_path` is set to `TRUE`, the number of columns of the output data frame is equal to the number of unique paths of the JSON content increased for the number of paths that repeat due to repetitions on the same JSON level (plus one for the `ind` column). The names of the columns are equal to the values of `unique_path` with appendend integer value of the repetition, which is used to distinguish between several different elements with the same JSON path. 
+
+For this a new temporary data frame `tmp` is created, which includes the columns of the `json_nav` along with the column `newind` created as unique combinations of the columns `ind` and `path`. This is achieved by using the `ddply` function, which splits the input data frame (`json_nav`) according to given variables (`ind` and `path`), applies the selected function (`transform` - transform to data frame) on the splits along with the additional column `newind` and combines the results into a data frame. The `out` data frame is cast (by using function `dcast`) from the molten data frame `tmp` by sorting the values in `json_results` according to the match between `ind` on one side and `newind` on the other.
+
+```{r, echo=-3, tidy=TRUE}
+tmp <- plyr::ddply(json_nav, plyr::.(ind, path), transform, newind = paste(path, seq_along(path), sep = "."))
+out2 <- reshape2::dcast(tmp, ind ~ newind, value.var = "json_results")
+str(out2)
+```
+
+The first six rows of output data frame `out` presented as table
+
+```{r, echo=FALSE}
+pander::panderOptions('table.split.table', 100)
+pander::pander(head(out2))
+```
+
+In this case the `out2` notation was used just to distinguish between results for different values of the `full_path` argument. 
+
+## Data query - csv flattening
+
+EhrScape provides data structure flattening capability using `GET /query/csv`, which returns the results of the specified AQL query as CSV. This allows to get a data frame directly instead of manipulating multi-level generic JSON data structure. In `EhrscapeR` this is implemented in the function `get_query_csv`:
+
+```{r, eval=FALSE}
+query_data_csv <- get_query_csv(baseURL, credentials = c(user_name, password), aql_query)
+```
+
+Input parameters: 
+
+  - `baseURL`: base url address of the REST service, 
+  - `credentials`: authentication pair of username and password
+  - `aql_query`: AQL query. 
+
+The function connects to the server with provided credentials and AQL query. The response in JSON format prepared as a CSV table is parsed to a data frame and returned as the result of the function. This will be presented in more detail on an example using the previously defined parameters `baseURL`, `user_name`, `password` and `aql_query`. 
+
+The function begins by preparing the AQL query for construction of the HTTP request. The only difference compared to the `get_query` function is the URL address, which uses `"query/csv?aql="` instead of `"query?aql="`. 
+
+```{r, tidy=TRUE, echo=-5}
+aql_query <- qdapRegex::rm_white(aql_query)
+aql_query <- gsub("\r?\n|\r", " ", aql_query)
+query_enc <- utils::URLencode(aql_query)
+URL_address = paste(baseURL, "query/csv?aql=", query_enc, sep = "")
+str(URL_address, strict.width = "cut")
+```
+
+The request `URL_address` is executed using the `GET` function of the **httr** package. The server response is stored as `resp`.
+
+```{r, echo=-2}
+resp <- httr::GET(URL_address, httr::authenticate(user_name, password), httr::content_type_json())
+str(resp, strict.width = "wrap")
+```
+
+Response `resp` includes the answer to the request in JSON format. This is extracted from the content field with the `content` function to a data frame `json`, which is returned as the output of the function. 
+
+```{r, echo=-c(2,3)}
+json <- httr::content(resp)
+str(json, strict.width = "wrap", list.len = 4)
+pander::pander(head(json))
+```
+
+
+## Save data
+
+Function `post_composition` enables saving data records (composition) to EhrScape. Compositions are created by using web templates. Web template can be regarded as an input schema, which declares all possible settings of the input data structures for building an openEHR composition. To build a composition sample use `GET /template/{templateId}/example`, which returns an example of data values for a web template. This is used as a prototype composition and further filled with actual data. 
+
+The composition has to be prepared and provided to the function in JSON format. Additionally, the composition has to be complemented by an identifier of one of the existing templates in the EhrScape and an identifier of an actual EHR record. The composition is saved to the server using the REST method **POST**. The function is called as: 
+
+```{r, eval=FALSE, tidy=TRUE}
+post_data <- post_composition(baseURL, credentials = c(user_name, password), templateId, ehrId, format, composition)
+```
+
+Input parameters: 
+
+  - `baseURL`: base url address of the REST service, 
+  - `credentials`: authentication pair of username and password
+  - `templateId`: identifier of one of the existing templates in the EhrScape platform, 
+  - `ehrId`: identifier of an existing EHR record
+  - `format`: indicator of whether the provided JSON composition is in structured (`"STRUCTURED"`) or flattened (`"FLAT"`) form
+  - `composition`: the OpenEhr composition in JSON format to be saved to EhrScape platform. It can be given as character string or as a structured list. 
+
+The function connects to the server with provided credentials. The response in JSON format is parsed to a list and returned as the result of the function. 
+
+Example: Save a patient's body temperature measurement to his EHR using a flattened web template composition
+
+```{r, tidy=FALSE}
+composition <- 
+'{
+  "ctx/language": "en", 
+  "ctx/territory": "US", 
+  "ctx/composer_name": "Silvia Blake", 
+  "ctx/time": "2015-12-03T14:55:51.868+01:00", 
+  "ctx/id_namespace": "HOSPITAL-NS", 
+  "ctx/id_scheme": "HOSPITAL-NS", 
+  "ctx/health_care_facility|name": "Hospital", 
+  "ctx/health_care_facility|id": "9091", 
+  "vital_signs/body_temperature:0/any_event:0/temperature|magnitude": 37.94,
+  "vital_signs/body_temperature:0/any_event:0/temperature|unit": "°C"
+}'
+baseURL <- "https://rest.ehrscape.com/rest/v1/"
+user_name <- "****"
+password <- "****"
+templateId <- "Vital Signs"
+ehrId <- "6e031066-14df-46db-8320-bce31199fcbd"
+format <- "FLAT"
+```
+
+### Make HTTP request
+
+The function begins by constructing the HTTP request from the `baseURL`, `templateId`, `ehrId` and `format` arguments. For this, the `modify_url` function of the **httr** package is used 
+
+```{r, echo=-2, tidy=FALSE}
+URL_address <- httr::modify_url(paste(baseURL, "composition", sep = ""), 
+                                query = list(templateId = templateId, 
+                                             ehrId = ehrId, format = format))
+str(URL_address, strict.width = "cut")
+```
+
+### Prepare composition
+
+Construction of HTTP request is followed by preparing the `composition`, which can either be given as character string or a structured list or data frame. In case it is given as a character string. All inapropriate white space, line break and carriage return symbols are cleaned using the same procedure as with the function `get_query` and the cleaned character string is converted to a structured list using the `fromJSON` function of the **jsonlite** package
+
+```{r}
+if(typeof(composition) == "character"){
+  composition <- qdapRegex::rm_white(composition)
+  composition <- gsub("\r?\n|\r", " ", composition)
+  df <- jsonlite::fromJSON(composition)
+} else {
+  df <- composition
+}
+df
+```
+
+### POST data 
+
+Once the HTTP request `URL_address` and composition data `df` are prepared, they can be used to save the composition to EhrScape. This is done by using the `POST` function of the **httr** package. The required arguments include the HTTP request (`URL_address`), configuration settings (authentication with `user_name` and `password`), body (`df` containing the composition) and encoding used (the `encode` argument)
+
+```{r, echo=-c(2,3), tidy=TRUE}
+resp <- httr::POST(URL_address, httr::authenticate(user_name, password), body = df, encode = "json")
+load(system.file("extdata", "resp.Rda", package="EhrscapeR"))
+str(resp, strict.width = "wrap")
+```
+
+### Parse response 
+
+The server response contains the details of the call along with the HTTP status. In case of successfully executed request, the response body contains a link to the newly created composition. This link is parsed from the content field of the response
+
+```{r, echo=-2}
+resp_content <- httr::content(resp, as = "parsed")
+str(resp_content, strict.width = "wrap")
+```
+
+The function returns a list of the full response `resp` and the parsed content field containing the link to the created composition `resp_content`.
