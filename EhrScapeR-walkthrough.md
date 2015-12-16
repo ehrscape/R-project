@@ -341,31 +341,31 @@ Below temperature data for the first three patients from the `json_nav` is visua
 
 
 ---------------------------------------------------
- &nbsp;   json_results          path           ind 
--------- -------------- --------------------- -----
- **1**    DV_QUANTITY    Temperature.@class     1  
+|&nbsp; | json_results |       path          | ind | 
+|-------|--------------|---------------------|-----|
+| **1** | DV_QUANTITY  | Temperature.@class  |  1  |
 
- **2**        37.3      Temperature.magnitude   1  
+| **2** |     37.3     |Temperature.magnitude|  1  |
 
- **3**         °C         Temperature.units     1  
+| **3** |      °C      |  Temperature.units  |  1  |
 
- **4**         1        Temperature.precision   1  
+| **4** |      1       |Temperature.precision|  1  |
 
- **11**   DV_QUANTITY    Temperature.@class     2  
+|**11** | DV_QUANTITY  | Temperature.@class  |  2  |
 
- **12**       38.4      Temperature.magnitude   2  
+|**12** |     38.4     |Temperature.magnitude|  2  |
 
- **13**        °C         Temperature.units     2  
+|**13** |      °C      |  Temperature.units  |  2  |
 
- **14**        1        Temperature.precision   2  
+|**14** |      1       |Temperature.precision|  2  |
 
- **21**   DV_QUANTITY    Temperature.@class     3  
+|**21** | DV_QUANTITY  | Temperature.@class  |  3  |
 
- **22**       36.2      Temperature.magnitude   3  
+|**22** |     36.2     |Temperature.magnitude|  3  |
 
- **23**        °C         Temperature.units     3  
+|**23** |      °C      |  Temperature.units  |  3  |
 
- **24**        1        Temperature.precision   3  
+|**24** |      1       |Temperature.precision|  3  |
 ---------------------------------------------------
 
 
