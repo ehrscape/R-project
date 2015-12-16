@@ -342,7 +342,7 @@ Below temperature data for the first three patients from the `json_nav` is visua
 
 ---------------------------------------------------
 |&nbsp; | json_results |       path          | ind | 
- ------- -------------- --------------------- ----- 
+|-------|--------------|---------------------|-----|
 | **1** | DV_QUANTITY  | Temperature.@class  |  1  |
 | **2** |     37.3     |Temperature.magnitude|  1  |
 | **3** |      °C      |  Temperature.units  |  1  |
@@ -394,7 +394,7 @@ The first six rows of output data frame `out` presented as table
 
 ----------------------------------------------------------------------------------------
 |ind | seq | Diastolic.@class | Diastolic.magnitude | Diastolic.units | Systolic.@class |
- ---- ----- ------------------ --------------------- ----------------- -----------------
+|----|-----|------------------|---------------------|-----------------|-----------------|
 | 1  |  1  |   DV_QUANTITY    |         70          |     mm[Hg]      |   DV_QUANTITY   |
 | 2  |  1  |   DV_QUANTITY    |         58          |     mm[Hg]      |   DV_QUANTITY   |
 | 3  |  1  |   DV_QUANTITY    |         62          |     mm[Hg]      |   DV_QUANTITY   |
@@ -408,7 +408,7 @@ Table: Table continues below
  
 ----------------------------------------------------------------------------------
 |Systolic.magnitude | Systolic.units | Temperature.@class | Temperature.magnitude |
--------------------- ---------------- -------------------- -----------------------
+|-------------------|----------------|--------------------|-----------------------|
 |        99         |     mm[Hg]     |    DV_QUANTITY     |         37.3          |
 |       107         |     mm[Hg]     |    DV_QUANTITY     |         38.4          |
 |       101         |     mm[Hg]     |    DV_QUANTITY     |         36.2          |
@@ -422,7 +422,7 @@ Table: Table continues below
  
 -------------------------------------------
 |Temperature.precision | Temperature.units |
------------------------ -------------------
+|----------------------|-------------------|
 |          1           |        °C         |
 |          1           |        °C         |
 |          1           |        °C         |
@@ -465,7 +465,7 @@ The first six rows of output data frame `out` presented as table
 
 ------------------------------------------------------------------------------------------
 |ind | Diastolic.@class.1 | Diastolic.magnitude.1 | Diastolic.units.1 | Systolic.@class.1 |
------ -------------------- ----------------------- ------------------- -------------------
+|----|--------------------|-----------------------|-------------------|-------------------|
 | 1  |    DV_QUANTITY     |          70           |      mm[Hg]       |    DV_QUANTITY    |
 | 2  |    DV_QUANTITY     |          58           |      mm[Hg]       |    DV_QUANTITY    |
 | 3  |    DV_QUANTITY     |          62           |      mm[Hg]       |    DV_QUANTITY    |
@@ -479,7 +479,7 @@ Table: Table continues below
  
 ------------------------------------------------------------------------------------------
 |Systolic.magnitude.1 | Systolic.units.1 | Temperature.@class.1 | Temperature.magnitude.1 |
----------------------- ------------------ ---------------------- -------------------------
+|---------------------|------------------|----------------------|-------------------------|
 |         99          |      mm[Hg]      |     DV_QUANTITY      |          37.3           |
 |        107          |      mm[Hg]      |     DV_QUANTITY      |          38.4           |
 |        101          |      mm[Hg]      |     DV_QUANTITY      |          36.2           |
@@ -493,7 +493,7 @@ Table: Table continues below
  
 -----------------------------------------------
 |Temperature.precision.1 | Temperature.units.1 |
-------------------------- ---------------------
+|------------------------|---------------------|
 |           1            |         °C          |
 |           1            |         °C          |
 |           1            |         °C          |
@@ -621,7 +621,7 @@ json <- httr::content(resp)
 
 --------------------------------------
 |Temperature |  Systolic  | Diastolic |
-------------- ------------ -----------
+|------------|------------|-----------|
 |  37.3 °C   |99.0 mm[Hg] |70.0 mm[Hg]|
 |  38.4 °C   |107.0 mm[Hg]|58.0 mm[Hg]|
 |  36.2 °C   |101.0 mm[Hg]|62.0 mm[Hg]|
