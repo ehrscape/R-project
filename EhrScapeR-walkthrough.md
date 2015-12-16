@@ -1,18 +1,5 @@
 # Walkthrough for the EhrscapeR package
 
--   Introduction
--   Data query
-    -   Make HTTP request
-    -   GET response
-    -   Parse response
-    -   Convert to data frame
--   Data query - csv flattening
--   Save data 
-    -   Make HTTP request
-    -   Prepare composition
-    -   POST data
-    -   Parse response
-
 
 ## Introduction
 
