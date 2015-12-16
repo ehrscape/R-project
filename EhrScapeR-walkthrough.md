@@ -620,7 +620,7 @@ json <- httr::content(resp)
 
 ## Save data
 
-Function `post_composition` enables saving data records (composition) to EhrScape. Compositions are created by using web templates. Web template can be regarded as an input schema, which declares all possible settings of the input data structures for building an openEHR composition. To build a composition sample use `GET /template/{templateId}/example`, which returns an example of data values for a web template. This is used as a prototype composition and further filled with actual data. 
+Function `post_composition` enables saving data records (composition) to EhrScape. Compositions are created by using [web templates](https://www.ehrscape.com/api-explorer.html?api=thinkehr&service=/template&operation=/template/{templateId}/example&method=get&inline=true). Web template can be regarded as an input schema, which declares all possible settings of the input data structures for building an openEHR composition. To build a composition sample use `GET /template/{templateId}/example`, which returns an example of data values for a web template. This is used as a prototype composition and further filled with actual data. 
 
 The composition has to be prepared and provided to the function in JSON format. Additionally, the composition has to be complemented by an identifier of one of the existing templates in the EhrScape and an identifier of an actual EHR record. The composition is saved to the server using the REST method **POST**. The function is called as: 
 
