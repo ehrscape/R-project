@@ -170,7 +170,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ##    __truncated__
 ## $ status_code: int 200
 ## $ headers :List of 7
-## ..$ date : chr &quot;Wed, 16 Dec 2015 16:07:19 GMT&quot;
+## ..$ date : chr &quot;Wed, 16 Dec 2015 17:24:18 GMT&quot;
 ## ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
 ## ..$ content-language: chr &quot;en-US&quot;
 ## ..$ content-type : chr &quot;application/json;charset=UTF-8&quot;
@@ -183,7 +183,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ## .. ..$ status : int 200
 ## .. ..$ version: chr &quot;HTTP/1.1&quot;
 ## .. ..$ headers:List of 7
-## .. .. ..$ date : chr &quot;Wed, 16 Dec 2015 16:07:19 GMT&quot;
+## .. .. ..$ date : chr &quot;Wed, 16 Dec 2015 17:24:18 GMT&quot;
 ## .. .. ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
 ## .. .. ..$ content-language: chr &quot;en-US&quot;
 ## .. .. ..$ content-type : chr &quot;application/json;charset=UTF-8&quot;
@@ -200,8 +200,8 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ## ..$ name : logi(0)
 ## ..$ value : logi(0)
 ## $ content : raw [1:14549] 7b 22 6d 65 ...
-## $ date : POSIXct[1:1], format: &quot;2015-12-16 16:07:19&quot;
-## $ times : Named num [1:6] 0 0 0.032 0.468 0.531 0.531
+## $ date : POSIXct[1:1], format: &quot;2015-12-16 17:24:18&quot;
+## $ times : Named num [1:6] 0 0 0.047 0.437 0.5 0.5
 ## ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;redirect&quot; &quot;namelookup&quot; &quot;connect&quot;
 ##    &quot;pretransfer&quot; ...
 ## $ request :List of 7
@@ -815,7 +815,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ##    __truncated__
 ## $ status_code: int 200
 ## $ headers :List of 5
-## ..$ date : chr &quot;Wed, 16 Dec 2015 16:07:20 GMT&quot;
+## ..$ date : chr &quot;Wed, 16 Dec 2015 17:24:19 GMT&quot;
 ## ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
 ## ..$ content-language : chr &quot;en-US&quot;
 ## ..$ content-type : chr &quot;text/csv;charset=UTF-8&quot;
@@ -826,7 +826,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ## .. ..$ status : int 200
 ## .. ..$ version: chr &quot;HTTP/1.1&quot;
 ## .. ..$ headers:List of 5
-## .. .. ..$ date : chr &quot;Wed, 16 Dec 2015 16:07:20 GMT&quot;
+## .. .. ..$ date : chr &quot;Wed, 16 Dec 2015 17:24:19 GMT&quot;
 ## .. .. ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
 ## .. .. ..$ content-language : chr &quot;en-US&quot;
 ## .. .. ..$ content-type : chr &quot;text/csv;charset=UTF-8&quot;
@@ -841,7 +841,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ## ..$ name : logi(0)
 ## ..$ value : logi(0)
 ## $ content : raw [1:2252] 22 54 65 6d ...
-## $ date : POSIXct[1:1], format: &quot;2015-12-16 16:07:20&quot;
+## $ date : POSIXct[1:1], format: &quot;2015-12-16 17:24:19&quot;
 ## $ times : Named num [1:6] 0 0 0 0 0.062 0.062
 ## ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;redirect&quot; &quot;namelookup&quot; &quot;connect&quot;
 ##    &quot;pretransfer&quot; ...
@@ -923,7 +923,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 </div>
 <div id="save-data" class="section level2">
 <h2>Save data</h2>
-<p>Function <code>post_composition</code> enables saving data records (composition) to EhrScape. Compositions are created by using web templates. Web template can be regarded as an input schema, which declares all possible settings of the input data structures for building an openEHR composition. To build a composition sample use <code>GET /template/{templateId}/example</code>, which returns an example of data values for a web template. This is used as a prototype composition and further filled with actual data.</p>
+<p>Function <code>post_composition</code> enables saving data records (composition) to EhrScape. Compositions are created by using <a href="https://www.ehrscape.com/api-explorer.html?api=thinkehr&amp;service=/template&amp;operation=/template/{templateId}/example&amp;method=get&amp;inline=true">web templates</a>. Web template can be regarded as an input schema, which declares all possible settings of the input data structures for building an openEHR composition. To build a composition sample use <code>GET /template/{templateId}/example</code>, which returns an example of data values for a web template. This is used as a prototype composition and further filled with actual data.</p>
 <p>The composition has to be prepared and provided to the function in JSON format. Additionally, the composition has to be complemented by an identifier of one of the existing templates in the EhrScape and an identifier of an actual EHR record. The composition is saved to the server using the REST method <strong>POST</strong>. The function is called as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">post_data &lt;-<span class="st"> </span><span class="kw">post_composition</span>(baseURL, <span class="dt">credentials =</span> <span class="kw">c</span>(user_name, password), 
     templateId, ehrId, format, composition)</code></pre></div>
