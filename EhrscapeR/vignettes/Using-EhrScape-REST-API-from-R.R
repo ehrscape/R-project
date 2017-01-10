@@ -1,7 +1,7 @@
 ## ---- eval=FALSE, tidy=TRUE----------------------------------------------
 #  query_data <- get_query(baseURL, credentials = c(user_name, password), aql_query, full_path = FALSE)
 
-## ---- tidy=FALSE---------------------------------------------------------
+## ---- tidy=FALSE, eval=-c(3:4), echo=-c(3:4)-----------------------------
 aql_query <- 
   "select
     t/data[at0002|History|]/events[at0003|Any event|]/data[at0001]/items[at0004|Temperature|]/value as Temperature,
@@ -13,8 +13,9 @@ contains (
     OBSERVATION t[openEHR-EHR-OBSERVATION.body_temperature.v1] and
     OBSERVATION bp[openEHR-EHR-OBSERVATION.blood_pressure.v1])
 offset 0 limit 100"
-
 baseURL <- "https://rest.ehrscape.com/rest/v1/"
+user_name <- "****"
+password <- "****"
 user_name <- "guidemo"
 password <- "gui?!demo123"
 
@@ -25,8 +26,9 @@ query_enc <- utils::URLencode(aql_query)
 URL_address = paste(baseURL, "query?aql=", query_enc, sep = "")
 str(URL_address, strict.width = "cut")
 
-## ---- echo=-2------------------------------------------------------------
+## ---- echo=-(2:3)--------------------------------------------------------
 resp <- httr::GET(URL_address, httr::authenticate(user_name, password), httr::content_type_json())
+# resp$request$options$userpwd <- "****:****"
 str(resp, strict.width = "wrap")
 
 ## ---- echo=-2------------------------------------------------------------
@@ -59,7 +61,7 @@ for(i in 1:rec_num) {
 str(json_nav, strict.width = "wrap")
 
 ## ---- echo=FALSE---------------------------------------------------------
-pander::pander(json_nav[c(1:4, 11:14, 21:24),])
+pander::pander(json_nav[c(1:4, 13:16, 25:28),])
 
 ## ---- echo=-4------------------------------------------------------------
 json_nav$seq <- with(json_nav, stats::ave(json_results, ind, path, FUN = seq_along))
@@ -81,7 +83,7 @@ pander::panderOptions('table.split.table', 100)
 pander::pander(head(out2))
 
 ## ---- eval=FALSE---------------------------------------------------------
-#  query_data_csv <- get_query_csv(baseURL, credentials = c(user_name, password), aql_query)
+#  query_data_csv <- query2csv(baseURL, credentials = c(user_name, password), aql_query)
 
 ## ---- tidy=TRUE, echo=-5-------------------------------------------------
 aql_query <- qdapRegex::rm_white(aql_query)
@@ -90,8 +92,9 @@ query_enc <- utils::URLencode(aql_query)
 URL_address = paste(baseURL, "query/csv?aql=", query_enc, sep = "")
 str(URL_address, strict.width = "cut")
 
-## ---- echo=-2------------------------------------------------------------
+## ---- echo=-(2:3)--------------------------------------------------------
 resp <- httr::GET(URL_address, httr::authenticate(user_name, password), httr::content_type_json())
+# resp$request$options$userpwd <- "****:****"
 str(resp, strict.width = "wrap")
 
 ## ---- echo=-c(2,3)-------------------------------------------------------

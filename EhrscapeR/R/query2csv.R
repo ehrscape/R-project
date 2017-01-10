@@ -17,9 +17,9 @@
 #'    as Diastolic from EHR e contains COMPOSITION 
 #'    a contains (OBSERVATION a_a[openEHR-EHR-OBSERVATION.body_temperature.v1] 
 #'    and OBSERVATION a_b[openEHR-EHR-OBSERVATION.blood_pressure.v1]) offset 0 limit 100"
-#' query_data <- get_query_csv(baseURL, credentials = c("guidemo", "gui?!demo123"), aql_query)
+#' query_data <- query2csv(baseURL, credentials = c("guidemo", "gui?!demo123"), aql_query)
 
-get_query_csv <- function(baseURL, credentials = c(user_name, password), aql_query) {
+query2csv <- function(baseURL, credentials, aql_query) {
   
   aql_query <- qdapRegex::rm_white(aql_query)
   aql_query <- gsub("\r?\n|\r", " ", aql_query)

@@ -22,9 +22,9 @@
 #'    "ctx/health_care_facility|id": "9091", 
 #'    "vital_signs/body_temperature:0/any_event:0/temperature|magnitude": 37.94, 
 #'    "vital_signs/body_temperature:0/any_event:0/temperature|unit": "°C"}'
-#' post_c <- post_composition(baseURL, credentials = c("****", "****"), templateId, ehrId, format, composition)
+#' post_c <- post_composition(baseURL, credentials = c("guidemo", "gui?!demo123"), templateId, ehrId, format, composition)
 
-post_composition <- function(baseURL, credentials = c(user_name, password), templateId, ehrId, format, composition){
+post_composition <- function(baseURL, credentials, templateId, ehrId, format, composition){
   
   URL_address <- httr::modify_url(paste(baseURL, "composition", sep = ""), query = list(templateId = templateId, ehrId = ehrId, format = format))
   

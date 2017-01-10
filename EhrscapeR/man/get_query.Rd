@@ -4,8 +4,7 @@
 \alias{get_query}
 \title{Parse JSON resulting from AQL query to data frame}
 \usage{
-get_query(baseURL, credentials = c(user_name, password), aql_query,
-  full_path = FALSE)
+get_query(baseURL, credentials, aql_query, full_path = FALSE)
 }
 \arguments{
 \item{baseURL}{url addres of the REST service (character string).}

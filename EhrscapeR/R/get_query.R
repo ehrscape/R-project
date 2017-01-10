@@ -21,7 +21,7 @@
 #'    and OBSERVATION a_b[openEHR-EHR-OBSERVATION.blood_pressure.v1]) offset 0 limit 100"
 #' query_data <- get_query(baseURL, credentials = c("guidemo", "gui?!demo123"), aql_query, full_path = FALSE)
 
-get_query <- function(baseURL, credentials = c(user_name, password), aql_query, full_path = FALSE) {
+get_query <- function(baseURL, credentials, aql_query, full_path = FALSE) {
   
   aql_query <- qdapRegex::rm_white(aql_query)
   aql_query <- gsub("\r?\n|\r", " ", aql_query)

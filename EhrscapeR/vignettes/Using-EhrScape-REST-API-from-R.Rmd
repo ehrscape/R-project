@@ -65,7 +65,7 @@ The function connects to the server with provided credentials and AQL query. The
 
 Example: Query body temperature, systolic and diastolic measurements for all patients
 
-```{r, tidy=FALSE}
+```{r, tidy=FALSE, eval=-c(3:4), echo=-c(3:4)}
 aql_query <- 
   "select
     t/data[at0002|History|]/events[at0003|Any event|]/data[at0001]/items[at0004|Temperature|]/value as Temperature,
@@ -77,8 +77,9 @@ contains (
     OBSERVATION t[openEHR-EHR-OBSERVATION.body_temperature.v1] and
     OBSERVATION bp[openEHR-EHR-OBSERVATION.blood_pressure.v1])
 offset 0 limit 100"
-
 baseURL <- "https://rest.ehrscape.com/rest/v1/"
+user_name <- "****"
+password <- "****"
 user_name <- "guidemo"
 password <- "gui?!demo123"
 ```
@@ -104,8 +105,9 @@ str(URL_address, strict.width = "cut")
 
 The request `URL_address` is executed using the `GET` function of the **httr** package. The server response is stored as `resp`. Since EhrScape requires authentication, user credentials have to be included to the `GET` function call. Additionally, the `content_type_json` function is used to set the expected content type returned from the server to JSON. 
 
-```{r, echo=-2}
+```{r, echo=-(2:3)}
 resp <- httr::GET(URL_address, httr::authenticate(user_name, password), httr::content_type_json())
+# resp$request$options$userpwd <- "****:****"
 str(resp, strict.width = "wrap")
 ```
 
@@ -160,7 +162,7 @@ str(json_nav, strict.width = "wrap")
 Below temperature data for the first three patients from the `json_nav` is visualized (the first column indicates which rows are displayed).
 
 ```{r, echo=FALSE}
-pander::pander(json_nav[c(1:4, 11:14, 21:24),])
+pander::pander(json_nav[c(1:4, 13:16, 25:28),])
 ```
 
 
@@ -213,7 +215,7 @@ In this case the `out2` notation was used just to distinguish between results fo
 EhrScape provides data structure flattening capability using `GET /query/csv`, which returns the results of the specified AQL query as CSV. This allows to get a data frame directly instead of manipulating multi-level generic JSON data structure. In `EhrscapeR` this is implemented in the function `get_query_csv`:
 
 ```{r, eval=FALSE}
-query_data_csv <- get_query_csv(baseURL, credentials = c(user_name, password), aql_query)
+query_data_csv <- query2csv(baseURL, credentials = c(user_name, password), aql_query)
 ```
 
 Input parameters: 
@@ -236,8 +238,9 @@ str(URL_address, strict.width = "cut")
 
 The request `URL_address` is executed using the `GET` function of the **httr** package. The server response is stored as `resp`.
 
-```{r, echo=-2}
+```{r, echo=-(2:3)}
 resp <- httr::GET(URL_address, httr::authenticate(user_name, password), httr::content_type_json())
+# resp$request$options$userpwd <- "****:****"
 str(resp, strict.width = "wrap")
 ```
 
