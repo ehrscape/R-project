@@ -1,4 +1,4 @@
-# Walkthrough for the analyzeGPS package
+# Walkthrough for the ZephyrECG package
 
 -   Introduction
 -   Parse Zephyr BH3 data
