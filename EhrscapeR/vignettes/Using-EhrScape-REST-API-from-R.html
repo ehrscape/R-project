@@ -12,7 +12,7 @@
 
 <meta name="author" content="Emil Plesnik, Marand d.o.o." />
 
-<meta name="date" content="2017-01-10" />
+<meta name="date" content="2017-02-02" />
 
 <title>Using EhrScape REST API from R</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Using EhrScape REST API from R</h1>
 <h4 class="author"><em>Emil Plesnik, Marand d.o.o.</em></h4>
-<h4 class="date"><em>2017-01-10</em></h4>
+<h4 class="date"><em>2017-02-02</em></h4>
 
 
 <div id="TOC">
@@ -170,32 +170,32 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ##    __truncated__
 ## $ status_code: int 200
 ## $ headers :List of 10
-## ..$ date : chr &quot;Tue, 10 Jan 2017 14:00:40 GMT&quot;
+## ..$ date : chr &quot;Thu, 02 Feb 2017 12:53:58 GMT&quot;
 ## ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
-## ..$ content-language : chr &quot;en-US&quot;
+## ..$ content-language: chr &quot;en-US&quot;
 ## ..$ cache-control : chr &quot;no-cache, must-revalidate, no-store&quot;
 ## ..$ content-type : chr &quot;application/json;charset=UTF-8&quot;
 ## ..$ expires : chr &quot;0&quot;
 ## ..$ pragma : chr &quot;no-cache&quot;
 ## ..$ vary : chr &quot;Accept-Encoding&quot;
-## ..$ content-encoding : chr &quot;gzip&quot;
-## ..$ transfer-encoding: chr &quot;chunked&quot;
+## ..$ content-encoding: chr &quot;gzip&quot;
+## ..$ content-length : chr &quot;1114&quot;
 ## ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;insensitive&quot; &quot;list&quot;
 ## $ all_headers:List of 1
 ## ..$ :List of 3
 ## .. ..$ status : int 200
 ## .. ..$ version: chr &quot;HTTP/1.1&quot;
 ## .. ..$ headers:List of 10
-## .. .. ..$ date : chr &quot;Tue, 10 Jan 2017 14:00:40 GMT&quot;
+## .. .. ..$ date : chr &quot;Thu, 02 Feb 2017 12:53:58 GMT&quot;
 ## .. .. ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
-## .. .. ..$ content-language : chr &quot;en-US&quot;
+## .. .. ..$ content-language: chr &quot;en-US&quot;
 ## .. .. ..$ cache-control : chr &quot;no-cache, must-revalidate, no-store&quot;
 ## .. .. ..$ content-type : chr &quot;application/json;charset=UTF-8&quot;
 ## .. .. ..$ expires : chr &quot;0&quot;
 ## .. .. ..$ pragma : chr &quot;no-cache&quot;
 ## .. .. ..$ vary : chr &quot;Accept-Encoding&quot;
-## .. .. ..$ content-encoding : chr &quot;gzip&quot;
-## .. .. ..$ transfer-encoding: chr &quot;chunked&quot;
+## .. .. ..$ content-encoding: chr &quot;gzip&quot;
+## .. .. ..$ content-length : chr &quot;1114&quot;
 ## .. .. ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;insensitive&quot; &quot;list&quot;
 ## $ cookies :'data.frame': 0 obs. of 7 variables:
 ## ..$ domain : logi(0)
@@ -206,8 +206,8 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ## ..$ name : logi(0)
 ## ..$ value : logi(0)
 ## $ content : raw [1:16118] 7b 22 6d 65 ...
-## $ date : POSIXct[1:1], format: &quot;2017-01-10 14:00:40&quot;
-## $ times : Named num [1:6] 0 0.047 0.078 0.515 0.546 0.546
+## $ date : POSIXct[1:1], format: &quot;2017-02-02 12:53:58&quot;
+## $ times : Named num [1:6] 0 0 0.031 0.421 0.67 0.67
 ## ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;redirect&quot; &quot;namelookup&quot; &quot;connect&quot;
 ##    &quot;pretransfer&quot; ...
 ## $ request :List of 7
@@ -865,7 +865,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ##    __truncated__
 ## $ status_code: int 200
 ## $ headers :List of 8
-## ..$ date : chr &quot;Tue, 10 Jan 2017 14:00:41 GMT&quot;
+## ..$ date : chr &quot;Thu, 02 Feb 2017 12:54:00 GMT&quot;
 ## ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
 ## ..$ content-language: chr &quot;en-US&quot;
 ## ..$ cache-control : chr &quot;no-cache, must-revalidate, no-store&quot;
@@ -879,7 +879,7 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ## .. ..$ status : int 200
 ## .. ..$ version: chr &quot;HTTP/1.1&quot;
 ## .. ..$ headers:List of 8
-## .. .. ..$ date : chr &quot;Tue, 10 Jan 2017 14:00:41 GMT&quot;
+## .. .. ..$ date : chr &quot;Thu, 02 Feb 2017 12:54:00 GMT&quot;
 ## .. .. ..$ server : chr &quot;Jetty(9.2.11.v20150529)&quot;
 ## .. .. ..$ content-language: chr &quot;en-US&quot;
 ## .. .. ..$ cache-control : chr &quot;no-cache, must-revalidate, no-store&quot;
@@ -897,8 +897,8 @@ URL_address =<span class="st"> </span><span class="kw">paste</span>(baseURL, <sp
 ## ..$ name : logi(0)
 ## ..$ value : logi(0)
 ## $ content : raw [1:2252] 22 54 65 6d ...
-## $ date : POSIXct[1:1], format: &quot;2017-01-10 14:00:41&quot;
-## $ times : Named num [1:6] 0 0 0 0 0.047 0.047
+## $ date : POSIXct[1:1], format: &quot;2017-02-02 12:54:00&quot;
+## $ times : Named num [1:6] 0 0 0 0 0.062 0.062
 ## ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;redirect&quot; &quot;namelookup&quot; &quot;connect&quot;
 ##    &quot;pretransfer&quot; ...
 ## $ request :List of 7

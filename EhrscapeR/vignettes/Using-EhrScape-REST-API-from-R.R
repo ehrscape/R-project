@@ -1,7 +1,7 @@
 ## ---- eval=FALSE, tidy=TRUE----------------------------------------------
 #  query_data <- get_query(baseURL, credentials = c(user_name, password), aql_query, full_path = FALSE)
 
-## ---- tidy=FALSE, eval=-c(3:4), echo=-c(3:4)-----------------------------
+## ---- tidy=FALSE---------------------------------------------------------
 aql_query <- 
   "select
     t/data[at0002|History|]/events[at0003|Any event|]/data[at0001]/items[at0004|Temperature|]/value as Temperature,
@@ -14,8 +14,6 @@ contains (
     OBSERVATION bp[openEHR-EHR-OBSERVATION.blood_pressure.v1])
 offset 0 limit 100"
 baseURL <- "https://rest.ehrscape.com/rest/v1/"
-user_name <- "****"
-password <- "****"
 user_name <- "guidemo"
 password <- "gui?!demo123"
 
