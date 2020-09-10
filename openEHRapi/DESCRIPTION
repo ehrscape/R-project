@@ -1,0 +1,19 @@
+Package: openEHRapi
+Type: Package
+Title: Data collection via OpenEHR REST API
+Version: 1.0.0
+Author: person("Emil", "Plesnik", email = "emil.plesnik@better.care", role =
+    c("aut", "cre"))
+Maintainer: Emil Plesnik <emil.plesnik@better.care>
+Description: The package enables data collection from openEHR server
+    through AQL queries via openEHR REST API. Additionally, the package enables
+    creating new compositions with new data for existing patients (EHR IDs). 
+License: LGPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: httr, jsonlite, data.table, plyr, reshape2, qdapRegex
+RoxygenNote: 7.1.1
+Suggests: 
+    knitr,
+    kableExtra
+VignetteBuilder: knitr

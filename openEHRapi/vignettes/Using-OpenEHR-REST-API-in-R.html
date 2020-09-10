@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Using openEHR REST API in R</title>
+
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic tbody tr:last-child td {
+border-bottom: 0.14em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Using openEHR REST API in R</h1>
+<h4 class="date">10 September, 2020</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#data-query">Data query</a><ul>
+<li><a href="#make-http-request">Make HTTP request</a></li>
+<li><a href="#get-response">GET response</a></li>
+<li><a href="#parse-response">Parse response</a></li>
+<li><a href="#convert-to-data-frame">Convert to data frame</a><ul>
+<li><a href="#json-paths-without-numbering">JSON paths without numbering</a></li>
+<li><a href="#json-paths-with-numbering">JSON paths with numbering</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#save-data">Save data</a><ul>
+<li><a href="#make-http-request-1">Make HTTP request</a></li>
+<li><a href="#prepare-composition">Prepare composition</a></li>
+<li><a href="#post-data">POST data</a></li>
+<li><a href="#parse-response-1">Parse response</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p><a href="https://www.ehrscape.com">EhrScape</a> is an open health data platform providing a rich service framework that allows you to store, query and retrieve electronic health records based on the <a href="http://www.openehr.org/">openEHR</a> specification. The data is available as <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> via a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> web service architecture.</p>
+<p>The overall approach is generic – we want to obtain healthcare data by calling a REST API, and then format the returned result set in R to ready the data for more sophisticated analysis.</p>
+<p>RESTful applications use HTTP requests to read data (e.g., make queries) and post data (create and/or update). At its most basic, calling a REST API to obtain data involves making a HTTP GET request to a server. If the call succeeds, you’ll have a document that contains the requested data. To store data using REST API, a HTTP POST request needs to be made to the server along with the newly created data.</p>
+<p>This tutorial describes the <code>openEHRapi</code> package, showcasing the use of R for handling data from an openEHR using REST API:</p>
+<ul>
+<li><a href="https://www.ehrscape.com/api-explorer.html?api=openehr&amp;service=/query&amp;operation=/query&amp;method=get&amp;inline=true">GET /query</a>: returns the results of the specified AQL query,</li>
+<li><a href="https://www.ehrscape.com/api-explorer.html?api=openehr&amp;service=/composition&amp;operation=/composition&amp;method=post&amp;inline=true">POST /composition</a>: creates and commits a contribution consisting of multiple composition creations, updates or deletes.</li>
+</ul>
+<p>Please check the <a href="https://www.ehrscape.com/api-explorer.html">EhrScape API Explorer</a> for a complete list of REST API.</p>
+<p>The basis of this package are functions from the:</p>
+<ul>
+<li><strong>httr</strong> package: functions for making HTTP requests</li>
+<li><strong>jsonlite</strong> package: functions for parsing JSON formated data into data frames (R-suitable form)</li>
+</ul>
+<p>An important part is parsing the obtained JSON data into R-usable form. The result set in JSON format can be complex in structure with several nested levels which requires flattening of the structure to the data frame.</p>
+<p>The package <code>openEHRapi</code> includes functions:</p>
+<ul>
+<li><code>get_query</code>: for a given <a href="http://www.openehr.org/releases/QUERY/latest/docs/AQL/AQL.html">AQL</a> query returns the result set in a data frame.</li>
+<li><code>post_composition</code>: stores new data records (compositions) in openEHR server.</li>
+</ul>
+<p>All the examples below can be checked on EhrScape API Explorer.</p>
+</div>
+<div id="data-query" class="section level1">
+<h1>Data query</h1>
+<p>Data is queried from EhrScape using the <code>get_query</code> function:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">query_data &lt;-<span class="st"> </span><span class="kw">get_query</span>(baseURL, <span class="dt">credentials =</span> <span class="kw">c</span>(user_name, password), aql_query, <span class="dt">full_path =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p>Input parameters:</p>
+<ul>
+<li><code>baseURL</code>: base url address of the REST service,</li>
+<li><code>credentials</code>: authentication pair of username and password</li>
+<li><code>aql_query</code>: AQL query,</li>
+<li><code>wide</code>: a logical value indicating the format of returned data. If <code>TRUE</code>, the data is returned in wide format, otherwise in long format.</li>
+<li><code>full_path</code>: logical value indicating the degree of flattening. If <code>FALSE</code>, each value (even repetitions on the same path) in the JSON is assigned a unique identifier. If <code>TRUE</code>, values are sorted in the outpt data frame according to JSON path and unique sequence within the same path (if there are several repetitions on the same JSON path).</li>
+</ul>
+<p>The function connects to the server with provided credentials and AQL query. The response in JSON format is parsed to a data frame and returned as the result of the function.</p>
+<p>Example: Query body temperature, systolic and diastolic measurements for all patients</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">aql_query &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="st">  &quot;select</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="st">    t/data[at0002|History|]/events[at0003|Any event|]/data[at0001]/items[at0004|Temperature|]/value as Temperature,</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="st">    bp/data[at0001|history|]/events[at0006|any event|]/data[at0003]/items[at0004|Systolic|]/value as Systolic,</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="st">    bp/data[at0001|history|]/events[at0006|any event|]/data[at0003]/items[at0005|Diastolic|]/value as Diastolic</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="st">from EHR e</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="st">contains COMPOSITION c</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="st">contains (</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="st">    OBSERVATION t[openEHR-EHR-OBSERVATION.body_temperature.v1] and</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="st">    OBSERVATION bp[openEHR-EHR-OBSERVATION.blood_pressure.v1])</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="st">offset 0 limit 100&quot;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">baseURL &lt;-<span class="st"> &quot;https://rest.ehrscape.com/rest/openehr/v1/&quot;</span></a>
+<a class="sourceLine" id="cb2-13" title="13">user_name &lt;-<span class="st"> &quot;guidemo&quot;</span></a>
+<a class="sourceLine" id="cb2-14" title="14">password &lt;-<span class="st"> &quot;gui?!demo123&quot;</span></a></code></pre></div>
+<p>Result of the above query is:</p>
+<div class="figure">
+<img src="data:image/png;base64,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" alt="Result of example query" />
+<p class="caption">Result of example query</p>
+</div>
+<div id="make-http-request" class="section level2">
+<h2>Make HTTP request</h2>
+<p>The function begins by preparing the AQL query for construction of the HTTP request. First, the <code>rm_white</code> function of the <strong>qdapRegex</strong> package removes from the input <code>aql_query</code> all multiple white spaces, white spaces before commas, semicolons, colons or endmarks, white spaces before or after brackets, leading and trailing white spaces. Next, line break and carriage return symbols are replaced with white space by using the <code>gsub</code> function. The edited AQL query string is then URL encoded (<code>query_enc</code>) and used to construct the HTTP request <code>URL_address</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">aql_query &lt;-<span class="st"> </span>qdapRegex<span class="op">::</span><span class="kw">rm_white</span>(aql_query)</a>
+<a class="sourceLine" id="cb3-2" title="2">aql_query &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">?</span><span class="ch">\n</span><span class="st">|</span><span class="ch">\r</span><span class="st">&quot;</span>, <span class="st">&quot; &quot;</span>, aql_query)</a>
+<a class="sourceLine" id="cb3-3" title="3">query_enc &lt;-<span class="st"> </span>utils<span class="op">::</span><span class="kw">URLencode</span>(aql_query)</a>
+<a class="sourceLine" id="cb3-4" title="4">URL_address =<span class="st"> </span><span class="kw">paste0</span>(baseURL, <span class="st">&quot;query/aql?q=&quot;</span>, query_enc)</a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt;  chr &quot;https://rest.ehrscape.com/rest/openehr/v1/query/aql?q=select%20t/data[a&quot;..</span></a></code></pre></div>
+</div>
+<div id="get-response" class="section level2">
+<h2>GET response</h2>
+<p>The request <code>URL_address</code> is executed using the <code>GET</code> function of the <strong>httr</strong> package. The server response is stored as <code>resp</code>. Since openEHR server requires authentication, user credentials have to be included to the <code>GET</code> function call. Additionally, the <code>content_type_json</code> function is used to set the expected content type returned from the server to JSON.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">resp &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">GET</span>(URL_address, httr<span class="op">::</span><span class="kw">authenticate</span>(user_name, password), httr<span class="op">::</span><span class="kw">content_type_json</span>())</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt; List of 10</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt; $ url : chr</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/query/aql?q=select%20t/data[at0&quot;..</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt;    __truncated__</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; $ status_code: int 200</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt; $ headers :List of 5</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; ..$ date : chr &quot;Thu, 10 Sep 2020 11:10:58 GMT&quot;</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; ..$ server : chr &quot;Apache/2.4.18 (Ubuntu)&quot;</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt; ..$ vary : chr</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt;    &quot;Origin,Access-Control-Request-Method,Access-Control-Request-Headers&quot;</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt; ..$ content-type : chr &quot;application/json;charset=utf-8&quot;</span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; ..$ transfer-encoding: chr &quot;chunked&quot;</span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt; ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;insensitive&quot; &quot;list&quot;</span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; $ all_headers:List of 1</span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; ..$ :List of 3</span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; .. ..$ status : int 200</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; .. ..$ version: chr &quot;HTTP/1.1&quot;</span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt; .. ..$ headers:List of 5</span></a>
+<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt; .. .. ..$ date : chr &quot;Thu, 10 Sep 2020 11:10:58 GMT&quot;</span></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt; .. .. ..$ server : chr &quot;Apache/2.4.18 (Ubuntu)&quot;</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt; .. .. ..$ vary : chr</span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt;    &quot;Origin,Access-Control-Request-Method,Access-Control-Request-Headers&quot;</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="co">#&gt; .. .. ..$ content-type : chr &quot;application/json;charset=utf-8&quot;</span></a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="co">#&gt; .. .. ..$ transfer-encoding: chr &quot;chunked&quot;</span></a>
+<a class="sourceLine" id="cb4-26" title="26"><span class="co">#&gt; .. .. ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;insensitive&quot; &quot;list&quot;</span></a>
+<a class="sourceLine" id="cb4-27" title="27"><span class="co">#&gt; $ cookies :&#39;data.frame&#39;: 0 obs. of 7 variables:</span></a>
+<a class="sourceLine" id="cb4-28" title="28"><span class="co">#&gt; ..$ domain : logi(0)</span></a>
+<a class="sourceLine" id="cb4-29" title="29"><span class="co">#&gt; ..$ flag : logi(0)</span></a>
+<a class="sourceLine" id="cb4-30" title="30"><span class="co">#&gt; ..$ path : logi(0)</span></a>
+<a class="sourceLine" id="cb4-31" title="31"><span class="co">#&gt; ..$ secure : logi(0)</span></a>
+<a class="sourceLine" id="cb4-32" title="32"><span class="co">#&gt; ..$ expiration: &#39;POSIXct&#39; num(0)</span></a>
+<a class="sourceLine" id="cb4-33" title="33"><span class="co">#&gt; ..$ name : logi(0)</span></a>
+<a class="sourceLine" id="cb4-34" title="34"><span class="co">#&gt; ..$ value : logi(0)</span></a>
+<a class="sourceLine" id="cb4-35" title="35"><span class="co">#&gt; $ content : raw [1:15038] 7b 22 6d 65 ...</span></a>
+<a class="sourceLine" id="cb4-36" title="36"><span class="co">#&gt; $ date : POSIXct[1:1], format: &quot;2020-09-10 11:10:58&quot;</span></a>
+<a class="sourceLine" id="cb4-37" title="37"><span class="co">#&gt; $ times : Named num [1:6] 0 0.0154 0.0527 0.1289 0.1712 ...</span></a>
+<a class="sourceLine" id="cb4-38" title="38"><span class="co">#&gt; ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;redirect&quot; &quot;namelookup&quot; &quot;connect&quot; &quot;pretransfer&quot;</span></a>
+<a class="sourceLine" id="cb4-39" title="39"><span class="co">#&gt;    ...</span></a>
+<a class="sourceLine" id="cb4-40" title="40"><span class="co">#&gt; $ request :List of 7</span></a>
+<a class="sourceLine" id="cb4-41" title="41"><span class="co">#&gt; ..$ method : chr &quot;GET&quot;</span></a>
+<a class="sourceLine" id="cb4-42" title="42"><span class="co">#&gt; ..$ url : chr</span></a>
+<a class="sourceLine" id="cb4-43" title="43"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/query/aql?q=select%20t/data[at0&quot;..</span></a>
+<a class="sourceLine" id="cb4-44" title="44"><span class="co">#&gt;    __truncated__</span></a>
+<a class="sourceLine" id="cb4-45" title="45"><span class="co">#&gt; ..$ headers : Named chr [1:2] &quot;application/json, text/xml, application/xml,</span></a>
+<a class="sourceLine" id="cb4-46" title="46"><span class="co">#&gt;    */*&quot; &quot;application/json&quot;</span></a>
+<a class="sourceLine" id="cb4-47" title="47"><span class="co">#&gt; .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Accept&quot; &quot;Content-Type&quot;</span></a>
+<a class="sourceLine" id="cb4-48" title="48"><span class="co">#&gt; ..$ fields : NULL</span></a>
+<a class="sourceLine" id="cb4-49" title="49"><span class="co">#&gt; ..$ options :List of 4</span></a>
+<a class="sourceLine" id="cb4-50" title="50"><span class="co">#&gt; .. ..$ useragent: chr &quot;libcurl/7.64.1 r-curl/4.3 httr/1.4.2&quot;</span></a>
+<a class="sourceLine" id="cb4-51" title="51"><span class="co">#&gt; .. ..$ httpauth : num 1</span></a>
+<a class="sourceLine" id="cb4-52" title="52"><span class="co">#&gt; .. ..$ userpwd : chr &quot;guidemo:gui?!demo123&quot;</span></a>
+<a class="sourceLine" id="cb4-53" title="53"><span class="co">#&gt; .. ..$ httpget : logi TRUE</span></a>
+<a class="sourceLine" id="cb4-54" title="54"><span class="co">#&gt; ..$ auth_token: NULL</span></a>
+<a class="sourceLine" id="cb4-55" title="55"><span class="co">#&gt; ..$ output : list()</span></a>
+<a class="sourceLine" id="cb4-56" title="56"><span class="co">#&gt; .. ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;write_memory&quot; &quot;write_function&quot;</span></a>
+<a class="sourceLine" id="cb4-57" title="57"><span class="co">#&gt; ..- attr(*, &quot;class&quot;)= chr &quot;request&quot;</span></a>
+<a class="sourceLine" id="cb4-58" title="58"><span class="co">#&gt; $ handle :Class &#39;curl_handle&#39; &lt;externalptr&gt;</span></a>
+<a class="sourceLine" id="cb4-59" title="59"><span class="co">#&gt; - attr(*, &quot;class&quot;)= chr &quot;response&quot;</span></a></code></pre></div>
+</div>
+<div id="parse-response" class="section level2">
+<h2>Parse response</h2>
+<p>Response <code>resp</code> includes data such as the HTTP request, status, headers, cookies, and also the answer to the request in JSON format. This is stored in the content field, which is extracted with the <code>content</code> function to a nested list <code>json_results</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">json_results &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">content</span>(resp)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; List of 4</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; $ meta :List of 4</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; ..$ _href : chr</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/query/aql?q=select%20t/data[at0&quot;..</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt;    __truncated__</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; ..$ _type : chr &quot;RESULTSET&quot;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; ..$ _created : chr &quot;2020-09-10T11:10:58.474Z&quot;</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; ..$ _executed_aql: chr &quot;select t/data[at0002|History|]/events[at0003|Any</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt;    event|]/data[at0001]/items[at0004|Temperature|]/value as Tempe&quot;|</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;    __truncated__</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt; $ q : chr &quot;select t/data[at0002|History|]/events[at0003|Any</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt;    event|]/data[at0001]/items[at0004|Temperature|]/value as Tempe&quot;|</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt;    __truncated__</span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; $ columns:List of 3</span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; ..$ :List of 2</span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; .. ..$ name: chr &quot;Temperature&quot;</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; .. ..$ path: chr</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt;    &quot;/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value&quot;</span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt; ..$ :List of 2</span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt; .. ..$ name: chr &quot;Systolic&quot;</span></a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt; .. ..$ path: chr</span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt;    &quot;/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value&quot;</span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt; ..$ :List of 2</span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">#&gt; .. ..$ name: chr &quot;Diastolic&quot;</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="co">#&gt; .. ..$ path: chr</span></a>
+<a class="sourceLine" id="cb5-27" title="27"><span class="co">#&gt;    &quot;/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value&quot;</span></a>
+<a class="sourceLine" id="cb5-28" title="28"><span class="co">#&gt; $ rows :List of 60</span></a>
+<a class="sourceLine" id="cb5-29" title="29"><span class="co">#&gt; ..$ :List of 3</span></a>
+<a class="sourceLine" id="cb5-30" title="30"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-31" title="31"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-32" title="32"><span class="co">#&gt; .. .. ..$ magnitude: num 37.3</span></a>
+<a class="sourceLine" id="cb5-33" title="33"><span class="co">#&gt; .. .. ..$ units : chr &quot;°C&quot;</span></a>
+<a class="sourceLine" id="cb5-34" title="34"><span class="co">#&gt; .. .. ..$ precision: int 1</span></a>
+<a class="sourceLine" id="cb5-35" title="35"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-36" title="36"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt; .. .. ..$ magnitude: num 99</span></a>
+<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-39" title="39"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-40" title="40"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-41" title="41"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-42" title="42"><span class="co">#&gt; .. .. ..$ magnitude: num 70</span></a>
+<a class="sourceLine" id="cb5-43" title="43"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-44" title="44"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-45" title="45"><span class="co">#&gt; ..$ :List of 3</span></a>
+<a class="sourceLine" id="cb5-46" title="46"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-47" title="47"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-48" title="48"><span class="co">#&gt; .. .. ..$ magnitude: num 38.4</span></a>
+<a class="sourceLine" id="cb5-49" title="49"><span class="co">#&gt; .. .. ..$ units : chr &quot;°C&quot;</span></a>
+<a class="sourceLine" id="cb5-50" title="50"><span class="co">#&gt; .. .. ..$ precision: int 1</span></a>
+<a class="sourceLine" id="cb5-51" title="51"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-52" title="52"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-53" title="53"><span class="co">#&gt; .. .. ..$ magnitude: num 107</span></a>
+<a class="sourceLine" id="cb5-54" title="54"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-55" title="55"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-56" title="56"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-57" title="57"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-58" title="58"><span class="co">#&gt; .. .. ..$ magnitude: num 58</span></a>
+<a class="sourceLine" id="cb5-59" title="59"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-60" title="60"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-61" title="61"><span class="co">#&gt; ..$ :List of 3</span></a>
+<a class="sourceLine" id="cb5-62" title="62"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-63" title="63"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-64" title="64"><span class="co">#&gt; .. .. ..$ magnitude: num 36.2</span></a>
+<a class="sourceLine" id="cb5-65" title="65"><span class="co">#&gt; .. .. ..$ units : chr &quot;°C&quot;</span></a>
+<a class="sourceLine" id="cb5-66" title="66"><span class="co">#&gt; .. .. ..$ precision: int 1</span></a>
+<a class="sourceLine" id="cb5-67" title="67"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-68" title="68"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-69" title="69"><span class="co">#&gt; .. .. ..$ magnitude: num 101</span></a>
+<a class="sourceLine" id="cb5-70" title="70"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-71" title="71"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-72" title="72"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-73" title="73"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-74" title="74"><span class="co">#&gt; .. .. ..$ magnitude: num 62</span></a>
+<a class="sourceLine" id="cb5-75" title="75"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-76" title="76"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-77" title="77"><span class="co">#&gt; ..$ :List of 3</span></a>
+<a class="sourceLine" id="cb5-78" title="78"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-79" title="79"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-80" title="80"><span class="co">#&gt; .. .. ..$ magnitude: num 36</span></a>
+<a class="sourceLine" id="cb5-81" title="81"><span class="co">#&gt; .. .. ..$ units : chr &quot;°C&quot;</span></a>
+<a class="sourceLine" id="cb5-82" title="82"><span class="co">#&gt; .. .. ..$ precision: int 1</span></a>
+<a class="sourceLine" id="cb5-83" title="83"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-84" title="84"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-85" title="85"><span class="co">#&gt; .. .. ..$ magnitude: num 122</span></a>
+<a class="sourceLine" id="cb5-86" title="86"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-87" title="87"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-88" title="88"><span class="co">#&gt; .. ..$ :List of 4</span></a>
+<a class="sourceLine" id="cb5-89" title="89"><span class="co">#&gt; .. .. ..$ _type : chr &quot;DV_QUANTITY&quot;</span></a>
+<a class="sourceLine" id="cb5-90" title="90"><span class="co">#&gt; .. .. ..$ magnitude: num 83</span></a>
+<a class="sourceLine" id="cb5-91" title="91"><span class="co">#&gt; .. .. ..$ units : chr &quot;mm[Hg]&quot;</span></a>
+<a class="sourceLine" id="cb5-92" title="92"><span class="co">#&gt; .. .. ..$ precision: int 0</span></a>
+<a class="sourceLine" id="cb5-93" title="93"><span class="co">#&gt; .. [list output truncated]</span></a></code></pre></div>
+<p>Sublists contain the used AQL query and URL address as well as the result, which is extracted to the <code>json_rows</code> named vector. Number of parameters per variable is stored in <code>pars_per_var</code> and names of queried variables and their paths are extracted to the data frame <code>namesPaths</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">json_rows &lt;-<span class="st"> </span><span class="kw">unlist</span>(json_results<span class="op">$</span>rows)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; Named chr [1:720] &quot;DV_QUANTITY&quot; &quot;37.3&quot; &quot;°C&quot; &quot;1&quot; ...</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt; - attr(*, &quot;names&quot;)= chr [1:720] &quot;_type&quot; &quot;magnitude&quot; &quot;units&quot; &quot;precision&quot; ...</span></a>
+<a class="sourceLine" id="cb6-4" title="4">nvars &lt;-<span class="st"> </span><span class="kw">length</span>(json_results<span class="op">$</span>columns)</a>
+<a class="sourceLine" id="cb6-5" title="5">pars_per_var &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(json_results<span class="op">$</span>rows[[<span class="dv">1</span>]], length))</a>
+<a class="sourceLine" id="cb6-6" title="6">namesPaths &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">matrix</span>(<span class="kw">unlist</span>(json_results<span class="op">$</span>columns),</a>
+<a class="sourceLine" id="cb6-7" title="7">                                <span class="dt">nrow =</span> nvars, <span class="dt">byrow =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb6-8" title="8">                                <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="ot">NULL</span>, <span class="kw">names</span>(json_results<span class="op">$</span>columns[[<span class="dv">1</span>]])))</a>
+<a class="sourceLine" id="cb6-9" title="9">                         )</a></code></pre></div>
+</div>
+<div id="convert-to-data-frame" class="section level2">
+<h2>Convert to data frame</h2>
+<p>The <code>json_rows</code> named vector is converted to two-column data frame <code>json_nav</code> where the names of the vector are in one column and the values are in the other</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">json_nav &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(json_rows, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb7-2" title="2">json_nav<span class="op">$</span>path &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="kw">rep</span>(namesPaths<span class="op">$</span>name, pars_per_var), <span class="dt">times =</span> <span class="kw">length</span>(json_results<span class="op">$</span>rows)),</a>
+<a class="sourceLine" id="cb7-3" title="3">                           <span class="kw">attr</span>(json_rows, <span class="st">&quot;names&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;.&quot;</span>)</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; &#39;data.frame&#39;:    720 obs. of  2 variables:</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; $ json_rows: chr &quot;DV_QUANTITY&quot; &quot;37.3&quot; &quot;°C&quot; &quot;1&quot; ...</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; $ path : chr &quot;Temperature._type&quot; &quot;Temperature.magnitude&quot; &quot;Temperature.units&quot;</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;    &quot;Temperature.precision&quot; ...</span></a></code></pre></div>
+<p>The names of the unlisted JSON <code>json_rows</code> represent paths of the values in the nested JSON. And in the next step the unique paths of the JSON content are determined (<code>pars</code>) and used to determine the number of different records <code>rec_num</code> and their index limits (<code>limits</code>) in the <code>json_nav</code> data_frame.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">unique_path &lt;-<span class="st"> </span><span class="kw">unique</span>(json_nav<span class="op">$</span>path)</a>
+<a class="sourceLine" id="cb8-2" title="2">json_nav<span class="op">$</span>path &lt;-<span class="st"> </span><span class="kw">ordered</span>(json_nav<span class="op">$</span>path, <span class="dt">levels =</span> unique_path)</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt;  chr [1:12] &quot;Temperature._type&quot; &quot;Temperature.magnitude&quot; &quot;Temperature.units&quot; ...</span></a>
+<a class="sourceLine" id="cb8-4" title="4">runs &lt;-<span class="st"> </span><span class="kw">rle</span>(json_nav<span class="op">$</span>path <span class="op">==</span><span class="st"> </span>unique_path[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb8-5" title="5">limits &lt;-<span class="st"> </span><span class="kw">cumsum</span>(runs<span class="op">$</span>lengths)</a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt;  int [1:120] 1 12 13 24 25 36 37 48 49 60 ...</span></a>
+<a class="sourceLine" id="cb8-7" title="7">rec_num &lt;-<span class="st"> </span><span class="kw">sum</span>(runs<span class="op">$</span>values)</a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt;  int 60</span></a></code></pre></div>
+<p>The number of different records <code>rec_num</code> and their start and end limits <code>limits</code> are then used to add a new column <code>ind</code> to the <code>json_nav</code> data frame to assign each line to the corresponding record number</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">json_nav<span class="op">$</span>ind &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">dim</span>(json_nav)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>rec_num) {</a>
+<a class="sourceLine" id="cb9-3" title="3">  json_nav<span class="op">$</span>ind[limits[<span class="dv">2</span><span class="op">*</span>i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>] <span class="op">:</span><span class="st"> </span>limits[<span class="dv">2</span><span class="op">*</span>i]] &lt;-<span class="st"> </span>i</a>
+<a class="sourceLine" id="cb9-4" title="4">}</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt; &#39;data.frame&#39;:    720 obs. of  3 variables:</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt; $ json_rows: chr &quot;DV_QUANTITY&quot; &quot;37.3&quot; &quot;°C&quot; &quot;1&quot; ...</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt; $ path : Ord.factor w/ 12 levels &quot;Temperature._type&quot;&lt;..: 1 2 3 4 5 6 7 8 9 10</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt;    ...</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt; $ ind : int 1 1 1 1 1 1 1 1 1 1 ...</span></a></code></pre></div>
+<p>Below temperature data for the first three patients from the <code>json_nav</code> is visualized (the first column indicates which rows are displayed).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+json_rows
+</th>
+<th style="text-align:left;">
+path
+</th>
+<th style="text-align:right;">
+ind
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+Temperature._type
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+37.3
+</td>
+<td style="text-align:left;">
+Temperature.magnitude
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+Temperature.units
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+Temperature.precision
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+Temperature._type
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+38.4
+</td>
+<td style="text-align:left;">
+Temperature.magnitude
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+Temperature.units
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+16
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+Temperature.precision
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+25
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+Temperature._type
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+26
+</td>
+<td style="text-align:left;">
+36.2
+</td>
+<td style="text-align:left;">
+Temperature.magnitude
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+27
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+Temperature.units
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+28
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+Temperature.precision
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the final step, the output data frame <code>out</code> is prepared according to the values of the <code>wide</code> and <code>full_path</code> logical parameters.</p>
+<div id="json-paths-without-numbering" class="section level3">
+<h3>JSON paths without numbering</h3>
+<p>If <code>full_path</code> is set to <code>FALSE</code>, the column names of the <code>out</code> data frame are equal to the values of <code>pars</code> vector. Additionally, the <code>ind</code> and <code>seq</code> columns are included. This way each column represents elements on the same path. The <code>ind</code> column is used to annotate each row with the corresponding record number. The <code>seq</code> column is used to annotate each row with the number of repetitions in the same JSON path (to distinguish between several different elements in the same JSON path). If each JSON path contains a single element, all values in the <code>seq</code> are equal to 1.</p>
+<p>The <code>seq</code> column is created using the <code>with</code> function, which evaluates the <code>json_nav</code> data frame to the expression defined by the <code>ave</code> function. The <code>ave</code> function groups the values in <code>json_rows</code> according to unique combinations of variables <code>ind</code> and <code>path</code>. The <code>out</code> data frame is cast (by using function <code>dcast</code>) from the molten data frame <code>json_nav</code> by sorting the values in <code>json_rows</code> according to the match between <code>ind</code> and <code>seq</code> on one side and <code>path</code> on the other.</p>
+<p>Additionally, the queried variable names are included to the <code>out</code> data frame and the <code>ind</code> column is adjusted to correctly distinct between different records.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">json_nav<span class="op">$</span>seq &lt;-<span class="st"> </span><span class="kw">with</span>(json_nav, stats<span class="op">::</span><span class="kw">ave</span>(json_rows, ind, path, <span class="dt">FUN =</span> seq_along))</a>
+<a class="sourceLine" id="cb10-2" title="2">json_nav<span class="op">$</span>seq &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(json_nav<span class="op">$</span>seq)</a>
+<a class="sourceLine" id="cb10-3" title="3">out &lt;-<span class="st"> </span>reshape2<span class="op">::</span><span class="kw">dcast</span>(ind <span class="op">+</span><span class="st"> </span>seq <span class="op">~</span><span class="st"> </span>path, <span class="dt">data =</span> json_nav, <span class="dt">value.var =</span> <span class="st">&quot;json_rows&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt; &#39;data.frame&#39;:    60 obs. of  14 variables:</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt;  $ ind                  : int  1 2 3 4 5 6 7 8 9 10 ...</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">#&gt;  $ seq                  : num  1 1 1 1 1 1 1 1 1 1 ...</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">#&gt;  $ Temperature._type    : chr  &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; ...</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">#&gt;  $ Temperature.magnitude: chr  &quot;37.3&quot; &quot;38.4&quot; &quot;36.2&quot; &quot;36&quot; ...</span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="co">#&gt;  $ Temperature.units    : chr  &quot;°C&quot; &quot;°C&quot; &quot;°C&quot; &quot;°C&quot; ...</span></a>
+<a class="sourceLine" id="cb10-10" title="10"><span class="co">#&gt;  $ Temperature.precision: chr  &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="co">#&gt;  $ Systolic._type       : chr  &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; ...</span></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="co">#&gt;  $ Systolic.magnitude   : chr  &quot;99&quot; &quot;107&quot; &quot;101&quot; &quot;122&quot; ...</span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="co">#&gt;  $ Systolic.units       : chr  &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; ...</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="co">#&gt;  $ Systolic.precision   : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...</span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="co">#&gt;  $ Diastolic._type      : chr  &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; ...</span></a>
+<a class="sourceLine" id="cb10-16" title="16"><span class="co">#&gt;  $ Diastolic.magnitude  : chr  &quot;70&quot; &quot;58&quot; &quot;62&quot; &quot;83&quot; ...</span></a>
+<a class="sourceLine" id="cb10-17" title="17"><span class="co">#&gt;  $ Diastolic.units      : chr  &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; ...</span></a>
+<a class="sourceLine" id="cb10-18" title="18"><span class="co">#&gt;  $ Diastolic.precision  : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...</span></a></code></pre></div>
+<p>The first six rows of output data frame <code>out</code> presented as table</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:700px; ">
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+ind
+</th>
+<th style="text-align:right;">
+seq
+</th>
+<th style="text-align:left;">
+Temperature._type
+</th>
+<th style="text-align:left;">
+Temperature.magnitude
+</th>
+<th style="text-align:left;">
+Temperature.units
+</th>
+<th style="text-align:left;">
+Temperature.precision
+</th>
+<th style="text-align:left;">
+Systolic._type
+</th>
+<th style="text-align:left;">
+Systolic.magnitude
+</th>
+<th style="text-align:left;">
+Systolic.units
+</th>
+<th style="text-align:left;">
+Systolic.precision
+</th>
+<th style="text-align:left;">
+Diastolic._type
+</th>
+<th style="text-align:left;">
+Diastolic.magnitude
+</th>
+<th style="text-align:left;">
+Diastolic.units
+</th>
+<th style="text-align:left;">
+Diastolic.precision
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+37.3
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+99
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+38.4
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+107
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+58
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+36.2
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+101
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+62
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+36
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+122
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+83
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+37.7
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+88
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+36.7
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+96
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+59
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="json-paths-with-numbering" class="section level3">
+<h3>JSON paths with numbering</h3>
+<p>If <code>full_path</code> is set to <code>TRUE</code>, the number of columns of the output data frame is equal to the number of unique paths of the JSON content increased for the number of paths that repeat due to repetitions on the same JSON level (plus one for the <code>ind</code> column). The names of the columns are equal to the values of <code>pars</code> with appendend integer value of the repetition, which is used to distinguish between several different elements with the same JSON path.</p>
+<p>For this a new temporary data frame <code>tmp</code> is created, which includes the columns of the <code>json_nav</code> along with the column <code>newind</code> created as unique combinations of the columns <code>ind</code> and <code>path</code>. This is achieved by using the <code>ddply</code> function, which splits the input data frame (<code>json_nav</code>) according to given variables (<code>ind</code> and <code>path</code>), applies the selected function (<code>transform</code> - transform to data frame) on the splits along with the additional column <code>newind</code> and combines the results into a data frame. The <code>out</code> data frame is cast (by using function <code>dcast</code>) from the molten data frame <code>tmp</code> by sorting the values in <code>json_rows</code> according to the match between <code>ind</code> on one side and <code>newind</code> on the other.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">tmp &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw">ddply</span>(json_nav, plyr<span class="op">::</span>.(ind, path), </a>
+<a class="sourceLine" id="cb11-2" title="2">                   transform, </a>
+<a class="sourceLine" id="cb11-3" title="3">                   <span class="dt">newind =</span> <span class="kw">paste</span>(path, <span class="kw">seq_along</span>(path), <span class="dt">sep =</span> <span class="st">&quot;.&quot;</span>))</a>
+<a class="sourceLine" id="cb11-4" title="4">tmp<span class="op">$</span>newind &lt;-<span class="st"> </span><span class="kw">ordered</span>(tmp<span class="op">$</span>newind, <span class="dt">levels =</span> <span class="kw">unique</span>(tmp<span class="op">$</span>newind))</a>
+<a class="sourceLine" id="cb11-5" title="5">out2 &lt;-<span class="st"> </span>reshape2<span class="op">::</span><span class="kw">dcast</span>(tmp, ind <span class="op">~</span><span class="st"> </span>newind, <span class="dt">value.var =</span> <span class="st">&quot;json_rows&quot;</span>)</a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; &#39;data.frame&#39;:    60 obs. of  13 variables:</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt;  $ ind                    : int  1 2 3 4 5 6 7 8 9 10 ...</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">#&gt;  $ Temperature._type.1    : chr  &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; ...</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt;  $ Temperature.magnitude.1: chr  &quot;37.3&quot; &quot;38.4&quot; &quot;36.2&quot; &quot;36&quot; ...</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt;  $ Temperature.units.1    : chr  &quot;°C&quot; &quot;°C&quot; &quot;°C&quot; &quot;°C&quot; ...</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt;  $ Temperature.precision.1: chr  &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...</span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt;  $ Systolic._type.1       : chr  &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; ...</span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">#&gt;  $ Systolic.magnitude.1   : chr  &quot;99&quot; &quot;107&quot; &quot;101&quot; &quot;122&quot; ...</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co">#&gt;  $ Systolic.units.1       : chr  &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; ...</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="co">#&gt;  $ Systolic.precision.1   : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...</span></a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt;  $ Diastolic._type.1      : chr  &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; &quot;DV_QUANTITY&quot; ...</span></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="co">#&gt;  $ Diastolic.magnitude.1  : chr  &quot;70&quot; &quot;58&quot; &quot;62&quot; &quot;83&quot; ...</span></a>
+<a class="sourceLine" id="cb11-18" title="18"><span class="co">#&gt;  $ Diastolic.units.1      : chr  &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; &quot;mm[Hg]&quot; ...</span></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="co">#&gt;  $ Diastolic.precision.1  : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...</span></a></code></pre></div>
+<p>The first six rows of output data frame <code>out2</code> presented as table</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:700px; ">
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+ind
+</th>
+<th style="text-align:left;">
+Temperature._type.1
+</th>
+<th style="text-align:left;">
+Temperature.magnitude.1
+</th>
+<th style="text-align:left;">
+Temperature.units.1
+</th>
+<th style="text-align:left;">
+Temperature.precision.1
+</th>
+<th style="text-align:left;">
+Systolic._type.1
+</th>
+<th style="text-align:left;">
+Systolic.magnitude.1
+</th>
+<th style="text-align:left;">
+Systolic.units.1
+</th>
+<th style="text-align:left;">
+Systolic.precision.1
+</th>
+<th style="text-align:left;">
+Diastolic._type.1
+</th>
+<th style="text-align:left;">
+Diastolic.magnitude.1
+</th>
+<th style="text-align:left;">
+Diastolic.units.1
+</th>
+<th style="text-align:left;">
+Diastolic.precision.1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+37.3
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+99
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+38.4
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+107
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+58
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+36.2
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+101
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+62
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+36
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+122
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+83
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+37.7
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+88
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+36.7
+</td>
+<td style="text-align:left;">
+°C
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+96
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+DV_QUANTITY
+</td>
+<td style="text-align:left;">
+59
+</td>
+<td style="text-align:left;">
+mm[Hg]
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In this case the <code>out2</code> notation was used just to distinguish between results for different values of the <code>full_path</code> argument.</p>
+</div>
+</div>
+</div>
+<div id="save-data" class="section level1">
+<h1>Save data</h1>
+<p>Function <code>post_composition</code> enables saving data records (composition) to openEHR server. Compositions are created by using web templates (please check the template endpoint of Electronic Health Record APIs on <a href="https://www.ehrscape.com/api-explorer.html">EhrScape API Explorer</a>). Web template can be regarded as an input schema, which declares all possible settings of the input data structures for building an openEHR composition. To build a composition sample use <code>GET /template/{templateId}/example</code>, which returns an example of data values for a web template. This is used as a prototype composition and further filled with actual data.</p>
+<p>The composition has to be prepared and provided to the function in JSON format. Additionally, the composition has to be complemented by an identifier of an actual EHR record. The composition is saved to the server using the REST method <strong>POST</strong>. The function is called as:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">post_data &lt;-<span class="st"> </span><span class="kw">post_composition</span>(baseURL, <span class="dt">credentials =</span> <span class="kw">c</span>(user_name, password), ehrId, composition)</a></code></pre></div>
+<p>Input parameters:</p>
+<ul>
+<li><code>baseURL</code>: base url address of the REST service,
+<ul>
+<li><code>credentials</code>: authentication pair of username and password</li>
+<li><code>ehrId</code>: identifier of an existing EHR record</li>
+<li><code>composition</code>: the openEhr composition in JSON format to be saved to openEHR server. It can be given as character string or as a structured list.</li>
+</ul></li>
+</ul>
+<p>The function connects to the server with provided credentials. The response in JSON format is parsed to a list and returned as the result of the function.</p>
+<p>Example: Save a patient’s body temperature measurement to his EHR using a structured web template composition</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">composition &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="st">&#39;{</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="st">  &quot;_type&quot;: &quot;COMPOSITION&quot;,</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="st">  &quot;name&quot;: {</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="st">    &quot;_type&quot;: &quot;DV_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="st">    &quot;value&quot;: &quot;Vital Signs&quot;</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="st">  },</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="st">  &quot;archetype_details&quot;: {</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="st">    &quot;_type&quot;: &quot;ARCHETYPED&quot;,</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="st">    &quot;archetype_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="st">      &quot;_type&quot;: &quot;ARCHETYPE_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="st">      &quot;value&quot;: &quot;openEHR-EHR-COMPOSITION.encounter.v1&quot;</span></a>
+<a class="sourceLine" id="cb13-13" title="13"><span class="st">    },</span></a>
+<a class="sourceLine" id="cb13-14" title="14"><span class="st">    &quot;template_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-15" title="15"><span class="st">      &quot;_type&quot;: &quot;TEMPLATE_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-16" title="16"><span class="st">      &quot;value&quot;: &quot;Vital Signs&quot;</span></a>
+<a class="sourceLine" id="cb13-17" title="17"><span class="st">    },</span></a>
+<a class="sourceLine" id="cb13-18" title="18"><span class="st">    &quot;rm_version&quot;: &quot;1.0.4&quot;</span></a>
+<a class="sourceLine" id="cb13-19" title="19"><span class="st">  },</span></a>
+<a class="sourceLine" id="cb13-20" title="20"><span class="st">  &quot;archetype_node_id&quot;: &quot;openEHR-EHR-COMPOSITION.encounter.v1&quot;,</span></a>
+<a class="sourceLine" id="cb13-21" title="21"><span class="st">  &quot;language&quot;: {</span></a>
+<a class="sourceLine" id="cb13-22" title="22"><span class="st">    &quot;_type&quot;: &quot;CODE_PHRASE&quot;,</span></a>
+<a class="sourceLine" id="cb13-23" title="23"><span class="st">    &quot;terminology_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-24" title="24"><span class="st">      &quot;_type&quot;: &quot;TERMINOLOGY_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-25" title="25"><span class="st">      &quot;value&quot;: &quot;ISO_639-1&quot;</span></a>
+<a class="sourceLine" id="cb13-26" title="26"><span class="st">    },</span></a>
+<a class="sourceLine" id="cb13-27" title="27"><span class="st">    &quot;code_string&quot;: &quot;en&quot;</span></a>
+<a class="sourceLine" id="cb13-28" title="28"><span class="st">  },</span></a>
+<a class="sourceLine" id="cb13-29" title="29"><span class="st">  &quot;territory&quot;: {</span></a>
+<a class="sourceLine" id="cb13-30" title="30"><span class="st">    &quot;_type&quot;: &quot;CODE_PHRASE&quot;,</span></a>
+<a class="sourceLine" id="cb13-31" title="31"><span class="st">    &quot;terminology_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-32" title="32"><span class="st">      &quot;_type&quot;: &quot;TERMINOLOGY_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-33" title="33"><span class="st">      &quot;value&quot;: &quot;ISO_3166-1&quot;</span></a>
+<a class="sourceLine" id="cb13-34" title="34"><span class="st">    },</span></a>
+<a class="sourceLine" id="cb13-35" title="35"><span class="st">    &quot;code_string&quot;: &quot;US&quot;</span></a>
+<a class="sourceLine" id="cb13-36" title="36"><span class="st">  },</span></a>
+<a class="sourceLine" id="cb13-37" title="37"><span class="st">  &quot;category&quot;: {</span></a>
+<a class="sourceLine" id="cb13-38" title="38"><span class="st">    &quot;_type&quot;: &quot;DV_CODED_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-39" title="39"><span class="st">    &quot;value&quot;: &quot;event&quot;,</span></a>
+<a class="sourceLine" id="cb13-40" title="40"><span class="st">    &quot;defining_code&quot;: {</span></a>
+<a class="sourceLine" id="cb13-41" title="41"><span class="st">      &quot;_type&quot;: &quot;CODE_PHRASE&quot;,</span></a>
+<a class="sourceLine" id="cb13-42" title="42"><span class="st">      &quot;terminology_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-43" title="43"><span class="st">        &quot;_type&quot;: &quot;TERMINOLOGY_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-44" title="44"><span class="st">        &quot;value&quot;: &quot;openehr&quot;</span></a>
+<a class="sourceLine" id="cb13-45" title="45"><span class="st">      },</span></a>
+<a class="sourceLine" id="cb13-46" title="46"><span class="st">      &quot;code_string&quot;: &quot;433&quot;</span></a>
+<a class="sourceLine" id="cb13-47" title="47"><span class="st">    }</span></a>
+<a class="sourceLine" id="cb13-48" title="48"><span class="st">  },</span></a>
+<a class="sourceLine" id="cb13-49" title="49"><span class="st">  &quot;composer&quot;: {</span></a>
+<a class="sourceLine" id="cb13-50" title="50"><span class="st">    &quot;_type&quot;: &quot;PARTY_IDENTIFIED&quot;,</span></a>
+<a class="sourceLine" id="cb13-51" title="51"><span class="st">    &quot;name&quot;: &quot;Silvia Blake&quot;</span></a>
+<a class="sourceLine" id="cb13-52" title="52"><span class="st">  },</span></a>
+<a class="sourceLine" id="cb13-53" title="53"><span class="st">  &quot;context&quot;: {</span></a>
+<a class="sourceLine" id="cb13-54" title="54"><span class="st">    &quot;_type&quot;: &quot;EVENT_CONTEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-55" title="55"><span class="st">    &quot;start_time&quot;: {</span></a>
+<a class="sourceLine" id="cb13-56" title="56"><span class="st">      &quot;_type&quot;: &quot;DV_DATE_TIME&quot;,</span></a>
+<a class="sourceLine" id="cb13-57" title="57"><span class="st">      &quot;value&quot;: &quot;2019-12-03T14:55:35.001+02:00&quot;</span></a>
+<a class="sourceLine" id="cb13-58" title="58"><span class="st">    },</span></a>
+<a class="sourceLine" id="cb13-59" title="59"><span class="st">    &quot;setting&quot;: {</span></a>
+<a class="sourceLine" id="cb13-60" title="60"><span class="st">      &quot;_type&quot;: &quot;DV_CODED_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-61" title="61"><span class="st">      &quot;value&quot;: &quot;other care&quot;,</span></a>
+<a class="sourceLine" id="cb13-62" title="62"><span class="st">      &quot;defining_code&quot;: {</span></a>
+<a class="sourceLine" id="cb13-63" title="63"><span class="st">        &quot;_type&quot;: &quot;CODE_PHRASE&quot;,</span></a>
+<a class="sourceLine" id="cb13-64" title="64"><span class="st">        &quot;terminology_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-65" title="65"><span class="st">          &quot;_type&quot;: &quot;TERMINOLOGY_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-66" title="66"><span class="st">          &quot;value&quot;: &quot;openehr&quot;</span></a>
+<a class="sourceLine" id="cb13-67" title="67"><span class="st">        },</span></a>
+<a class="sourceLine" id="cb13-68" title="68"><span class="st">        &quot;code_string&quot;: &quot;238&quot;</span></a>
+<a class="sourceLine" id="cb13-69" title="69"><span class="st">      }</span></a>
+<a class="sourceLine" id="cb13-70" title="70"><span class="st">    },</span></a>
+<a class="sourceLine" id="cb13-71" title="71"><span class="st">    &quot;health_care_facility&quot;: {</span></a>
+<a class="sourceLine" id="cb13-72" title="72"><span class="st">      &quot;_type&quot;: &quot;PARTY_IDENTIFIED&quot;,</span></a>
+<a class="sourceLine" id="cb13-73" title="73"><span class="st">      &quot;external_ref&quot;: {</span></a>
+<a class="sourceLine" id="cb13-74" title="74"><span class="st">        &quot;_type&quot;: &quot;PARTY_REF&quot;,</span></a>
+<a class="sourceLine" id="cb13-75" title="75"><span class="st">        &quot;id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-76" title="76"><span class="st">          &quot;_type&quot;: &quot;GENERIC_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-77" title="77"><span class="st">          &quot;value&quot;: &quot;9091&quot;,</span></a>
+<a class="sourceLine" id="cb13-78" title="78"><span class="st">          &quot;scheme&quot;: &quot;HOSPITAL-NS&quot;</span></a>
+<a class="sourceLine" id="cb13-79" title="79"><span class="st">        },</span></a>
+<a class="sourceLine" id="cb13-80" title="80"><span class="st">        &quot;namespace&quot;: &quot;HOSPITAL-NS&quot;,</span></a>
+<a class="sourceLine" id="cb13-81" title="81"><span class="st">        &quot;type&quot;: &quot;PARTY&quot;</span></a>
+<a class="sourceLine" id="cb13-82" title="82"><span class="st">      },</span></a>
+<a class="sourceLine" id="cb13-83" title="83"><span class="st">      &quot;name&quot;: &quot;Hospital&quot;</span></a>
+<a class="sourceLine" id="cb13-84" title="84"><span class="st">    }</span></a>
+<a class="sourceLine" id="cb13-85" title="85"><span class="st">  },</span></a>
+<a class="sourceLine" id="cb13-86" title="86"><span class="st">  &quot;content&quot;: [</span></a>
+<a class="sourceLine" id="cb13-87" title="87"><span class="st">    {</span></a>
+<a class="sourceLine" id="cb13-88" title="88"><span class="st">      &quot;_type&quot;: &quot;OBSERVATION&quot;,</span></a>
+<a class="sourceLine" id="cb13-89" title="89"><span class="st">      &quot;name&quot;: {</span></a>
+<a class="sourceLine" id="cb13-90" title="90"><span class="st">        &quot;_type&quot;: &quot;DV_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-91" title="91"><span class="st">        &quot;value&quot;: &quot;Body temperature&quot;</span></a>
+<a class="sourceLine" id="cb13-92" title="92"><span class="st">      },</span></a>
+<a class="sourceLine" id="cb13-93" title="93"><span class="st">      &quot;archetype_details&quot;: {</span></a>
+<a class="sourceLine" id="cb13-94" title="94"><span class="st">        &quot;_type&quot;: &quot;ARCHETYPED&quot;,</span></a>
+<a class="sourceLine" id="cb13-95" title="95"><span class="st">        &quot;archetype_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-96" title="96"><span class="st">          &quot;_type&quot;: &quot;ARCHETYPE_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-97" title="97"><span class="st">          &quot;value&quot;: &quot;openEHR-EHR-OBSERVATION.body_temperature.v1&quot;</span></a>
+<a class="sourceLine" id="cb13-98" title="98"><span class="st">        },</span></a>
+<a class="sourceLine" id="cb13-99" title="99"><span class="st">        &quot;rm_version&quot;: &quot;1.0.4&quot;</span></a>
+<a class="sourceLine" id="cb13-100" title="100"><span class="st">      },</span></a>
+<a class="sourceLine" id="cb13-101" title="101"><span class="st">      &quot;archetype_node_id&quot;: &quot;openEHR-EHR-OBSERVATION.body_temperature.v1&quot;,</span></a>
+<a class="sourceLine" id="cb13-102" title="102"><span class="st">      &quot;language&quot;: {</span></a>
+<a class="sourceLine" id="cb13-103" title="103"><span class="st">        &quot;_type&quot;: &quot;CODE_PHRASE&quot;,</span></a>
+<a class="sourceLine" id="cb13-104" title="104"><span class="st">        &quot;terminology_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-105" title="105"><span class="st">          &quot;_type&quot;: &quot;TERMINOLOGY_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-106" title="106"><span class="st">          &quot;value&quot;: &quot;ISO_639-1&quot;</span></a>
+<a class="sourceLine" id="cb13-107" title="107"><span class="st">        },</span></a>
+<a class="sourceLine" id="cb13-108" title="108"><span class="st">        &quot;code_string&quot;: &quot;en&quot;</span></a>
+<a class="sourceLine" id="cb13-109" title="109"><span class="st">      },</span></a>
+<a class="sourceLine" id="cb13-110" title="110"><span class="st">      &quot;encoding&quot;: {</span></a>
+<a class="sourceLine" id="cb13-111" title="111"><span class="st">        &quot;_type&quot;: &quot;CODE_PHRASE&quot;,</span></a>
+<a class="sourceLine" id="cb13-112" title="112"><span class="st">        &quot;terminology_id&quot;: {</span></a>
+<a class="sourceLine" id="cb13-113" title="113"><span class="st">          &quot;_type&quot;: &quot;TERMINOLOGY_ID&quot;,</span></a>
+<a class="sourceLine" id="cb13-114" title="114"><span class="st">          &quot;value&quot;: &quot;IANA_character-sets&quot;</span></a>
+<a class="sourceLine" id="cb13-115" title="115"><span class="st">        },</span></a>
+<a class="sourceLine" id="cb13-116" title="116"><span class="st">        &quot;code_string&quot;: &quot;UTF-8&quot;</span></a>
+<a class="sourceLine" id="cb13-117" title="117"><span class="st">      },</span></a>
+<a class="sourceLine" id="cb13-118" title="118"><span class="st">      &quot;subject&quot;: {</span></a>
+<a class="sourceLine" id="cb13-119" title="119"><span class="st">        &quot;_type&quot;: &quot;PARTY_SELF&quot;</span></a>
+<a class="sourceLine" id="cb13-120" title="120"><span class="st">      },</span></a>
+<a class="sourceLine" id="cb13-121" title="121"><span class="st">      &quot;data&quot;: {</span></a>
+<a class="sourceLine" id="cb13-122" title="122"><span class="st">        &quot;_type&quot;: &quot;HISTORY&quot;,</span></a>
+<a class="sourceLine" id="cb13-123" title="123"><span class="st">        &quot;name&quot;: {</span></a>
+<a class="sourceLine" id="cb13-124" title="124"><span class="st">          &quot;_type&quot;: &quot;DV_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-125" title="125"><span class="st">          &quot;value&quot;: &quot;History&quot;</span></a>
+<a class="sourceLine" id="cb13-126" title="126"><span class="st">        },</span></a>
+<a class="sourceLine" id="cb13-127" title="127"><span class="st">        &quot;archetype_node_id&quot;: &quot;at0002&quot;,</span></a>
+<a class="sourceLine" id="cb13-128" title="128"><span class="st">        &quot;origin&quot;: {</span></a>
+<a class="sourceLine" id="cb13-129" title="129"><span class="st">          &quot;_type&quot;: &quot;DV_DATE_TIME&quot;,</span></a>
+<a class="sourceLine" id="cb13-130" title="130"><span class="st">          &quot;value&quot;: &quot;2019-12-03T14:55:35.001+02:00&quot;</span></a>
+<a class="sourceLine" id="cb13-131" title="131"><span class="st">        },</span></a>
+<a class="sourceLine" id="cb13-132" title="132"><span class="st">        &quot;events&quot;: [</span></a>
+<a class="sourceLine" id="cb13-133" title="133"><span class="st">          {</span></a>
+<a class="sourceLine" id="cb13-134" title="134"><span class="st">            &quot;_type&quot;: &quot;POINT_EVENT&quot;,</span></a>
+<a class="sourceLine" id="cb13-135" title="135"><span class="st">            &quot;name&quot;: {</span></a>
+<a class="sourceLine" id="cb13-136" title="136"><span class="st">              &quot;_type&quot;: &quot;DV_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-137" title="137"><span class="st">              &quot;value&quot;: &quot;Any event&quot;</span></a>
+<a class="sourceLine" id="cb13-138" title="138"><span class="st">            },</span></a>
+<a class="sourceLine" id="cb13-139" title="139"><span class="st">            &quot;archetype_node_id&quot;: &quot;at0003&quot;,</span></a>
+<a class="sourceLine" id="cb13-140" title="140"><span class="st">            &quot;time&quot;: {</span></a>
+<a class="sourceLine" id="cb13-141" title="141"><span class="st">              &quot;_type&quot;: &quot;DV_DATE_TIME&quot;,</span></a>
+<a class="sourceLine" id="cb13-142" title="142"><span class="st">              &quot;value&quot;: &quot;2019-12-03T14:55:35.001+02:00&quot;</span></a>
+<a class="sourceLine" id="cb13-143" title="143"><span class="st">            },</span></a>
+<a class="sourceLine" id="cb13-144" title="144"><span class="st">            &quot;data&quot;: {</span></a>
+<a class="sourceLine" id="cb13-145" title="145"><span class="st">              &quot;_type&quot;: &quot;ITEM_TREE&quot;,</span></a>
+<a class="sourceLine" id="cb13-146" title="146"><span class="st">              &quot;name&quot;: {</span></a>
+<a class="sourceLine" id="cb13-147" title="147"><span class="st">                &quot;_type&quot;: &quot;DV_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-148" title="148"><span class="st">                &quot;value&quot;: &quot;Tree&quot;</span></a>
+<a class="sourceLine" id="cb13-149" title="149"><span class="st">              },</span></a>
+<a class="sourceLine" id="cb13-150" title="150"><span class="st">              &quot;archetype_node_id&quot;: &quot;at0001&quot;,</span></a>
+<a class="sourceLine" id="cb13-151" title="151"><span class="st">              &quot;items&quot;: [</span></a>
+<a class="sourceLine" id="cb13-152" title="152"><span class="st">                {</span></a>
+<a class="sourceLine" id="cb13-153" title="153"><span class="st">                  &quot;_type&quot;: &quot;ELEMENT&quot;,</span></a>
+<a class="sourceLine" id="cb13-154" title="154"><span class="st">                  &quot;name&quot;: {</span></a>
+<a class="sourceLine" id="cb13-155" title="155"><span class="st">                    &quot;_type&quot;: &quot;DV_TEXT&quot;,</span></a>
+<a class="sourceLine" id="cb13-156" title="156"><span class="st">                    &quot;value&quot;: &quot;Temperature&quot;</span></a>
+<a class="sourceLine" id="cb13-157" title="157"><span class="st">                  },</span></a>
+<a class="sourceLine" id="cb13-158" title="158"><span class="st">                  &quot;archetype_node_id&quot;: &quot;at0004&quot;,</span></a>
+<a class="sourceLine" id="cb13-159" title="159"><span class="st">                  &quot;value&quot;: {</span></a>
+<a class="sourceLine" id="cb13-160" title="160"><span class="st">                    &quot;_type&quot;: &quot;DV_QUANTITY&quot;,</span></a>
+<a class="sourceLine" id="cb13-161" title="161"><span class="st">                    &quot;magnitude&quot;: 37.94,</span></a>
+<a class="sourceLine" id="cb13-162" title="162"><span class="st">                    &quot;units&quot;: &quot;°C&quot;,</span></a>
+<a class="sourceLine" id="cb13-163" title="163"><span class="st">                    &quot;precision&quot;: 1</span></a>
+<a class="sourceLine" id="cb13-164" title="164"><span class="st">                  }</span></a>
+<a class="sourceLine" id="cb13-165" title="165"><span class="st">                }</span></a>
+<a class="sourceLine" id="cb13-166" title="166"><span class="st">              ]</span></a>
+<a class="sourceLine" id="cb13-167" title="167"><span class="st">            }</span></a>
+<a class="sourceLine" id="cb13-168" title="168"><span class="st">          }</span></a>
+<a class="sourceLine" id="cb13-169" title="169"><span class="st">        ]</span></a>
+<a class="sourceLine" id="cb13-170" title="170"><span class="st">      }</span></a>
+<a class="sourceLine" id="cb13-171" title="171"><span class="st">    }</span></a>
+<a class="sourceLine" id="cb13-172" title="172"><span class="st">  ]</span></a>
+<a class="sourceLine" id="cb13-173" title="173"><span class="st">}&#39;</span></a>
+<a class="sourceLine" id="cb13-174" title="174">baseURL &lt;-<span class="st"> &quot;https://rest.ehrscape.com/rest/openehr/v1/&quot;</span></a>
+<a class="sourceLine" id="cb13-175" title="175">user_name &lt;-<span class="st"> &quot;****&quot;</span></a>
+<a class="sourceLine" id="cb13-176" title="176">password &lt;-<span class="st"> &quot;****&quot;</span></a>
+<a class="sourceLine" id="cb13-177" title="177">ehrId &lt;-<span class="st"> &quot;3944045a-656b-44e8-ba0f-136cfd44c045&quot;</span></a></code></pre></div>
+<div id="make-http-request-1" class="section level2">
+<h2>Make HTTP request</h2>
+<p>The function begins by constructing the HTTP request from the <code>baseURL</code> and <code>ehrId</code> arguments. For this, the <code>modify_url</code> function of the <strong>httr</strong> package is used</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">URL_address &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">modify_url</span>(<span class="kw">paste0</span>(baseURL, <span class="st">&quot;ehr/&quot;</span>, ehrId, <span class="st">&quot;/composition&quot;</span>))</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt;  chr &quot;https://rest.ehrscape.com/rest/openehr/v1/ehr/3944045a-656b-44e8-ba0f-1&quot;..</span></a></code></pre></div>
+</div>
+<div id="prepare-composition" class="section level2">
+<h2>Prepare composition</h2>
+<p>Construction of HTTP request is followed by preparing the <code>composition</code>, which can either be given as character string or a structured list or data frame. In case it is given as a character string, all inapropriate white space, line break and carriage return symbols are cleaned using the same procedure as with the function <code>get_query</code> and the cleaned character string is converted to a structured list using the <code>fromJSON</code> function of the <strong>jsonlite</strong> package</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="cf">if</span>(<span class="kw">typeof</span>(composition) <span class="op">==</span><span class="st"> &quot;character&quot;</span>){</a>
+<a class="sourceLine" id="cb15-2" title="2">  composition &lt;-<span class="st"> </span>qdapRegex<span class="op">::</span><span class="kw">rm_white</span>(composition)</a>
+<a class="sourceLine" id="cb15-3" title="3">  composition &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">?</span><span class="ch">\n</span><span class="st">|</span><span class="ch">\r</span><span class="st">&quot;</span>, <span class="st">&quot; &quot;</span>, composition)</a>
+<a class="sourceLine" id="cb15-4" title="4">  df &lt;-<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw">fromJSON</span>(composition)</a>
+<a class="sourceLine" id="cb15-5" title="5">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb15-6" title="6">  df &lt;-<span class="st"> </span>composition</a>
+<a class="sourceLine" id="cb15-7" title="7">}</a>
+<a class="sourceLine" id="cb15-8" title="8">df</a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">#&gt; $`_type`</span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">#&gt; [1] &quot;COMPOSITION&quot;</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">#&gt; $name</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="co">#&gt; $name$`_type`</span></a>
+<a class="sourceLine" id="cb15-14" title="14"><span class="co">#&gt; [1] &quot;DV_TEXT&quot;</span></a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="co">#&gt; $name$value</span></a>
+<a class="sourceLine" id="cb15-17" title="17"><span class="co">#&gt; [1] &quot;Vital Signs&quot;</span></a>
+<a class="sourceLine" id="cb15-18" title="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-19" title="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="co">#&gt; $archetype_details</span></a>
+<a class="sourceLine" id="cb15-21" title="21"><span class="co">#&gt; $archetype_details$`_type`</span></a>
+<a class="sourceLine" id="cb15-22" title="22"><span class="co">#&gt; [1] &quot;ARCHETYPED&quot;</span></a>
+<a class="sourceLine" id="cb15-23" title="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-24" title="24"><span class="co">#&gt; $archetype_details$archetype_id</span></a>
+<a class="sourceLine" id="cb15-25" title="25"><span class="co">#&gt; $archetype_details$archetype_id$`_type`</span></a>
+<a class="sourceLine" id="cb15-26" title="26"><span class="co">#&gt; [1] &quot;ARCHETYPE_ID&quot;</span></a>
+<a class="sourceLine" id="cb15-27" title="27"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-28" title="28"><span class="co">#&gt; $archetype_details$archetype_id$value</span></a>
+<a class="sourceLine" id="cb15-29" title="29"><span class="co">#&gt; [1] &quot;openEHR-EHR-COMPOSITION.encounter.v1&quot;</span></a>
+<a class="sourceLine" id="cb15-30" title="30"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-31" title="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-32" title="32"><span class="co">#&gt; $archetype_details$template_id</span></a>
+<a class="sourceLine" id="cb15-33" title="33"><span class="co">#&gt; $archetype_details$template_id$`_type`</span></a>
+<a class="sourceLine" id="cb15-34" title="34"><span class="co">#&gt; [1] &quot;TEMPLATE_ID&quot;</span></a>
+<a class="sourceLine" id="cb15-35" title="35"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-36" title="36"><span class="co">#&gt; $archetype_details$template_id$value</span></a>
+<a class="sourceLine" id="cb15-37" title="37"><span class="co">#&gt; [1] &quot;Vital Signs&quot;</span></a>
+<a class="sourceLine" id="cb15-38" title="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-39" title="39"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-40" title="40"><span class="co">#&gt; $archetype_details$rm_version</span></a>
+<a class="sourceLine" id="cb15-41" title="41"><span class="co">#&gt; [1] &quot;1.0.4&quot;</span></a>
+<a class="sourceLine" id="cb15-42" title="42"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-43" title="43"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-44" title="44"><span class="co">#&gt; $archetype_node_id</span></a>
+<a class="sourceLine" id="cb15-45" title="45"><span class="co">#&gt; [1] &quot;openEHR-EHR-COMPOSITION.encounter.v1&quot;</span></a>
+<a class="sourceLine" id="cb15-46" title="46"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-47" title="47"><span class="co">#&gt; $language</span></a>
+<a class="sourceLine" id="cb15-48" title="48"><span class="co">#&gt; $language$`_type`</span></a>
+<a class="sourceLine" id="cb15-49" title="49"><span class="co">#&gt; [1] &quot;CODE_PHRASE&quot;</span></a>
+<a class="sourceLine" id="cb15-50" title="50"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-51" title="51"><span class="co">#&gt; $language$terminology_id</span></a>
+<a class="sourceLine" id="cb15-52" title="52"><span class="co">#&gt; $language$terminology_id$`_type`</span></a>
+<a class="sourceLine" id="cb15-53" title="53"><span class="co">#&gt; [1] &quot;TERMINOLOGY_ID&quot;</span></a>
+<a class="sourceLine" id="cb15-54" title="54"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-55" title="55"><span class="co">#&gt; $language$terminology_id$value</span></a>
+<a class="sourceLine" id="cb15-56" title="56"><span class="co">#&gt; [1] &quot;ISO_639-1&quot;</span></a>
+<a class="sourceLine" id="cb15-57" title="57"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-58" title="58"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-59" title="59"><span class="co">#&gt; $language$code_string</span></a>
+<a class="sourceLine" id="cb15-60" title="60"><span class="co">#&gt; [1] &quot;en&quot;</span></a>
+<a class="sourceLine" id="cb15-61" title="61"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-62" title="62"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-63" title="63"><span class="co">#&gt; $territory</span></a>
+<a class="sourceLine" id="cb15-64" title="64"><span class="co">#&gt; $territory$`_type`</span></a>
+<a class="sourceLine" id="cb15-65" title="65"><span class="co">#&gt; [1] &quot;CODE_PHRASE&quot;</span></a>
+<a class="sourceLine" id="cb15-66" title="66"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-67" title="67"><span class="co">#&gt; $territory$terminology_id</span></a>
+<a class="sourceLine" id="cb15-68" title="68"><span class="co">#&gt; $territory$terminology_id$`_type`</span></a>
+<a class="sourceLine" id="cb15-69" title="69"><span class="co">#&gt; [1] &quot;TERMINOLOGY_ID&quot;</span></a>
+<a class="sourceLine" id="cb15-70" title="70"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-71" title="71"><span class="co">#&gt; $territory$terminology_id$value</span></a>
+<a class="sourceLine" id="cb15-72" title="72"><span class="co">#&gt; [1] &quot;ISO_3166-1&quot;</span></a>
+<a class="sourceLine" id="cb15-73" title="73"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-74" title="74"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-75" title="75"><span class="co">#&gt; $territory$code_string</span></a>
+<a class="sourceLine" id="cb15-76" title="76"><span class="co">#&gt; [1] &quot;US&quot;</span></a>
+<a class="sourceLine" id="cb15-77" title="77"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-78" title="78"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-79" title="79"><span class="co">#&gt; $category</span></a>
+<a class="sourceLine" id="cb15-80" title="80"><span class="co">#&gt; $category$`_type`</span></a>
+<a class="sourceLine" id="cb15-81" title="81"><span class="co">#&gt; [1] &quot;DV_CODED_TEXT&quot;</span></a>
+<a class="sourceLine" id="cb15-82" title="82"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-83" title="83"><span class="co">#&gt; $category$value</span></a>
+<a class="sourceLine" id="cb15-84" title="84"><span class="co">#&gt; [1] &quot;event&quot;</span></a>
+<a class="sourceLine" id="cb15-85" title="85"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-86" title="86"><span class="co">#&gt; $category$defining_code</span></a>
+<a class="sourceLine" id="cb15-87" title="87"><span class="co">#&gt; $category$defining_code$`_type`</span></a>
+<a class="sourceLine" id="cb15-88" title="88"><span class="co">#&gt; [1] &quot;CODE_PHRASE&quot;</span></a>
+<a class="sourceLine" id="cb15-89" title="89"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-90" title="90"><span class="co">#&gt; $category$defining_code$terminology_id</span></a>
+<a class="sourceLine" id="cb15-91" title="91"><span class="co">#&gt; $category$defining_code$terminology_id$`_type`</span></a>
+<a class="sourceLine" id="cb15-92" title="92"><span class="co">#&gt; [1] &quot;TERMINOLOGY_ID&quot;</span></a>
+<a class="sourceLine" id="cb15-93" title="93"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-94" title="94"><span class="co">#&gt; $category$defining_code$terminology_id$value</span></a>
+<a class="sourceLine" id="cb15-95" title="95"><span class="co">#&gt; [1] &quot;openehr&quot;</span></a>
+<a class="sourceLine" id="cb15-96" title="96"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-97" title="97"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-98" title="98"><span class="co">#&gt; $category$defining_code$code_string</span></a>
+<a class="sourceLine" id="cb15-99" title="99"><span class="co">#&gt; [1] &quot;433&quot;</span></a>
+<a class="sourceLine" id="cb15-100" title="100"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-101" title="101"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-102" title="102"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-103" title="103"><span class="co">#&gt; $composer</span></a>
+<a class="sourceLine" id="cb15-104" title="104"><span class="co">#&gt; $composer$`_type`</span></a>
+<a class="sourceLine" id="cb15-105" title="105"><span class="co">#&gt; [1] &quot;PARTY_IDENTIFIED&quot;</span></a>
+<a class="sourceLine" id="cb15-106" title="106"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-107" title="107"><span class="co">#&gt; $composer$name</span></a>
+<a class="sourceLine" id="cb15-108" title="108"><span class="co">#&gt; [1] &quot;Silvia Blake&quot;</span></a>
+<a class="sourceLine" id="cb15-109" title="109"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-110" title="110"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-111" title="111"><span class="co">#&gt; $context</span></a>
+<a class="sourceLine" id="cb15-112" title="112"><span class="co">#&gt; $context$`_type`</span></a>
+<a class="sourceLine" id="cb15-113" title="113"><span class="co">#&gt; [1] &quot;EVENT_CONTEXT&quot;</span></a>
+<a class="sourceLine" id="cb15-114" title="114"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-115" title="115"><span class="co">#&gt; $context$start_time</span></a>
+<a class="sourceLine" id="cb15-116" title="116"><span class="co">#&gt; $context$start_time$`_type`</span></a>
+<a class="sourceLine" id="cb15-117" title="117"><span class="co">#&gt; [1] &quot;DV_DATE_TIME&quot;</span></a>
+<a class="sourceLine" id="cb15-118" title="118"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-119" title="119"><span class="co">#&gt; $context$start_time$value</span></a>
+<a class="sourceLine" id="cb15-120" title="120"><span class="co">#&gt; [1] &quot;2019-12-03T14:55:35.001+02:00&quot;</span></a>
+<a class="sourceLine" id="cb15-121" title="121"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-122" title="122"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-123" title="123"><span class="co">#&gt; $context$setting</span></a>
+<a class="sourceLine" id="cb15-124" title="124"><span class="co">#&gt; $context$setting$`_type`</span></a>
+<a class="sourceLine" id="cb15-125" title="125"><span class="co">#&gt; [1] &quot;DV_CODED_TEXT&quot;</span></a>
+<a class="sourceLine" id="cb15-126" title="126"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-127" title="127"><span class="co">#&gt; $context$setting$value</span></a>
+<a class="sourceLine" id="cb15-128" title="128"><span class="co">#&gt; [1] &quot;other care&quot;</span></a>
+<a class="sourceLine" id="cb15-129" title="129"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-130" title="130"><span class="co">#&gt; $context$setting$defining_code</span></a>
+<a class="sourceLine" id="cb15-131" title="131"><span class="co">#&gt; $context$setting$defining_code$`_type`</span></a>
+<a class="sourceLine" id="cb15-132" title="132"><span class="co">#&gt; [1] &quot;CODE_PHRASE&quot;</span></a>
+<a class="sourceLine" id="cb15-133" title="133"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-134" title="134"><span class="co">#&gt; $context$setting$defining_code$terminology_id</span></a>
+<a class="sourceLine" id="cb15-135" title="135"><span class="co">#&gt; $context$setting$defining_code$terminology_id$`_type`</span></a>
+<a class="sourceLine" id="cb15-136" title="136"><span class="co">#&gt; [1] &quot;TERMINOLOGY_ID&quot;</span></a>
+<a class="sourceLine" id="cb15-137" title="137"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-138" title="138"><span class="co">#&gt; $context$setting$defining_code$terminology_id$value</span></a>
+<a class="sourceLine" id="cb15-139" title="139"><span class="co">#&gt; [1] &quot;openehr&quot;</span></a>
+<a class="sourceLine" id="cb15-140" title="140"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-141" title="141"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-142" title="142"><span class="co">#&gt; $context$setting$defining_code$code_string</span></a>
+<a class="sourceLine" id="cb15-143" title="143"><span class="co">#&gt; [1] &quot;238&quot;</span></a>
+<a class="sourceLine" id="cb15-144" title="144"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-145" title="145"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-146" title="146"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-147" title="147"><span class="co">#&gt; $context$health_care_facility</span></a>
+<a class="sourceLine" id="cb15-148" title="148"><span class="co">#&gt; $context$health_care_facility$`_type`</span></a>
+<a class="sourceLine" id="cb15-149" title="149"><span class="co">#&gt; [1] &quot;PARTY_IDENTIFIED&quot;</span></a>
+<a class="sourceLine" id="cb15-150" title="150"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-151" title="151"><span class="co">#&gt; $context$health_care_facility$external_ref</span></a>
+<a class="sourceLine" id="cb15-152" title="152"><span class="co">#&gt; $context$health_care_facility$external_ref$`_type`</span></a>
+<a class="sourceLine" id="cb15-153" title="153"><span class="co">#&gt; [1] &quot;PARTY_REF&quot;</span></a>
+<a class="sourceLine" id="cb15-154" title="154"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-155" title="155"><span class="co">#&gt; $context$health_care_facility$external_ref$id</span></a>
+<a class="sourceLine" id="cb15-156" title="156"><span class="co">#&gt; $context$health_care_facility$external_ref$id$`_type`</span></a>
+<a class="sourceLine" id="cb15-157" title="157"><span class="co">#&gt; [1] &quot;GENERIC_ID&quot;</span></a>
+<a class="sourceLine" id="cb15-158" title="158"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-159" title="159"><span class="co">#&gt; $context$health_care_facility$external_ref$id$value</span></a>
+<a class="sourceLine" id="cb15-160" title="160"><span class="co">#&gt; [1] &quot;9091&quot;</span></a>
+<a class="sourceLine" id="cb15-161" title="161"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-162" title="162"><span class="co">#&gt; $context$health_care_facility$external_ref$id$scheme</span></a>
+<a class="sourceLine" id="cb15-163" title="163"><span class="co">#&gt; [1] &quot;HOSPITAL-NS&quot;</span></a>
+<a class="sourceLine" id="cb15-164" title="164"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-165" title="165"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-166" title="166"><span class="co">#&gt; $context$health_care_facility$external_ref$namespace</span></a>
+<a class="sourceLine" id="cb15-167" title="167"><span class="co">#&gt; [1] &quot;HOSPITAL-NS&quot;</span></a>
+<a class="sourceLine" id="cb15-168" title="168"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-169" title="169"><span class="co">#&gt; $context$health_care_facility$external_ref$type</span></a>
+<a class="sourceLine" id="cb15-170" title="170"><span class="co">#&gt; [1] &quot;PARTY&quot;</span></a>
+<a class="sourceLine" id="cb15-171" title="171"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-172" title="172"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-173" title="173"><span class="co">#&gt; $context$health_care_facility$name</span></a>
+<a class="sourceLine" id="cb15-174" title="174"><span class="co">#&gt; [1] &quot;Hospital&quot;</span></a>
+<a class="sourceLine" id="cb15-175" title="175"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-176" title="176"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-177" title="177"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-178" title="178"><span class="co">#&gt; $content</span></a>
+<a class="sourceLine" id="cb15-179" title="179"><span class="co">#&gt;         _type name._type       name.value archetype_details._type</span></a>
+<a class="sourceLine" id="cb15-180" title="180"><span class="co">#&gt; 1 OBSERVATION    DV_TEXT Body temperature              ARCHETYPED</span></a>
+<a class="sourceLine" id="cb15-181" title="181"><span class="co">#&gt;   archetype_details.archetype_id._type</span></a>
+<a class="sourceLine" id="cb15-182" title="182"><span class="co">#&gt; 1                         ARCHETYPE_ID</span></a>
+<a class="sourceLine" id="cb15-183" title="183"><span class="co">#&gt;          archetype_details.archetype_id.value archetype_details.rm_version</span></a>
+<a class="sourceLine" id="cb15-184" title="184"><span class="co">#&gt; 1 openEHR-EHR-OBSERVATION.body_temperature.v1                        1.0.4</span></a>
+<a class="sourceLine" id="cb15-185" title="185"><span class="co">#&gt;                             archetype_node_id language._type</span></a>
+<a class="sourceLine" id="cb15-186" title="186"><span class="co">#&gt; 1 openEHR-EHR-OBSERVATION.body_temperature.v1    CODE_PHRASE</span></a>
+<a class="sourceLine" id="cb15-187" title="187"><span class="co">#&gt;   language.terminology_id._type language.terminology_id.value</span></a>
+<a class="sourceLine" id="cb15-188" title="188"><span class="co">#&gt; 1                TERMINOLOGY_ID                     ISO_639-1</span></a>
+<a class="sourceLine" id="cb15-189" title="189"><span class="co">#&gt;   language.code_string encoding._type encoding.terminology_id._type</span></a>
+<a class="sourceLine" id="cb15-190" title="190"><span class="co">#&gt; 1                   en    CODE_PHRASE                TERMINOLOGY_ID</span></a>
+<a class="sourceLine" id="cb15-191" title="191"><span class="co">#&gt;   encoding.terminology_id.value encoding.code_string      _type data._type</span></a>
+<a class="sourceLine" id="cb15-192" title="192"><span class="co">#&gt; 1           IANA_character-sets                UTF-8 PARTY_SELF    HISTORY</span></a>
+<a class="sourceLine" id="cb15-193" title="193"><span class="co">#&gt;   data.name._type data.name.value data.archetype_node_id data.origin._type</span></a>
+<a class="sourceLine" id="cb15-194" title="194"><span class="co">#&gt; 1         DV_TEXT         History                 at0002      DV_DATE_TIME</span></a>
+<a class="sourceLine" id="cb15-195" title="195"><span class="co">#&gt;               data.origin.value</span></a>
+<a class="sourceLine" id="cb15-196" title="196"><span class="co">#&gt; 1 2019-12-03T14:55:35.001+02:00</span></a>
+<a class="sourceLine" id="cb15-197" title="197"><span class="co">#&gt;                                                                                                                                                                                data.events</span></a>
+<a class="sourceLine" id="cb15-198" title="198"><span class="co">#&gt; 1 POINT_EVENT, DV_TEXT, Any event, at0003, DV_DATE_TIME, 2019-12-03T14:55:35.001+02:00, ITEM_TREE, DV_TEXT, Tree, at0001, ELEMENT, DV_TEXT, Temperature, at0004, DV_QUANTITY, 37.94, °C, 1</span></a></code></pre></div>
+</div>
+<div id="post-data" class="section level2">
+<h2>POST data</h2>
+<p>Once the HTTP request <code>URL_address</code> and composition data <code>df</code> are prepared, they can be used to save the composition to the server. This is done by using the <code>POST</code> function of the <strong>httr</strong> package. The required arguments include the HTTP request (<code>URL_address</code>), configuration settings (authentication with <code>user_name</code> and <code>password</code>), body (<code>df</code> containing the composition) and encoding used (the <code>encode</code> argument)</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">resp &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">POST</span>(URL_address, httr<span class="op">::</span><span class="kw">authenticate</span>(user_name, password), <span class="dt">body =</span> df, <span class="dt">encode =</span> <span class="st">&quot;json&quot;</span>)</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="co">#&gt; List of 10</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="co">#&gt; $ url : chr</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/ehr/3944045a-656b-44e8-ba0f-136&quot;..</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="co">#&gt; $ status_code: int 201</span></a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="co">#&gt; $ headers :List of 8</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="co">#&gt; ..$ date : chr &quot;Wed, 09 Sep 2020 14:26:33 GMT&quot;</span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="co">#&gt; ..$ server : chr &quot;Apache/2.4.18 (Ubuntu)&quot;</span></a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="co">#&gt; ..$ vary : chr</span></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="co">#&gt;    &quot;Origin,Access-Control-Request-Method,Access-Control-Request-Headers&quot;</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="co">#&gt; ..$ last-modified : chr &quot;Wed, 09 Sep 2020 14:26:33 GMT&quot;</span></a>
+<a class="sourceLine" id="cb16-12" title="12"><span class="co">#&gt; ..$ etag : chr</span></a>
+<a class="sourceLine" id="cb16-13" title="13"><span class="co">#&gt;    &quot;\&quot;5acce0a8-b503-4cca-8b21-7f7508dc5c0b::medtronic.ehrscape.com::1\&quot;&quot;</span></a>
+<a class="sourceLine" id="cb16-14" title="14"><span class="co">#&gt; ..$ location : chr</span></a>
+<a class="sourceLine" id="cb16-15" title="15"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/ehr/3944045a-656b-44e8-ba0f-136&quot;..</span></a>
+<a class="sourceLine" id="cb16-16" title="16"><span class="co">#&gt;    __truncated__</span></a>
+<a class="sourceLine" id="cb16-17" title="17"><span class="co">#&gt; ..$ openehr-uri : chr</span></a>
+<a class="sourceLine" id="cb16-18" title="18"><span class="co">#&gt;    &quot;ehr:/3944045a-656b-44e8-ba0f-136cfd44c045/compositions/5acce0a8-b503-4cca&quot;..</span></a>
+<a class="sourceLine" id="cb16-19" title="19"><span class="co">#&gt; ..$ content-length: chr &quot;0&quot;</span></a>
+<a class="sourceLine" id="cb16-20" title="20"><span class="co">#&gt; ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;insensitive&quot; &quot;list&quot;</span></a>
+<a class="sourceLine" id="cb16-21" title="21"><span class="co">#&gt; $ all_headers:List of 1</span></a>
+<a class="sourceLine" id="cb16-22" title="22"><span class="co">#&gt; ..$ :List of 3</span></a>
+<a class="sourceLine" id="cb16-23" title="23"><span class="co">#&gt; .. ..$ status : int 201</span></a>
+<a class="sourceLine" id="cb16-24" title="24"><span class="co">#&gt; .. ..$ version: chr &quot;HTTP/1.1&quot;</span></a>
+<a class="sourceLine" id="cb16-25" title="25"><span class="co">#&gt; .. ..$ headers:List of 8</span></a>
+<a class="sourceLine" id="cb16-26" title="26"><span class="co">#&gt; .. .. ..$ date : chr &quot;Wed, 09 Sep 2020 14:26:33 GMT&quot;</span></a>
+<a class="sourceLine" id="cb16-27" title="27"><span class="co">#&gt; .. .. ..$ server : chr &quot;Apache/2.4.18 (Ubuntu)&quot;</span></a>
+<a class="sourceLine" id="cb16-28" title="28"><span class="co">#&gt; .. .. ..$ vary : chr</span></a>
+<a class="sourceLine" id="cb16-29" title="29"><span class="co">#&gt;    &quot;Origin,Access-Control-Request-Method,Access-Control-Request-Headers&quot;</span></a>
+<a class="sourceLine" id="cb16-30" title="30"><span class="co">#&gt; .. .. ..$ last-modified : chr &quot;Wed, 09 Sep 2020 14:26:33 GMT&quot;</span></a>
+<a class="sourceLine" id="cb16-31" title="31"><span class="co">#&gt; .. .. ..$ etag : chr</span></a>
+<a class="sourceLine" id="cb16-32" title="32"><span class="co">#&gt;    &quot;\&quot;5acce0a8-b503-4cca-8b21-7f7508dc5c0b::medtronic.ehrscape.com::1\&quot;&quot;</span></a>
+<a class="sourceLine" id="cb16-33" title="33"><span class="co">#&gt; .. .. ..$ location : chr</span></a>
+<a class="sourceLine" id="cb16-34" title="34"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/ehr/3944045a-656b-44e8-ba0f-136&quot;..</span></a>
+<a class="sourceLine" id="cb16-35" title="35"><span class="co">#&gt;    __truncated__</span></a>
+<a class="sourceLine" id="cb16-36" title="36"><span class="co">#&gt; .. .. ..$ openehr-uri : chr</span></a>
+<a class="sourceLine" id="cb16-37" title="37"><span class="co">#&gt;    &quot;ehr:/3944045a-656b-44e8-ba0f-136cfd44c045/compositions/5acce0a8-b503-4cca&quot;..</span></a>
+<a class="sourceLine" id="cb16-38" title="38"><span class="co">#&gt; .. .. ..$ content-length: chr &quot;0&quot;</span></a>
+<a class="sourceLine" id="cb16-39" title="39"><span class="co">#&gt; .. .. ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;insensitive&quot; &quot;list&quot;</span></a>
+<a class="sourceLine" id="cb16-40" title="40"><span class="co">#&gt; $ cookies :&#39;data.frame&#39;: 0 obs. of 7 variables:</span></a>
+<a class="sourceLine" id="cb16-41" title="41"><span class="co">#&gt; ..$ domain : logi(0)</span></a>
+<a class="sourceLine" id="cb16-42" title="42"><span class="co">#&gt; ..$ flag : logi(0)</span></a>
+<a class="sourceLine" id="cb16-43" title="43"><span class="co">#&gt; ..$ path : logi(0)</span></a>
+<a class="sourceLine" id="cb16-44" title="44"><span class="co">#&gt; ..$ secure : logi(0)</span></a>
+<a class="sourceLine" id="cb16-45" title="45"><span class="co">#&gt; ..$ expiration: &#39;POSIXct&#39; num(0)</span></a>
+<a class="sourceLine" id="cb16-46" title="46"><span class="co">#&gt; ..$ name : logi(0)</span></a>
+<a class="sourceLine" id="cb16-47" title="47"><span class="co">#&gt; ..$ value : logi(0)</span></a>
+<a class="sourceLine" id="cb16-48" title="48"><span class="co">#&gt; $ content : raw(0)</span></a>
+<a class="sourceLine" id="cb16-49" title="49"><span class="co">#&gt; $ date : POSIXct[1:1], format: &quot;2020-09-09 14:26:33&quot;</span></a>
+<a class="sourceLine" id="cb16-50" title="50"><span class="co">#&gt; $ times : Named num [1:6] 0 0.00764 0.03002 0.07676 0 ...</span></a>
+<a class="sourceLine" id="cb16-51" title="51"><span class="co">#&gt; ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;redirect&quot; &quot;namelookup&quot; &quot;connect&quot; &quot;pretransfer&quot;</span></a>
+<a class="sourceLine" id="cb16-52" title="52"><span class="co">#&gt;    ...</span></a>
+<a class="sourceLine" id="cb16-53" title="53"><span class="co">#&gt; $ request :List of 7</span></a>
+<a class="sourceLine" id="cb16-54" title="54"><span class="co">#&gt; ..$ method : chr &quot;POST&quot;</span></a>
+<a class="sourceLine" id="cb16-55" title="55"><span class="co">#&gt; ..$ url : chr</span></a>
+<a class="sourceLine" id="cb16-56" title="56"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/ehr/3944045a-656b-44e8-ba0f-136&quot;..</span></a>
+<a class="sourceLine" id="cb16-57" title="57"><span class="co">#&gt; ..$ headers : Named chr [1:2] &quot;application/json, text/xml, application/xml,</span></a>
+<a class="sourceLine" id="cb16-58" title="58"><span class="co">#&gt;    */*&quot; &quot;application/json&quot;</span></a>
+<a class="sourceLine" id="cb16-59" title="59"><span class="co">#&gt; .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Accept&quot; &quot;Content-Type&quot;</span></a>
+<a class="sourceLine" id="cb16-60" title="60"><span class="co">#&gt; ..$ fields : NULL</span></a>
+<a class="sourceLine" id="cb16-61" title="61"><span class="co">#&gt; ..$ options :List of 6</span></a>
+<a class="sourceLine" id="cb16-62" title="62"><span class="co">#&gt; .. ..$ useragent : chr &quot;libcurl/7.64.1 r-curl/4.3 httr/1.4.2&quot;</span></a>
+<a class="sourceLine" id="cb16-63" title="63"><span class="co">#&gt; .. ..$ post : logi TRUE</span></a>
+<a class="sourceLine" id="cb16-64" title="64"><span class="co">#&gt; .. ..$ postfieldsize: int 2562</span></a>
+<a class="sourceLine" id="cb16-65" title="65"><span class="co">#&gt; .. ..$ postfields : raw [1:2562] 7b 22 5f 74 ...</span></a>
+<a class="sourceLine" id="cb16-66" title="66"><span class="co">#&gt; .. ..$ httpauth : num 1</span></a>
+<a class="sourceLine" id="cb16-67" title="67"><span class="co">#&gt; .. ..$ userpwd : chr &quot;****:****&quot;</span></a>
+<a class="sourceLine" id="cb16-68" title="68"><span class="co">#&gt; ..$ auth_token: NULL</span></a>
+<a class="sourceLine" id="cb16-69" title="69"><span class="co">#&gt; ..$ output : list()</span></a>
+<a class="sourceLine" id="cb16-70" title="70"><span class="co">#&gt; .. ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;write_memory&quot; &quot;write_function&quot;</span></a>
+<a class="sourceLine" id="cb16-71" title="71"><span class="co">#&gt; ..- attr(*, &quot;class&quot;)= chr &quot;request&quot;</span></a>
+<a class="sourceLine" id="cb16-72" title="72"><span class="co">#&gt; $ handle :Class &#39;curl_handle&#39; &lt;externalptr&gt;</span></a>
+<a class="sourceLine" id="cb16-73" title="73"><span class="co">#&gt; - attr(*, &quot;class&quot;)= chr &quot;response&quot;</span></a></code></pre></div>
+</div>
+<div id="parse-response-1" class="section level2">
+<h2>Parse response</h2>
+<p>The server response contains the details of the call along with the HTTP status. In case of successfully executed request, the response body contains a link to the newly created composition. This link is parsed from the content field of the response</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">resp_content &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">content</span>(resp, <span class="dt">as =</span> <span class="st">&quot;parsed&quot;</span>)</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="co">#&gt; $answer</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="co">#&gt; Response [https://rest.ehrscape.com/rest/openehr/v1/ehr/3944045a-656b-44e8-ba0f-136cfd44c045/composition]</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="co">#&gt;   Date: 2020-09-09 14:26</span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="co">#&gt;   Status: 201</span></a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="co">#&gt;   Content-Type: &lt;unknown&gt;</span></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="co">#&gt; &lt;EMPTY BODY&gt;</span></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb17-9" title="9"><span class="co">#&gt; $answer_content</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="co">#&gt; $location</span></a>
+<a class="sourceLine" id="cb17-13" title="13"><span class="co">#&gt; [1] &quot;https://rest.ehrscape.com/rest/openehr/v1/ehr/3944045a-656b-44e8-ba0f-136cfd44c045/composition/5acce0a8-b503-4cca-8b21-7f7508dc5c0b::medtronic.ehrscape.com::1&quot;</span></a></code></pre></div>
+<p>The function returns a list of the full response <code>resp</code> and the parsed content field containing the link to the created composition <code>resp_content</code>.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
