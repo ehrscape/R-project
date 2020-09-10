@@ -5,7 +5,7 @@
 
 [EhrScape](https://www.ehrscape.com/index.html) is an open health data platform providing a rich service framework that allows you to store, query and retrieve electronic health records based on the [openEHR](http://www.openehr.org/) specification. The data is available as [JSON](https://en.wikipedia.org/wiki/JSON) via a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) web service architecture. 
 
-The overall approach is generic â€“ we want to obtain healthcare data by calling a REST API, and then format the returned result set in R to ready the data for more sophisticated analysis.
+The overall approach is generic - we want to obtain healthcare data by calling a REST API, and then format the returned result set in R to ready the data for more sophisticated analysis.
 
 RESTful applications use HTTP requests to read data (e.g., make queries) and post data (create and/or update). At its most basic, calling a REST API to obtain data involves making a HTTP GET request to a server. If the call succeeds, youâ€™ll have a document that contains the requested data. To store data using REST API, a HTTP POST request needs to be made to the server along with the newly created data. 
 
