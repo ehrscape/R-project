@@ -27,13 +27,24 @@ devtools::install_github("ehrscape/R-project/AnalyzeGPS")
 Included packages
 -------
 
+### openEHRapi - using openEHR REST API from R 
+
+The package is designed to collect data from an openEHR server with [AQL](http://www.openehr.org/releases/QUERY/latest/docs/AQL/AQL.html) queries via [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) web service architecture. Healthcare data is obtained by calling a REST API, and then format the returned result set in R to prepare the data for further analysis. Saving data records (compositions) to an openEHR server is also enabled.  
+
+The package **openEHRapi** includes functions: 
+
+* `get_query`: for a given AQL query returns the result set in a data frame. 
+* `post_composition`: stores new data records (compositions).
+
+For more details on the usage of the package please refer to the included vignette.
+
 ### EhrscapeR - using EhrScape REST API from R 
 
-The package is designed to collect data from open health data platform [EhrScape](https://www.ehrscape.com/index.html) with [AQL](http://www.openehr.org/releases/QUERY/latest/docs/AQL/AQL.html) queries via [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) web service architecture. Healthcare data is obtained by calling a REST API, and then format the returned result set in R to ready the data for more sophisticated analysis. Saving data records (compositions) to EhrScape is also enabled.  
+The package is designed to collect data from open health data platform [EhrScape](https://www.ehrscape.com/index.html) with [AQL](http://www.openehr.org/releases/QUERY/latest/docs/AQL/AQL.html) queries via [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) web service architecture. Healthcare data is obtained by calling a REST API, and then format the returned result set in R to prepare the data for further analysis. Saving data records (compositions) to EhrScape is also enabled.  
 
 The package **EhrscapeR** includes functions: 
 
-* `get_query`: for a given AQ query returns the result set in a data frame. 
+* `get_query`: for a given AQL query returns the result set in a data frame. 
 * `get_query_csv`: for a given AQL query returns the CSV formated result set in a data frame. 
 * `post_composition`: stores new data records (compositions) in EhrScape.
 
