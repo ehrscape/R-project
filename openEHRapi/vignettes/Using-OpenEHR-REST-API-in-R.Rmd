@@ -51,7 +51,8 @@ The package `openEHRapi` includes functions:
 * `get_query`: for a given [AQL](http://www.openehr.org/releases/QUERY/latest/docs/AQL/AQL.html) query returns the result set in a data frame. 
 * `post_composition`: stores new data records (compositions) in openEHR server.
 
-All the examples below can be checked on EhrScape API Explorer.
+All the examples below can be checked on EhrScape API Explorer. 
+Part of the `get_query` function that ensures proper editing the baseURL and error handling of the GET request is credited to [openehR](https://github.com/DIPSAS/openehR) package. [Details](https://github.com/search?q=paste0%28+++++++++++%22Could+not+execute+query.+HTTP+%22%2C&type=code). 
 
 # Data query
 

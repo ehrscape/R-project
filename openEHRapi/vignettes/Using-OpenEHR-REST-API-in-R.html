@@ -493,7 +493,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Using openEHR REST API in R</h1>
-<h4 class="date">10 September, 2020</h4>
+<h4 class="date">14 September, 2020</h4>
 
 
 <div id="TOC">
@@ -539,7 +539,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><code>get_query</code>: for a given <a href="http://www.openehr.org/releases/QUERY/latest/docs/AQL/AQL.html">AQL</a> query returns the result set in a data frame.</li>
 <li><code>post_composition</code>: stores new data records (compositions) in openEHR server.</li>
 </ul>
-<p>All the examples below can be checked on EhrScape API Explorer.</p>
+<p>All the examples below can be checked on EhrScape API Explorer. Part of the <code>get_query</code> function that ensures proper editing the baseURL and error handling of the GET request is credited to <a href="https://github.com/DIPSAS/openehR">openehR</a> package. <a href="https://github.com/search?q=paste0%28+++++++++++%22Could+not+execute+query.+HTTP+%22%2C&amp;type=code">Details</a>.</p>
 </div>
 <div id="data-query" class="section level1">
 <h1>Data query</h1>
@@ -593,7 +593,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt;    __truncated__</span></a>
 <a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; $ status_code: int 200</span></a>
 <a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt; $ headers :List of 5</span></a>
-<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; ..$ date : chr &quot;Thu, 10 Sep 2020 11:10:58 GMT&quot;</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; ..$ date : chr &quot;Mon, 14 Sep 2020 09:10:39 GMT&quot;</span></a>
 <a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; ..$ server : chr &quot;Apache/2.4.18 (Ubuntu)&quot;</span></a>
 <a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt; ..$ vary : chr</span></a>
 <a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt;    &quot;Origin,Access-Control-Request-Method,Access-Control-Request-Headers&quot;</span></a>
@@ -605,7 +605,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; .. ..$ status : int 200</span></a>
 <a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; .. ..$ version: chr &quot;HTTP/1.1&quot;</span></a>
 <a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt; .. ..$ headers:List of 5</span></a>
-<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt; .. .. ..$ date : chr &quot;Thu, 10 Sep 2020 11:10:58 GMT&quot;</span></a>
+<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt; .. .. ..$ date : chr &quot;Mon, 14 Sep 2020 09:10:39 GMT&quot;</span></a>
 <a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt; .. .. ..$ server : chr &quot;Apache/2.4.18 (Ubuntu)&quot;</span></a>
 <a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt; .. .. ..$ vary : chr</span></a>
 <a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt;    &quot;Origin,Access-Control-Request-Method,Access-Control-Request-Headers&quot;</span></a>
@@ -621,8 +621,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb4-33" title="33"><span class="co">#&gt; ..$ name : logi(0)</span></a>
 <a class="sourceLine" id="cb4-34" title="34"><span class="co">#&gt; ..$ value : logi(0)</span></a>
 <a class="sourceLine" id="cb4-35" title="35"><span class="co">#&gt; $ content : raw [1:15038] 7b 22 6d 65 ...</span></a>
-<a class="sourceLine" id="cb4-36" title="36"><span class="co">#&gt; $ date : POSIXct[1:1], format: &quot;2020-09-10 11:10:58&quot;</span></a>
-<a class="sourceLine" id="cb4-37" title="37"><span class="co">#&gt; $ times : Named num [1:6] 0 0.0154 0.0527 0.1289 0.1712 ...</span></a>
+<a class="sourceLine" id="cb4-36" title="36"><span class="co">#&gt; $ date : POSIXct[1:1], format: &quot;2020-09-14 09:10:39&quot;</span></a>
+<a class="sourceLine" id="cb4-37" title="37"><span class="co">#&gt; $ times : Named num [1:6] 0 0.0114 0.0297 0.0798 0.1437 ...</span></a>
 <a class="sourceLine" id="cb4-38" title="38"><span class="co">#&gt; ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;redirect&quot; &quot;namelookup&quot; &quot;connect&quot; &quot;pretransfer&quot;</span></a>
 <a class="sourceLine" id="cb4-39" title="39"><span class="co">#&gt;    ...</span></a>
 <a class="sourceLine" id="cb4-40" title="40"><span class="co">#&gt; $ request :List of 7</span></a>
@@ -656,7 +656,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt;    &quot;https://rest.ehrscape.com/rest/openehr/v1/query/aql?q=select%20t/data[at0&quot;..</span></a>
 <a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt;    __truncated__</span></a>
 <a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; ..$ _type : chr &quot;RESULTSET&quot;</span></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; ..$ _created : chr &quot;2020-09-10T11:10:58.474Z&quot;</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; ..$ _created : chr &quot;2020-09-14T09:10:39.809Z&quot;</span></a>
 <a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; ..$ _executed_aql: chr &quot;select t/data[at0002|History|]/events[at0003|Any</span></a>
 <a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt;    event|]/data[at0001]/items[at0004|Temperature|]/value as Tempe&quot;|</span></a>
 <a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;    __truncated__</span></a>
