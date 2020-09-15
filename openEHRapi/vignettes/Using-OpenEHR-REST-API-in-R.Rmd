@@ -26,6 +26,8 @@ library(kableExtra)
 
 # Introduction
 
+The `openEHRapi` R package is an update of the previous [EhrscapeR](https://github.com/ehrscape/R-project/tree/master/EhrscapeR) package to the latest [openEHR REST API](https://specifications.openehr.org/releases/ITS-REST/latest/index.html) specification. The `openEHRapi` package enables data retrieval by executing [AQL](http://www.openehr.org/wiki/display/spec/Archetype+Query+Language+Description) queries and commiting new compositions (documents) on an openEHR server using openEHR REST API. Part of the code regarding HTTP exception handling was inspired by another recent R package, enabling data retrieval from an openEHR server using openEHR REST API - the [`openehR`](https://github.com/DIPSAS/openehR).
+
 [EhrScape](https://www.ehrscape.com) is an open health data platform providing a rich service framework that allows you to store, query and retrieve electronic health records based on the [openEHR](http://www.openehr.org/) specification. The data is available as [JSON](https://en.wikipedia.org/wiki/JSON) via a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) web service architecture. 
 
 The overall approach is generic – we want to obtain healthcare data by calling a REST API, and then format the returned result set in R to ready the data for more sophisticated analysis.
@@ -52,7 +54,6 @@ The package `openEHRapi` includes functions:
 * `post_composition`: stores new data records (compositions) in openEHR server.
 
 All the examples below can be checked on EhrScape API Explorer. 
-Part of the `get_query` function that ensures proper editing the baseURL and error handling of the GET request is credited to [openehR](https://github.com/DIPSAS/openehR) package. [Details](https://github.com/search?q=paste0%28+++++++++++%22Could+not+execute+query.+HTTP+%22%2C&type=code). 
 
 # Data query
 

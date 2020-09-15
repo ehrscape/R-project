@@ -23,25 +23,20 @@
 
 get_query <- function(baseURL, credentials, aql_query, full_path = FALSE) {
 
-  if (!endsWith(baseURL, "/")) {
-    baseURL = paste0(baseURL, "/")
-  }
-
   aql_query <- qdapRegex::rm_white(aql_query)
   aql_query <- gsub("\r?\n|\r", " ", aql_query)
   query_enc <- utils::URLencode(aql_query)
-  URL_address = paste0(baseURL, "query/aql?q=", query_enc)
+  if (endsWith(baseURL, "/")) {
+    URL_address = paste0(baseURL, "query/aql?q=", query_enc)
+  } else {
+    URL_address = paste0(baseURL, "/query/aql?q=", query_enc)
+  }
   resp <- httr::GET(URL_address, httr::authenticate(credentials[1], credentials[2]), httr::content_type_json())
 
   if (httr::http_error(resp)) {
     stop(
-      paste0(
-        "Could not execute query. HTTP ",
-        resp$status_code,
-        " Response:\n",
-        httr::content(resp)
+      paste0("Query not executed. HTTP ", resp$status_code, ": ", httr::content(resp))
       )
-    )
     return(resp)
   } else {
 

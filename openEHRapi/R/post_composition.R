@@ -186,11 +186,11 @@
 
 post_composition <- function(baseURL, credentials, ehrId, composition){
 
-  if (!endsWith(baseURL, "/")) {
-    baseURL = paste0(baseURL, "/")
+  if (endsWith(baseURL, "/")) {
+    URL_address <- httr::modify_url(paste0(baseURL, "ehr/", ehrId, "/composition"))
+  } else {
+    URL_address <- httr::modify_url(paste0(baseURL, "/ehr/", ehrId, "/composition"))
   }
-
-  URL_address <- httr::modify_url(paste0(baseURL, "ehr/", ehrId, "/composition"))
 
   if(typeof(composition) == "character"){
     composition <- qdapRegex::rm_white(composition)
@@ -205,12 +205,7 @@ post_composition <- function(baseURL, credentials, ehrId, composition){
 
   if (httr::http_error(resp)) {
     stop(
-      paste0(
-        "Could not execute. HTTP ",
-        resp$status_code,
-        " Response:\n",
-        resp_content
-      )
+      paste0("Could not execute. HTTP ", resp$status_code, ": ", resp_content)
     )
     return(list(answer = resp, answer_content = resp_content))
   } else {
