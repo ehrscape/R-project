@@ -62,8 +62,12 @@ get_query <- function(baseURL, credentials, aql_query, full_path = FALSE) {
     rec_num <- sum(runs$values)
 
     json_nav$ind <- rep(NA, dim(json_nav)[1])
-    for(i in 1:rec_num) {
-      json_nav$ind[limits[2*i - 1] : limits[2*i]] <- i
+    if(length(limits) > 1) {
+      for(i in 1:rec_num) {
+        json_nav$ind[limits[2*i - 1] : limits[2*i]] <- i
+      }
+    } else {
+      json_nav$ind <- seq(1, limits, 1)
     }
 
     if(full_path) {
