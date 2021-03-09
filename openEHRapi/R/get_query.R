@@ -1,10 +1,10 @@
 #' Parse JSON resulting from AQL query to data frame
 #'
 #' This function applies the GET method on the selected AQL query to obtain data via OpenEHR REST API from an openEHR server.
-#' @param baseURL url addres of the REST service (character string).
+#' @param baseURL url address of the REST service (character string).
 #' @param credentials character vector of the authentication pair of \code{username} and \code{password}.
 #' @param aql_query character string containing the AQL query.
-#' @param full_path logical value indicating the degree of flattening. If TRUE each value (even repetitions on the same level) in the JSON is assigned a unique identifier (basically flattened address). If FALSE values are sorted in the outpt data frame according to JSON path, case number and unique sequence within the same case (if there are several repetitions on the same JSON level).
+#' @param full_path logical value indicating the degree of flattening. If TRUE each value (even repetitions on the same level) in the JSON is assigned a unique identifier (basically flattened address). If FALSE values are sorted in the output data frame according to JSON path, case number and unique sequence within the same case (if there are several repetitions on the same JSON level).
 #' @return A data frame containing the parsed JSON result.
 #' @export
 #' @examples
@@ -41,6 +41,12 @@ get_query <- function(baseURL, credentials, aql_query, full_path = FALSE) {
   } else {
 
     json_results <- httr::content(resp)
+    # replace null values with NA
+    json_results$rows <- purrr::map(json_results$rows,
+                                    ~ if(is.list(.x)){
+                                      purrr::map(.x, ~ replace(.x, is.null(.x), NA))
+                                    } else {.x}
+    )
     json_rows <- unlist(json_results$rows)
     nvars <- length(json_results$columns)
     pars_per_var <- unlist(lapply(json_results$rows[[1]], length))
@@ -51,8 +57,12 @@ get_query <- function(baseURL, credentials, aql_query, full_path = FALSE) {
 
     # Data frame with values and paths
     json_nav <- as.data.frame(json_rows, stringsAsFactors = FALSE)
-    json_nav$path <- paste(rep(rep(namesPaths$name, pars_per_var), times = length(json_results$rows)),
-                           attr(json_rows, "names"), sep = ".")
+    if(is.null(attr(json_rows, "names"))) {
+      json_nav$path <- rep(rep(namesPaths$name, pars_per_var), times = length(json_results$rows))
+    } else {
+      json_nav$path <- paste(rep(rep(namesPaths$name, pars_per_var), times = length(json_results$rows)),
+                             attr(json_rows, "names"), sep = ".")
+    }
     unique_path <- unique(json_nav$path)
     json_nav$path <- ordered(json_nav$path, levels = unique_path)
 

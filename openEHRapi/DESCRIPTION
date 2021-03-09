@@ -11,7 +11,7 @@ Description: The package enables data collection from openEHR server
 License: LGPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: httr, jsonlite, data.table, plyr, reshape2, qdapRegex
+Imports: httr, jsonlite, data.table, plyr, reshape2, qdapRegex, purrr
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

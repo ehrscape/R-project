@@ -7,13 +7,13 @@
 get_query(baseURL, credentials, aql_query, full_path = FALSE)
 }
 \arguments{
-\item{baseURL}{url addres of the REST service (character string).}
+\item{baseURL}{url address of the REST service (character string).}
 
 \item{credentials}{character vector of the authentication pair of \code{username} and \code{password}.}
 
 \item{aql_query}{character string containing the AQL query.}
 
-\item{full_path}{logical value indicating the degree of flattening. If TRUE each value (even repetitions on the same level) in the JSON is assigned a unique identifier (basically flattened address). If FALSE values are sorted in the outpt data frame according to JSON path, case number and unique sequence within the same case (if there are several repetitions on the same JSON level).}
+\item{full_path}{logical value indicating the degree of flattening. If TRUE each value (even repetitions on the same level) in the JSON is assigned a unique identifier (basically flattened address). If FALSE values are sorted in the output data frame according to JSON path, case number and unique sequence within the same case (if there are several repetitions on the same JSON level).}
 }
 \value{
 A data frame containing the parsed JSON result.
